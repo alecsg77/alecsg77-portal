@@ -17,16 +17,23 @@ stepsCompleted:
 inputDocuments:
   - /workspaces/alecsg77-portal/_bmad-output/planning-artifacts/product-brief-alecsg77-portal-2026-02-27.md
   - /workspaces/alecsg77-portal/_bmad-output/brainstorming/brainstorming-session-2026-02-25.md
+date: '2026-02-27'
 classification:
   projectType: web_app
   domain: general
   complexity: low
   projectContext: greenfield
 productVision:
-  vision: Rendi l'esperienza lavorativa in un database interrogabile per estrarre informazioni mirate, inclusi fatti tangibili e lessons learned oggettive. Il sistema agisce da ponte proattivo tra le competenze reali (mappate anche in format S.T.A.R) del professionista e le specifiche Job Description (JD).
-  differentiator: "Un 'HyperCV' alimentato da un duplice flusso automatizzato: Agenti AI proattivi che intervistano l'utente per far emergere memorie e sfide profonde (l'output base è un dato grezzo verificabile, riprocessabile e soggetto a human-validation obbligatoria), e un sistema di ricerca documentale semantica tramite linguaggio naturale che filtra un sito web statico pubblico (con feature AI dietro login per evitare abusi)."
-  insight: L'obiettivo non è sostituire il colloquio con un "yes-man" automatizzato, ma usare l'AI come "agente di ricerca virtuale" che esponga il vero DB delle mie esperienze. Questo elimina i recruiter pigri senza valore aggiunto, premiando chi ha vero interesse ad approfondire. Se l'Agente non capisce le sottigliezze tecniche della JD, è istruito per restituire un sincero "Chiedi ad Alessio per approfondire".
-  oneLiner: "L'AI Mode per la tua carriera: un portale formato da un CV interattivo pubblico e un 'Agente di Ricerca Virtuale' privato dietro login, istruito sui dati grezzi della tua carriera pre-validati umanamente."
+  vision: Trasformare l'esperienza lavorativa in una knowledge base pubblica esplorabile, capace di esporre fatti tangibili e lessons learned oggettive tramite discovery guidata e contenuti strutturati verificabili.
+  differentiator: "Un HyperCV alimentato da una pipeline privata offline-first che distilla memorie e note grezze in artifact canonici validati umanamente, poi pubblicati in un portale statico bilingue ad alta leggibilita."
+  insight: L'obiettivo non e sostituire il colloquio con un assistente che parli al posto del candidato, ma ridurre l'attrito della valutazione esponendo un database reale di esperienze consultabile con navigazione, ricerca e progressive disclosure.
+  oneLiner: "Un portale pubblico statico che rende la carriera consultabile come una knowledge base, alimentato da una pipeline privata che distilla contenuti verificabili."
+lastEdited: '2026-03-08'
+editHistory:
+  - date: '2026-03-08'
+    changes: 'Refocused requirements for measurability, traceability, web-app coverage, and abstract provenance/regeneration language'
+  - date: '2026-03-08'
+    changes: 'Tightened BMAD rigor across success criteria, transition architecture, selected FRs, and release-evidence terminology'
 workflowType: 'prd'
 ---
 
@@ -37,16 +44,17 @@ workflowType: 'prd'
 
 ## Executive Summary
 
-HyperCV è una web app che trasforma il CV statico in una knowledge base interrogabile. Il prodotto combina un portale pubblico statico, ottimizzato per performance e trust, con una futura area privata autenticata dedicata alla ricerca semantica e al job matching contestuale.
+HyperCV è una web app che trasforma il CV statico in una knowledge base esplorabile. Il problema da risolvere è duplice: un CV tradizionale comprime troppo il contesto per recruiter e valutatori tecnici, mentre un portfolio narrativo richiede troppo tempo per arrivare al punto utile. La V1 risponde a questo gap con un portale pubblico statico bilingue, progettato per offrire discovery guidata, ricerca lato client e progressive disclosure su contenuti verificabili. Il valore del portale deriva da una pipeline privata offline-first che distilla e valida i contenuti prima della pubblicazione. Le funzionalita conversazionali e il matching real-time restano esplicitamente fuori dal MVP.
 
 ### What Makes This Special
 
-Il differenziatore è la separazione tra acquisizione del dato grezzo, distillazione canonica e presentazione pubblica:
+Il differenziatore è la separazione tra preparazione privata del contenuto e consultazione pubblica:
 
-1. **Private pipeline:** l'Autore conserva memorie raw persistenti, multilingua e non filtrate. Uno o più agenti o processi privati le trasformano in artifact strutturati, verificabili, versionabili e soggetti a validazione umana.
-2. **Public presentation pipeline:** il portale pubblico espone contenuti statici bilingui ad alta leggibilità; la futura area privata userà gli artifact canonici per matching su Job Description e retrieval semantico, evitando sintesi narrative non verificabili.
+1. **Private distillation pipeline:** l'Autore raccoglie memorie raw e le trasforma in artifact strutturati, verificabili e soggetti a validazione umana.
+2. **Canonical public experience:** il portale espone contenuti statici bilingui ad alta leggibilita, generati da una knowledge base canonica approvata.
+3. **Contextual progressive disclosure:** l'esperienza pubblica mostra prima la domanda rilevante e poi il frammento strutturato, facilitando valutazione rapida e copy-paste operativo.
 
-**Core Insight:** *"L'AI Mode per la tua carriera: un portale formato da un CV interattivo pubblico e un 'Agente di Ricerca Virtuale' privato abilitato al matching contestuale sulle JD, istruito su memorie documentali e interviste proattive a format S.T.A.R."*
+**Core Insight:** *"Un portale pubblico statico che rende la carriera consultabile come una knowledge base, alimentato da una pipeline privata che distilla contenuti verificabili e leggibili in modo rapido."*
 
 ## Project Classification
 
@@ -58,20 +66,27 @@ Il differenziatore è la separazione tra acquisizione del dato grezzo, distillaz
 ## Success Criteria
 
 ### User Success (Il Recruiter)
-Il successo per l'utente ("Aha! moment") coincide con la velocità e la pulizia con cui reperisce un'informazione profonda su un'esperienza altrimenti introvabile incrociando parole chiave o analizzando una navigazione logica. Il Recruiter sa di aver trovato valore quando il sistema risponde senza filtri all'esigenza: "Mostrami esattamente dove, come e con che risultati ha usato questa competenza".
+Il successo per l'utente coincide con tre esiti osservabili nella stessa sessione:
+* raggiunge un frammento rilevante entro 15 secondi;
+* espande almeno un approfondimento utile;
+* ottiene testo riutilizzabile per screening o handoff interni senza riformattazione sostanziale.
 
 ### Business Success (L'Autore/Candidato)
-Essendo un hub personale, il ROI (Return on Investment) dell'Autore trascende il solo esercizio accademico per atterrare sul Personal Branding e la visibilità:
-* **Generazione d'interesse circolare:** Stabilire un volano di traffico in cui i visitatori del profilo LinkedIn accedono al portale e i visitatori organici del portale convertono ritornando all'account LinkedIn per un contatto professionale.
-* Elevare la qualità percepita del profilo tecnico durante i follow-up o i contatti da parte di HR/Hiring Manager top-tier.
+Il successo business dell'Autore e dimostrato da due segnali misurabili di qualificazione e ritorno:
+* **Generazione d'interesse circolare:** Stabilire un volano di traffico in cui i visitatori del profilo LinkedIn accedono al portale e almeno il 5% delle visite uniche del portale genera un click di ritorno verso LinkedIn o una CTA di contatto professionale.
+* **Qualificazione del contatto:** Almeno il 50% dei contatti professionali generati dal portale deve arrivare dopo la consultazione di almeno un approfondimento tecnico o metodologico tracciato negli analytics o confermato nel contesto del contatto.
 
 ### Technical Success
-L'infrastruttura di erogazione e di navigazione deve risultare fulminea, solida, prevedibile nei costi operativi (consumo token LLM severamente sotto controllo tramite generazione statica pre-processata). Nessuna interruzione di servizio.
+La V1 raggiunge il successo tecnico se rispetta simultaneamente quattro condizioni di rilascio:
+* costi di erogazione prevedibili tramite publishing statico;
+* interazioni pubbliche principali entro 100 ms dopo il caricamento iniziale;
+* cambio lingua entro 500 ms nei browser supportati;
+* punteggio Lighthouse di almeno 95 sulle pagine benchmark di release, senza dipendenze runtime critiche per la consultazione del contenuto pubblico.
 
 ### Measurable Outcomes
 * **Time-to-Value (TTV) < 15 secondi:** L'utente esplora le tassonomie e raggiunge il suo primo livello di approfondimento entro i primi secondi.
 * **Deep-Dive Engagement (>40%):** Il 40% delle visite uniche deve arrivare ad espandere le descrizioni metodologiche (S.T.A.R) e non restare sulla Root List.
-* **Conversion / Click-through-Rate (CTR):** Tracciamento quantitativo del volume di traffico cross-canale in entrata (da LinkedIn al Portal) e soprattutto in "Uscita" (Click sulla CTA "Contattami su LinkedIn" posta sul portale al temine delle esperienze).
+* **Conversion / Click-through-Rate (CTR) >= 5%:** Almeno il 5% delle visite uniche del portale deve generare un click in uscita verso la CTA professionale primaria, con tracciamento separato del traffico in entrata da LinkedIn e del traffico di ritorno dal portale.
 
 Questi obiettivi impongono una scelta architetturale conservativa per la V1: contenuti verificabili, costi operativi bassi e massima leggibilità pubblica prima di introdurre capacità real-time più costose e rischiose.
 
@@ -80,53 +95,54 @@ Questi obiettivi impongono una scelta architetturale conservativa per la V1: con
 ### MVP - Minimum Viable Product
 Costruisce il valore minimo riducendo costo, rischio di allucinazione e superficie d'attacco:
 * Private pipeline offline-first per trasformare raw in artifact strutturati validati.
-* Portale pubblico statico bilingue con navigazione gerarchica e ricerca lato client.
+* Portale pubblico statico bilingue con navigazione gerarchica come modalita primaria e ricerca lato client come supporto secondario.
 * **Progressive Disclosure:** i link espongono domande contestuali e aprono frammenti S.T.A.R. leggibili e copiabili.
 * Analytics per TTV, deep-dive engagement e CTR verso LinkedIn.
+* Esclusioni esplicite del MVP: nessun chatbot runtime, nessun job matching live, nessun report dinamico generato on demand, nessuna autenticazione.
 
 ### Growth Features (Post-MVP)
 Estende la stessa knowledge base canonica con capacità real-time e governance operativa:
-* Autenticazione e gating delle funzionalità avanzate.
+* Autenticazione e gating delle funzionalita avanzate.
 * Retrieval e matching contestuale su Job Description dietro login.
+* Esperienze conversazionali e output dinamici generati a runtime.
 * Dashboard amministrativa per ingestione, validazione e aggiornamento dei contenuti.
-* Evoluzioni future come input vocali e agenti conversazionali guidati dal contesto.
 
-Lo scope dell'MVP è quindi sufficiente se dimostra che discovery guidata, copy-paste operativo e consultazione rapida generano valore reale per recruiter, valutatori tecnici e Autore.
+Lo scope dell'MVP e sufficiente se dimostra che discovery guidata, copy-paste operativo e consultazione rapida generano valore reale prima di introdurre capacita AI in tempo reale.
 
 ## User Journeys
 
-In questa fase MVP, l'architettura è puramente SSG (Static Site Generation), eliminando la stretta necessità di una barra di ricerca globale a favore di un'architettura dell'informazione rigorosa (sezioni e sottogruppi) che intercetta i principali intenti di navigazione. Le informazioni vengono duplicate e declinate contestualmente dall'Agente Generatore in base al percorso in cui si trovano. 
+In questa fase MVP, l'esperienza e static-first: la navigazione gerarchica e il pattern principale, mentre la ricerca globale lato client serve come acceleratore secondario per il recupero di contenuti noti. Le informazioni vengono organizzate in percorsi coerenti e declinate contestualmente in base al nodo di navigazione.
 
-Il pattern di interazione primario è la **Progressive Disclosure**: hover su un link = mostra la *domanda* a cui quel link risponderà (es. "In quali progetti è stato usato React e per risolvere quale problema?"); click = mostra il *frammento di risposta* formattato per facilitare il copia e incolla.
+Il pattern di interazione primario è la **Progressive Disclosure**: una richiesta contestuale mostra prima la domanda rilevante e poi il frammento di risposta strutturato, in modo da favorire lettura rapida e copia del contenuto utile.
 
 ### 1. Il Valutatore Tecnico (CTO / Tech Lead)
 * **Goal:** Validare le competenze (es. architettura, problem solving) in modo approfondito ma senza perdere tempo in test narrativi noiosi.
-* **Journey:** L'utente atterra sul portale e naviga attraverso le categorie tecniche o per progetto. Quando individua uno stack o una competizione di interesse, passa il mouse sull'elemento. Il tooltip gli prospetta un quesito specifico. Cliccando, espande il caso di studio nel formato S.T.A.R. Inverso ("Risultato -> Problema -> Azione"), ottimizzato per la lettura tecnica veloce e per permettere di copiare facilmente dati quantitativi. 
+* **Journey:** L'utente atterra sul portale e naviga attraverso le categorie tecniche o per progetto. Quando individua uno stack o una competenza di interesse, richiama il contesto relativo e poi espande il caso di studio nel formato S.T.A.R. inverso ("Risultato -> Problema -> Azione"), ottimizzato per la lettura tecnica veloce e per permettere di copiare dati quantitativi senza riformattazione manuale.
 
 ### 2. Il Talent Sourcer (Recruiter / HR)
-* **Goal:** Trovare corrispondenze con le Job Description e creare rapidamente summary condivisibili con gli Hiring Manager.
-* **Journey:** Il recruiter accede (senza barriere/login per l'MVP). Trova un executive summary chiaro. Invece di dover cercare manualmente (grazie alla struttura ben clusterizzata), esplora i percorsi guidati e individua le metodologie e i risultati chiave. Clicca sui dettagli di interesse ed utilizza l'output ben formattato a schermo per un rapido "copia e incolla" da inserire nell'ATS o da inoltrare via email. 
+* **Goal:** Capire rapidamente se il profilo merita approfondimento e raccogliere elementi chiari da condividere con gli Hiring Manager.
+* **Journey:** Il recruiter accede senza barriere o login, legge un executive summary chiaro e usa navigazione e ricerca per trovare stack, risultati e contesti rilevanti. Espande i dettagli di interesse e usa i frammenti formattati a schermo per un rapido copia e incolla in ATS, email o note di screening.
 
 ### 3. L'Autore (Alessio / Admin)
 * **Goal:** Inserire e mantenere aggiornato il proprio vissuto professionale riducendo l'attrito e massimizzando la qualità del dato, usando una private pipeline **completamente locale** composta da uno o più agenti o processi offline.
 * **Journey (Backend Offline):**
   1. **Input Grezzo:** Alessio registra un vocale o appunta delle note destrutturate dopo una giornata di lavoro.
-  2. **Distillazione privata:** uno o più agenti o processi locali prendono i dati grezzi, li interrogano proattivamente ed estraggono artifact neutri in formato JSON/Markdown, organizzati secondo la logica S.T.A.R. inversa.
-  3. **Human Validation (SSOT):** Alessio revisiona, approva o modofica manualmente il Markdown generato (Single Source of Truth).
-  4. **Assemblaggio e publish:** uno o più processi locali prendono gli artifact approvati dalla Canonical Knowledge Base, li organizzano in corpus version coerenti e generano il sito statico bilingue. Se una competenza o esperienza è rilevante in più percorsi, il sistema la espone nel front-end in modo semanticamente appropriato a ciascun nodo di navigazione.
-  5. **Deployment Automatico:** Il prodotto statico aggiornato va in produzione, invisibile e in background per gli utenti finali.
+  2. **Distillazione privata:** uno o piu agenti o processi locali trasformano i dati grezzi in artifact strutturati secondo la logica S.T.A.R. inversa.
+  3. **Human Validation (SSOT):** Alessio revisiona, approva o modifica manualmente gli artifact generati.
+  4. **Assemblaggio e publish:** processi locali assemblano gli artifact approvati e generano il sito statico bilingue.
+  5. **Aggiornamento pubblico:** il contenuto pubblicato viene rigenerato e distribuito senza introdurre interazioni runtime complesse.
 
-Questi journey mostrano perché il prodotto richiede sia un differenziatore di esperienza, sia una struttura tecnica che mantenga trust, costi bassi e controllo editoriale sull'intero ciclo di pubblicazione.
+Questi journey mostrano perche il prodotto combina un'esperienza pubblica leggibile e veloce con un ciclo editoriale privato governato dall'Autore.
 
 ## Innovation & Novel Patterns
 
 ### Detected Innovation Areas
 * **Offline-First AI Pipeline:** la distillazione avviene a monte, fuori dal runtime pubblico, riducendo costi, rischio di leakage e allucinazioni.
-* **Canonical Knowledge Base:** il CV non è un documento statico ma una vista derivata da artifact validati, versionabili a livello di corpus e riutilizzabili in più percorsi.
+* **Canonical Knowledge Base:** il CV non e un documento statico ma una vista derivata da artifact validati e riutilizzabili in piu percorsi.
 * **Contextual Progressive Disclosure:** la navigazione espone prima la domanda e poi la risposta strutturata, favorendo lettura rapida e copy-paste operativo.
 
 ### Market Context & Competitive Landscape
-Le alternative oggi sono polarizzate tra portfolio statici poco interrogabili e chatbot su CV con rischio di allucinazione, costi runtime e fiducia limitata. HyperCV si posiziona tra questi estremi: interazione esplorativa e retrieval guidato, ma con contenuti precompilati, verificabili e serviti da infrastruttura statica.
+Le alternative oggi sono polarizzate tra portfolio statici poco interrogabili e chatbot su CV con rischio di allucinazione, costi runtime e fiducia limitata. HyperCV si posiziona tra questi estremi: esperienza esplorativa guidata, ma con contenuti precompilati, verificabili e serviti da infrastruttura statica.
 
 ### Validation Approach
 Il modello è stato validato tramite First Principles Analysis: separa chiaramente esigenze di recruiter e valutatori tecnici, senza introdurre complessità cloud nella V1. L'ipotesi verrà considerata valida se il prodotto supera il 40% di deep-dive engagement oltre la view iniziale.
@@ -137,23 +153,30 @@ Il modello è stato validato tramite First Principles Analysis: separa chiaramen
 
 ## Web App Specific Requirements & Architecture
 
+### Browser Support Matrix
+
+* La V1 supporta le ultime due major release stabili di Chrome, Edge, Firefox e Safari su desktop.
+* La V1 supporta Safari iOS e Chrome Android su smartphone moderni, mantenendo accessibili i flussi core di discovery, cambio lingua, approfondimento e CTA.
+* Se un enhancement secondario non e disponibile in un browser supportato, la consultazione del contenuto pubblico deve restare possibile senza perdita del percorso principale.
+
+### Responsive Design
+
+* I flussi core del MVP devono restare utilizzabili da viewport mobili a partire da 360 px di larghezza fino a layout desktop ampi, senza perdita di contenuto essenziale o scroll orizzontale nei contenuti principali.
+* Navigazione, ricerca, progressive disclosure, cambio lingua e CTA devono preservare la stessa gerarchia logica su mobile e desktop.
+
 ### Architettura di Transizione (V1 $\rightarrow$ V2)
 
-La roadmap architetturale affronta una sfida specifica: lanciare il prodotto il prima possibile a zero-cost per validarlo (V1), ma prevedere un'evoluzione solida e sicura per le feature avanzate (V2), utilizzandolo contestualmente come strumento di *Showcase Tecnico*.
-
-Il modello scelto prevede una V1 statica e conservativa, seguita da una possibile V2 con backend reale solo dopo validazione dei costi operativi e del valore delle feature avanzate:
+Questa sezione definisce un vincolo di decisione, non una soluzione tecnica definitiva: la V1 deve restare statica e a basso rischio; la Growth puo introdurre runtime e servizi aggiuntivi solo dopo validazione del valore e del costo operativo.
 
 #### Fase V1 (Minimum Viable Product):
-* **Tipologia:** applicazione pre-renderizzata SSG per massimizzare SEO, semplicità operativa e Web Vitals.
-* **Hosting:** CDN statica come Cloudflare Pages o equivalente.
-* **Origine Dati:** artifact strutturati generati nella private pipeline locale, approvati e organizzati in corpus version coerenti prima del publish.
-* **Esperienza Utente Core:** navigazione gerarchica, ricerca lato client e progressive disclosure su contenuti pubblici in inglese e italiano.
+* **Boundary:** esperienza pubblica statica con contenuti approvati prima del publish.
+* **Decision Driver:** massimizzare leggibilita, SEO, semplicita operativa e prevedibilita del rilascio.
+* **Esperienza Utente Core:** navigazione gerarchica primaria, ricerca lato client secondaria e progressive disclosure su contenuti pubblici in inglese e italiano, mantenute coerenti su desktop e mobile nei browser supportati.
 
 #### Fase 2 (Growth & Backend Migration):
-* **Tipologia:** introduzione opzionale di un backend reale dopo validazione della V1.
-* **Scelta Strategica:** il pattern definitivo della V2 resta congelato fino a quando il costo operativo della V1 e il valore delle feature avanzate non saranno misurati.
-* **Migrazione Asset:** la pipeline locale potrà evolvere verso servizi backend e storage dedicato.
-* **Accesso:** autenticazione standard per sbloccare feature avanzate come matching e retrieval real-time.
+* **Activation Condition:** introduzione opzionale di runtime o servizi aggiuntivi solo dopo validazione della V1.
+* **Decision Driver:** il pattern definitivo della Growth resta aperto finche costo operativo e valore delle feature avanzate non sono stati misurati.
+* **Capacita aggiuntive:** autenticazione, gating, matching contestuale e altre funzionalita AI runtime.
 
 ## Project Scoping & Phased Development
 
@@ -163,18 +186,17 @@ Il modello scelto prevede una V1 statica e conservativa, seguita da una possibil
 ### Scope Boundaries (In vs Out)
 
 #### Fase 1: Minimum Viable Product (Static Publish)
-* **[IN SCOPE] Dati Sorgente:** JSON e file Markdown validati umanamente (SSOT) derivati da agenti o processi eseguiti esclusivamente nella private pipeline locale dell'Autore.
-* **[IN SCOPE] Front-end Web:** Generatore Statico SSG distribuito su CDN in configurazione serverless totale (nessun costo computazionale attivo in produzione).
-* **[IN SCOPE] Localizzazione Pubblica:** Pubblicazione delle pagine statiche in inglese e italiano a partire dalla Canonical Knowledge Base.
-* **[IN SCOPE] Esperienza Utente (UX):** Dinamica esplorativa a "Progressive Disclosure" guidata da tooltip interrogativi ed espansione al click. 
-* **[IN SCOPE] Search lato client:** Al fine di non alienare l'esperienza UX dei Talent Sourcer e veicolare precocemente il feel di knowledge base interrogabile, viene implementata in Fase 1 un'interfaccia di ricerca globale operante sull'indice statico SSG, senza ausilio di server o backend remoti.
-* **[OUT OF SCOPE]** Nessun database in cloud. Nessun backend operativo live. Nessun log-in. Nessun retrieval semantico o inferenza LLM prodotta dalle interazioni degli utenti a run-time.
+* **[IN SCOPE] Dati Sorgente:** artifact strutturati validati umanamente derivati da agenti o processi eseguiti esclusivamente nella private pipeline locale dell'Autore.
+* **[IN SCOPE] Front-end Web:** generatore statico distribuito come esperienza pubblica a basso costo operativo.
+* **[IN SCOPE] Localizzazione Pubblica:** pubblicazione delle pagine statiche in inglese e italiano a partire dalla knowledge base canonica approvata.
+* **[IN SCOPE] Esperienza Utente (UX):** dinamica esplorativa a progressive disclosure con contesto esplicito e approfondimento a richiesta.
+* **[IN SCOPE] Search lato client:** ricerca globale su indice statico come modalita secondaria di discovery.
+* **[OUT OF SCOPE]** Nessun database in cloud. Nessun backend operativo live. Nessun log-in. Nessun retrieval semantico, chatbot o inferenza LLM prodotta dalle interazioni degli utenti a run-time.
 
 #### Fase 2: Growth (Backend Evaluation)
-* **[IN SCOPE]** Invasione del Backend (decisione pattern strutturale congelata in attesa di test V1).
-* **[IN SCOPE]** Passaggio da repository-based trigger ad ingestione real-time su Blob-Storage per le note vocali/testuali dell'Autore.
-* **[IN SCOPE]** Autenticazione Oauth2/LinkedIn per gating.
-* **[IN SCOPE]** Attivazione Inferenza AI Real-time (Job Matching). 
+* **[IN SCOPE]** Introduzione di backend e servizi gestiti solo dopo validazione V1.
+* **[IN SCOPE]** Autenticazione per gating delle funzionalita avanzate.
+* **[IN SCOPE]** Attivazione di inferenza AI real-time per matching e retrieval contestuale.
 * **[OUT OF SCOPE]** Sistemi multi-tenancy (se il portale non apre ad altri utenti/portfolio esterni).
 
 ## Functional Requirements (MVP V1)
@@ -184,26 +206,26 @@ Le sezioni precedenti definiscono il problema, il modello di prodotto, i journey
 ### Data Ingestion & Distillation (Offline AI Pipeline)
 * **FR1:** L'Autore può inserire "memorie" destrutturate (note di testo o vocali) relative alla propria carriera nell'ambiente locale.
 * **FR2:** L'Agente Distillatore (locale) può estrarre fatti tangibili dai dati destrutturati per formattarli in una rigorosa struttura "S.T.A.R. inversa" (Risultato -> Problema -> Azione).
-* **FR3:** L'Agente Distillatore (locale) può salvare l'esperienza strutturata in file di testo piatti e neutrali (JSON/Markdown).
+* **FR3:** L'Agente Distillatore (locale) può salvare l'esperienza strutturata in artifact testuali neutrali ed editabili.
 * **FR4:** L'Autore può leggere, editare e approvare manualmente i file generati, stabilendoli come Single Source of Truth (SSOT).
 
 ### Content Assembly & Generation
-* **FR5:** L'Agente Generatore (locale) può inglobare tutti i file S.T.A.R. approvati per compilarli nel codice sorgente del generatore statico web.
-* **FR6:** L'Agente Generatore (locale) può duplicare e declinare semanticamente la stessa S.T.A.R. in più nodi di navigazione (es. "Competenze Backend" e "Progetto X").
-* **FR7:** Il Sistema locale può dispiegare l'output statico (HTML/JS/CSS) nel repository preposto al deploy su CDN esterna.
-* **FR8:** L'Autore può aggirare gli Agenti (degradazione manuale) ed editare a mano i file Markdown come in un classico file system Headless CMS.
+* **FR5:** L'Agente Generatore (locale) può assemblare tutti gli artifact S.T.A.R. approvati nella build del sito pubblico.
+* **FR6:** L'Agente Generatore (locale) può riutilizzare lo stesso artifact approvato in piu nodi di navigazione mantenendo coerenza semantica, collegamento alla stessa fonte canonica e assenza di divergenze testuali non approvate tra le viste pubblicate.
+* **FR7:** Il Sistema locale può pubblicare l'output statico del portale tramite la pipeline di hosting pubblico.
+* **FR8:** L'Autore può aggirare gli Agenti (degradazione manuale) ed editare direttamente gli artifact testuali approvati prima della pubblicazione.
 
 ### Navigation & Discovery (UX)
 * **FR9:** Il Visitatore può accedere a un Executive Summary generale e navigare la carriera tramite cluster logici.
-* **FR10:** Il Visitatore può eseguire un'azione di "hover" (passaggio del mouse) o focus (tastiera) su uno stack o competenza per visualizzare un tooltip contenente l'esatta domanda di contesto legata a quell'elemento.
+* **FR10:** Il Visitatore può richiamare il contesto di uno stack o di una competenza e vedere la domanda esatta a cui quel contenuto risponde.
 * **FR11:** Il Visitatore può eseguire un "click" (Progressive Disclosure) sull'elemento per far espandere il blocco di testo contenente il caso di studio S.T.A.R.
-* **FR12:** Il Visitatore può selezionare e copiare agilmente i frammenti S.T.A.R. a schermo per esportarli in ATS terzi.
-* **FR13:** Il Visitatore può utilizzare una barra di ricerca globale lato-client che effettua ricerche istantanee sull'indice statico dell'app limitando il perimetro al CV.
+* **FR12:** Il Visitatore può selezionare e copiare i frammenti S.T.A.R. a schermo mantenendo una struttura leggibile e riutilizzabile in strumenti terzi.
+* **FR13:** Il Visitatore può utilizzare una barra di ricerca globale lato client come modalita secondaria per interrogare l'indice statico del CV.
 
 ### Accessibility, SEO & AI Ingestion
-* **FR14:** Il Visitatore con disabilità (e i bot non visivi) può navigare l'intera alberatura del sito, inclusi i tooltip generati dinamicamente, godendo del pieno supporto e attributi ARIA.
-* **FR15:** Qualsiasi Agente AI di terze parti (es. GPT-bot esterni, Perplexity) usato dai recruiter può eseguire il "crawling" documentale delle informazioni strutturate senza incontrare ostacoli javascript rendering e ricevendo risposte formattate e semanticamente taggate.
-* **FR16:** Il Motore di Ricerca Pubblico (Google) può indicizzare i file S.T.A.R. esposti in funzione di determinate keyword scelte per rankare in alto il naming "Alessio / Autore + [Stack]".
+* **FR14:** Il Visitatore con disabilita, cosi come gli strumenti assistivi non visivi, può navigare l'intera alberatura del sito e accedere ai contenuti contestuali e agli approfondimenti.
+* **FR15:** Sistemi esterni di crawling e retrieval documentale possono leggere il contenuto pubblico strutturato e recuperare il contenuto principale delle pagine benchmark di release senza dipendere dall'esecuzione di JavaScript client-side.
+* **FR16:** I motori di ricerca pubblici possono indicizzare i contenuti professionali esposti in modo che le pagine benchmark di release risultino eleggibili per query professionali prioritarie definite dall'Autore.
 
 ### Analytics & Conversion
 * **FR17:** Il Sistema web traccia l'engagement misurando percentualmente i visitatori che espandono le descrizioni (Deep-Dive).
@@ -213,76 +235,49 @@ Le sezioni precedenti definiscono il problema, il modello di prodotto, i journey
 ### Canonical Knowledge, Localization & Reprocessing
 * **FR20:** L'Autore può acquisire dati raw in qualunque lingua, inclusi italiano e inglese.
 * **FR21:** Il sistema di distillazione può creare artifact canonici in inglese a partire da una o più sorgenti raw eterogenee.
-* **FR22:** Il sistema può associare ciascun artifact distillato a più sorgenti raw e ciascuna sorgente raw a più artifact distillati.
-* **FR23:** L'Autore può ispezionare la provenance di un artifact distillato identificando le sorgenti raw che lo hanno alimentato.
+* **FR22:** Il sistema può mantenere un collegamento verificabile tra gli artifact canonici e le sorgenti raw che ne supportano la revisione.
+* **FR23:** L'Autore può ispezionare il collegamento di provenienza degli artifact approvati durante review e decisioni di publish.
 * **FR24:** Il sistema di generazione statica può pubblicare varianti di pagina in inglese e italiano a partire dalla knowledge base canonica approvata.
 * **FR25:** Il Visitatore può cambiare lingua mantenendo, quando disponibile, lo stesso contenuto logico o nodo di navigazione.
-* **FR26:** Il sistema può tracciare lo stato di localizzazione di ciascun contenuto e bloccare la pubblicazione di varianti incomplete o incoerenti.
-* **FR27:** L'Autore può rigenerare selettivamente artifact distillati o rigenerare l'intero corpus quando cambiano agente, prompt, modello o strategia di organizzazione.
-* **FR28:** Il sistema può creare versioni coerenti del corpus distillato e confrontarle prima della pubblicazione.
+* **FR26:** Il sistema può rilevare condizioni di localizzazione che impediscono una pubblicazione coerente prima del rilascio pubblico.
+* **FR27:** L'Autore può avviare una rigenerazione selettiva o completa quando cambiano input sorgente o regole di trasformazione approvate.
+* **FR28:** Il sistema può pubblicare soltanto uno stato del corpus che sia stato revisionato come coerente per il rilascio pubblico previsto.
 
 ## Non-Functional Requirements
 
 ### Performance
-* Il portale statico deve mantenere tempi di risposta percepiti come immediati per navigazione, ricerca lato client e progressive disclosure, con interazioni ordinarie sotto i 100 ms.
-* Gli asset pubblici devono essere distribuiti via CDN con metriche Core Web Vitals in fascia verde e target Lighthouse superiore a 95 per le principali pagine pubbliche.
-* La pubblicazione di una nuova corpus version non deve introdurre regressioni sensibili di performance rispetto alla release pubblica precedente.
-* Il supporto bilingue non deve introdurre degradi percepibili nella navigazione, nella ricerca o nel cambio lingua.
+* Le interazioni pubbliche principali di navigazione, ricerca lato client e progressive disclosure devono completarsi entro 100 ms dopo il caricamento iniziale della pagina, misurate nei browser supportati su build di release.
+* Le principali pagine pubbliche di benchmark release (homepage, una pagina esperienza rappresentativa e un percorso bilingue con cambio lingua) devono raggiungere un punteggio Lighthouse almeno pari a 95 su mobile e desktop nelle verifiche pre-release.
+* Una nuova release pubblica non deve peggiorare di oltre il 10% i tempi di interazione o il peso pagina rispetto alla release pubblica precedente, misurato nel release evidence package.
+* Il cambio lingua deve completarsi entro 500 ms su pagine pubbliche gia caricate nei browser supportati.
 
 ### Security & Boundary Enforcement
-* I dati raw devono risiedere esclusivamente in un Raw Vault privato, segregato dal repository e dalla pipeline del portale pubblico.
-* Gli artifact intermedi, i manifest di derivazione e gli output tecnici di lavorazione devono risiedere in una Staging/Distillation Zone privata distinta dal Raw Vault e dal layer pubblico.
-* La build pubblica deve operare in modalità allowlist-only, includendo soltanto artifact esplicitamente marcati come pubblicabili.
-* Nessun raw, artifact intermedio o metadata di provenance completa può essere esposto nel layer pubblico senza trasformazione e validazione esplicita.
-* I metadata pubblici devono essere minimizzati per prevenire leakage di informazioni sensibili, riferimenti interni o dettagli coperti da NDA.
+* I controlli pre-publish devono verificare su tutti gli artifact modificati che dati raw e materiali di lavorazione non siano inclusi nel package pubblico.
+* La build pubblica deve includere soltanto artifact marcati come pubblicabili; ogni artifact privo di approvazione deve essere escluso dal bundle di release.
+* Il numero di riferimenti privati non autorizzati nel layer pubblico deve essere pari a 0 in ogni review di rilascio.
+* Il release evidence package deve confermare che metadata sensibili, riferimenti interni e dettagli coperti da NDA siano assenti dalle pagine pubbliche modificate.
 
-### Artifact Lifecycle & State Governance
-* Ogni artifact del sistema deve avere uno stato esplicito coerente con il proprio livello di maturità operativa, ad esempio raw, staged, distilled, validated, localized, publishable, published o retired.
-* Le transizioni di stato devono essere controllate da validation gates espliciti e verificabili.
-* Nessun artifact deve avanzare verso il publish pubblico in assenza di stato e provenance coerenti.
-* Le regole di transizione tra zone e stati devono essere semplici, limitate e non ambigue.
+### Governance & Traceability
+* Ogni artifact pubblicato deve avere uno stato di review e un collegamento di provenienza verificabile prima del rilascio.
+* L'Autore deve poter risalire da un artifact approvato ad almeno una sorgente di supporto durante la review pre-publish.
+* Il release evidence package deve verificare stato di review e collegamento di provenienza per il 100% degli artifact modificati in una release.
 
-### Persistence, Traceability & Manifest Integrity
-* Il Raw Vault deve essere persistente, non distruttivo e idoneo alla conservazione storica completa delle sorgenti originali.
-* Il modello dati deve supportare relazioni many-to-many tra raw sources e artifact distillati.
-* Ogni artifact distillato deve essere associato a un derivation manifest privato e versionato che registri almeno source_ids, lingue sorgente, canonical language, prompt version, agent version, model version, processed_at, validation status e corpus version.
-* Deve essere possibile risalire da ogni artifact distillato a tutte le sorgenti raw che lo hanno generato e, inversamente, verificare in quali artifact distillati una sorgente è stata utilizzata.
-* Il derivation manifest deve essere trattato come artifact critico del sistema, con integrità preservata e accesso limitato.
-* La provenance deve essere facilmente interrogabile senza richiedere ispezione dispersiva manuale di file o metadata.
-
-### Reprocessability, Diffability & Corpus Versioning
-* Il sistema deve supportare sia il riprocessamento selettivo sia la rigenerazione completa dell'intera base distillata.
-* Il full rebuild del corpus deve essere considerato un'operazione ordinaria prevista dall'architettura quando cambiano agente, prompt, modello o strategia di clustering e organizzazione semantica.
-* Ogni full rebuild deve produrre una nuova corpus version coerente, auditabile e confrontabile con le versioni precedenti.
-* Ogni pubblicazione deve derivare da una corpus version completa e validata, non da un insieme arbitrario di file approvati in tempi diversi.
-* Il sistema deve offrire meccanismi comprensibili di confronto tra corpus versions per supportare review, audit e approvazione del rebuild.
-* La rigenerazione completa non deve compromettere segregazione, auditabilità, rollback logico o capacità di analizzare regressioni.
-
-### Content Identity & Canonical Consistency
-* Il sistema deve distinguere tra content identity logica e artifact instance generata in una specifica corpus version.
-* Le riorganizzazioni del corpus non devono compromettere la continuità concettuale dei contenuti nel tempo.
-* Deve essere possibile determinare se un contenuto è stato mantenuto, sostituito, fuso, frammentato o ritirato tra due corpus versions.
-* La knowledge base distillata deve mantenere una forma canonica coerente in inglese.
-
-### Localization Governance
-* Le varianti localizzate pubbliche in inglese e italiano devono derivare esclusivamente dalla knowledge base canonica, non direttamente dalle raw sources.
-* Ogni variante localizzata deve essere associata alla medesima content identity canonica del contenuto di origine.
-* Il sistema deve tracciare lo stato di localizzazione di ogni contenuto almeno come missing, stale o verified.
-* Il publish deve impedire la pubblicazione di localizzazioni incomplete, placeholder non tradotti o varianti linguistiche incoerenti rispetto alla corpus version di origine, salvo override esplicito.
-* Il cambio lingua nel layer pubblico deve preservare, quando disponibile, l'equivalenza logica del contenuto o del nodo di navigazione.
+### Localization & Content Consistency
+* Ogni pagina pubblica in inglese deve avere una variante italiana equivalente oppure un'eccezione esplicita approvata prima del rilascio.
+* Il cambio lingua deve preservare lo stesso contenuto logico o nodo di navigazione nel 100% delle pagine bilingui verificate in release QA.
+* I controlli pre-release devono rilevare il 100% dei placeholder non tradotti e dei contenuti palesemente incoerenti nelle pagine modificate.
 
 ### Accessibility & Machine Readability
-* Tutte le interazioni pubbliche, inclusi tooltip, progressive disclosure, cambio lingua e ricerca lato client, devono essere accessibili via tastiera e compatibili con screen reader secondo WCAG 2.1 AA.
-* Il markup pubblico deve restare semanticamente leggibile da crawler e agenti AI di terze parti senza dipendere da rendering fragile lato client.
-* La struttura pubblica deve favorire la fruizione umana e l'estrazione machine-readable dei contenuti professionali senza esporre provenance privata o dati non pubblicabili.
+* Tutte le interazioni pubbliche principali devono essere utilizzabili via tastiera nei browser supportati durante la QA di release.
+* I template pubblici del MVP devono soddisfare WCAG 2.1 AA in review automatizzata e manuale prima della pubblicazione.
+* Il release evidence package deve includere snapshot HTML o catture equivalenti con JavaScript disabilitato per homepage, una pagina esperienza rappresentativa e un percorso bilingue, dimostrando che il contenuto pubblico principale resta leggibile senza dipendere dall'esecuzione client-side.
 
 ### Validation & Publish Readiness
-* Il sistema deve applicare validation gates distinti per acquisizione raw, staging, distillazione, localizzazione, corpus assembly e packaging pubblico.
-* I controlli automatici devono intercettare leakage, metadata non ammessi, placeholder non tradotti, incongruenze di stato e violazioni delle publish policy prima della review umana.
-* La review umana deve concentrarsi su accuratezza semantica, reputazione, chiarezza e publish readiness, non su difetti meccanici rilevabili automaticamente.
-* Deve essere possibile dimostrare, tramite artifact e manifest privati, che il package pubblico non contiene dati raw né riferimenti privati non autorizzati.
+* I controlli pre-publish devono bloccare la release in presenza di leakage, metadata non ammessi o contenuti incompleti nelle pagine modificate.
+* La review umana deve coprire il 100% delle pagine pubbliche modificate in una release.
+* Il release evidence package deve dimostrare che il package pubblico non contiene dati raw né riferimenti privati non autorizzati.
 
 ### Operability
-* Il sistema deve restare governabile da un singolo autore-operatore senza richiedere processi manuali fragili o conoscenza tacita eccessiva.
-* Le zone operative, i tipi di artifact ammessi e i passaggi di transizione devono essere abbastanza semplici da evitare la proliferazione di cartelle ibride, shortcut non governati o eccezioni permanenti.
-* Il costo cognitivo di ispezione, rebuild, review e publish deve rimanere compatibile con un workflow regolare di aggiornamento del corpus.
+* Un aggiornamento standard del contenuto pubblicabile deve poter essere completato da un singolo autore-operatore in meno di 30 minuti, esclusa la stesura delle note raw, durante una dry run di processo.
+* Un full rebuild del corpus deve poter essere eseguito tramite passaggi documentati senza interventi manuali non descritti.
+* Il release evidence package e la checklist di rebuild, review e publish devono poter essere eseguiti da un singolo autore usando la documentazione del repository come unica guida operativa.
