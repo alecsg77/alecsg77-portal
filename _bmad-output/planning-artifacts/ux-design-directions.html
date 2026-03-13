@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UX Design Directions</title>
+  <style>
+    :root {
+      --bg: #e9eef0;
+      --panel: #f8fbfb;
+      --panel-soft: rgba(255, 255, 255, 0.74);
+      --ink: #122025;
+      --muted: #586971;
+      --line: rgba(18, 32, 37, 0.12);
+      --accent: #285869;
+      --accent-soft: rgba(40, 88, 105, 0.1);
+      --success: #2f6f44;
+      --warning: #8a5a22;
+      --shadow: 0 22px 56px rgba(20, 31, 35, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top right, rgba(40, 88, 105, 0.08), transparent 24%),
+        linear-gradient(180deg, #eff3f4 0%, #e4ebed 100%);
+    }
+
+    .page {
+      width: min(1240px, calc(100% - 40px));
+      margin: 0 auto;
+      padding: 32px 0 80px;
+    }
+
+    .eyebrow,
+    .meta,
+    .tag,
+    .mini-label {
+      font-family: "Courier New", Courier, monospace;
+      font-size: 12px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 24px;
+      padding-bottom: 28px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    h1 {
+      margin: 12px 0 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(44px, 7vw, 78px);
+      line-height: 0.94;
+      max-width: 12ch;
+    }
+
+    .lead,
+    .summary p,
+    .section p,
+    .notes li,
+    .decision-list li,
+    .mini-copy,
+    .tile p,
+    .topic p,
+    .path-note,
+    .legend p {
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    .lead {
+      margin-top: 18px;
+      max-width: 62ch;
+      font-size: 18px;
+    }
+
+    .summary,
+    .decision,
+    .legend,
+    .section-card {
+      border: 1px solid var(--line);
+      background: var(--panel-soft);
+      box-shadow: var(--shadow);
+    }
+
+    .summary {
+      padding: 18px;
+      align-self: end;
+    }
+
+    .summary strong,
+    .decision h2,
+    .section h2,
+    .frame-title,
+    .rail-title {
+      color: var(--ink);
+    }
+
+    .summary strong {
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    .decision {
+      margin-top: 26px;
+      padding: 20px;
+    }
+
+    .decision h2 {
+      margin: 8px 0 12px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 34px;
+      line-height: 1;
+    }
+
+    .decision-list {
+      margin: 0;
+      padding-left: 18px;
+    }
+
+    .legend {
+      margin-top: 18px;
+      padding: 18px;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .legend article {
+      padding: 14px;
+      background: white;
+      border: 1px solid var(--line);
+    }
+
+    .legend strong {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 14px;
+    }
+
+    .section {
+      display: grid;
+      grid-template-columns: 0.42fr 1.58fr;
+      gap: 24px;
+      padding: 34px 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .section h2 {
+      margin: 8px 0 8px;
+      font-size: 30px;
+      font-family: Georgia, "Times New Roman", serif;
+      line-height: 1.05;
+    }
+
+    .preview {
+      border: 1px solid var(--line);
+      background: var(--panel);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .frame-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      padding: 16px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(40, 88, 105, 0.04);
+    }
+
+    .frame-title,
+    .rail-title {
+      margin: 8px 0 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 26px;
+      line-height: 1.04;
+    }
+
+    .content {
+      padding: 16px;
+    }
+
+    .entry-row,
+    .topics,
+    .balanced-grid,
+    .signal-grid {
+      display: grid;
+      gap: 12px;
+    }
+
+    .entry-row {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .topics {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      margin-top: 12px;
+    }
+
+    .balanced-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .signal-grid {
+      grid-template-columns: 1.15fr 0.85fr;
+      margin-top: 12px;
+    }
+
+    .entry,
+    .tile,
+    .topic,
+    .section-card,
+    .signal-stack {
+      background: white;
+      border: 1px solid var(--line);
+      position: relative;
+    }
+
+    .entry,
+    .tile,
+    .topic,
+    .signal-stack {
+      padding: 14px;
+    }
+
+    .entry::before,
+    .tile::before,
+    .topic::before,
+    .signal-stack::before {
+      content: "";
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: 4px;
+      background: var(--accent);
+    }
+
+    .entry strong,
+    .tile strong,
+    .topic strong,
+    .section-card strong,
+    .signal-stack strong {
+      display: block;
+      margin-top: 8px;
+      font-size: 20px;
+      line-height: 1.2;
+    }
+
+    .jump-link {
+      display: inline-block;
+      margin-top: 10px;
+      color: var(--accent);
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .section-card {
+      padding: 16px;
+      margin-top: 12px;
+    }
+
+    .path-layout {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      min-height: 360px;
+    }
+
+    .rail {
+      padding: 16px;
+      border-right: 1px solid var(--line);
+      background: rgba(40, 88, 105, 0.03);
+    }
+
+    .rail-link {
+      display: block;
+      margin-top: 10px;
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      background: white;
+      text-decoration: none;
+      color: var(--muted);
+    }
+
+    .signal-stack {
+      min-height: 132px;
+    }
+
+    .notes {
+      margin: 14px 0 0;
+      padding-left: 18px;
+    }
+
+    .pill-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+
+    .pill {
+      padding: 8px 10px;
+      border: 1px solid var(--line);
+      background: white;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .status-good { color: var(--success); }
+    .status-watch { color: var(--warning); }
+
+    @media (max-width: 1024px) {
+      .hero,
+      .section,
+      .legend,
+      .entry-row,
+      .topics,
+      .balanced-grid,
+      .signal-grid,
+      .path-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .rail {
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <section class="hero">
+      <div>
+        <div class="eyebrow">Step 09 / Design Directions</div>
+        <h1>Single-page record of the directions that still matter.</h1>
+        <p class="lead">
+          This page is the final documentation artifact for the design direction decision. It keeps only the directions that remain meaningful after the discussion and maps them to content behavior, not just visual tone.
+        </p>
+      </div>
+      <aside class="summary">
+        <strong>Why one page</strong>
+        <p>The secondary geek lens changes tone, not direction. The structural decision now lives in a single professional-mode page, with the Technical Signal Layer retained as a tone influence rather than as a separate alternate showcase.</p>
+      </aside>
+    </section>
+
+    <section class="decision">
+      <div class="eyebrow">Final Decision</div>
+      <h2>Persona-First Homepage TOC wins. Technical Signal Layer informs the tone. Restraint Baseline remains the control reference.</h2>
+      <ul class="decision-list">
+        <li><span class="status-good">Selected:</span> Persona-First Homepage TOC as the chosen homepage structure and journey surface.</li>
+        <li><span class="status-good">Retained:</span> Technical Signal Layer as the source of technical voice, metadata emphasis, and authored tone inside the chosen structure.</li>
+        <li><span class="status-watch">Fallback:</span> Restraint Baseline as the calm control reference if the result becomes too directive or too stylized.</li>
+        <li><span class="status-watch">Excluded:</span> Other exploratory directions were discarded because they increased density or introduced unnecessary alternate framing.</li>
+      </ul>
+      <div class="pill-row">
+        <div class="pill">Homepage = persona-first TOC</div>
+        <div class="pill">Each section = concise micro-landing</div>
+        <div class="pill">Reward arrives before topic selection</div>
+        <div class="pill">Top topics can be the first explicit step of the path</div>
+      </div>
+    </section>
+
+    <section class="legend">
+      <article>
+        <strong>Restraint Baseline</strong>
+        <p>Balanced archive baseline. It is not the chosen structure, but it remains useful as a restraint control for calm, spacing, and readability.</p>
+      </article>
+      <article>
+        <strong>Persona-First Homepage TOC</strong>
+        <p>Persona-first homepage TOC. This is the chosen structural model because it gives the clearest first move and supports both confident routing and exploratory scrolling.</p>
+      </article>
+      <article>
+        <strong>Technical Signal Layer</strong>
+        <p>Archive plus terminal signals. This is not a separate route anymore; it is the tonal layer that gives the chosen structure a more authored technical voice.</p>
+      </article>
+    </section>
+
+    <section class="section">
+      <div>
+        <div class="eyebrow">Chosen Structure</div>
+        <h2>Persona-first homepage TOC</h2>
+        <p>The homepage starts from the visitor perspective, not from the site taxonomy. Users can jump to the section that matches how they want to evaluate the profile, or keep scrolling and compare the available paths.</p>
+      </div>
+      <div>
+        <div class="preview">
+          <div class="frame-head">
+            <div>
+              <div class="tag">chosen homepage posture</div>
+              <div class="frame-title">Choose your evaluation perspective.</div>
+            </div>
+            <div class="meta">selected structure</div>
+          </div>
+          <div class="content">
+            <div class="entry-row">
+              <article class="entry">
+                <div class="mini-label">entry point</div>
+                <strong>Technical evaluator</strong>
+                <div class="mini-copy">Jump to architecture depth, technical decisions, and delivery proof.</div>
+                <a class="jump-link" href="#path-tech">Scroll to section</a>
+              </article>
+              <article class="entry">
+                <div class="mini-label">entry point</div>
+                <strong>HR or recruiter</strong>
+                <div class="mini-copy">Jump to role fit, business framing, and handoff-friendly evidence.</div>
+                <a class="jump-link" href="#path-hr">Scroll to section</a>
+              </article>
+              <article class="entry">
+                <div class="mini-label">entry point</div>
+                <strong>Outcome-led reviewer</strong>
+                <div class="mini-copy">Jump to high-level impact, transitions, and decision-ready summaries.</div>
+                <a class="jump-link" href="#path-impact">Scroll to section</a>
+              </article>
+            </div>
+
+            <div class="section-card" id="path-tech">
+              <div class="mini-label">section / immediate reward</div>
+              <strong>Technical evaluator section</strong>
+              <div class="mini-copy">This section already gives value before any deeper choice: it frames the profile in the language of systems, trade-offs, delivery pressure, and technical leadership.</div>
+              <div class="topics">
+                <article class="topic">
+                  <div class="mini-label">top topic / first explicit step</div>
+                  <strong>Can he stabilize complex systems?</strong>
+                  <p>Enter the path from a concrete technical question.</p>
+                </article>
+                <article class="topic">
+                  <div class="mini-label">top topic / first explicit step</div>
+                  <strong>How does he reason under constraints?</strong>
+                  <p>Focus on architecture decisions and trade-offs.</p>
+                </article>
+                <article class="topic">
+                  <div class="mini-label">go deeper</div>
+                  <strong>Open full technical path</strong>
+                  <p>See the complete topic list for this route.</p>
+                </article>
+              </div>
+            </div>
+          </div>
+        </div>
+        <ul class="notes">
+          <li>Dominant first move is perspective selection.</li>
+          <li>Each section gives an immediate reward before deeper navigation.</li>
+          <li>Top topics can already act as the first explicit step into the path.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section">
+      <div>
+        <div class="eyebrow">Tone Layer</div>
+        <h2>Technical voice inside the chosen structure</h2>
+        <p>The Technical Signal Layer is no longer treated as an alternative homepage. It now survives as the tonal layer that sharpens metadata, evaluative labels, and technical cues after users enter a persona section.</p>
+      </div>
+      <div>
+        <div class="preview">
+          <div class="frame-head">
+            <div>
+              <div class="tag">retained stylistic influence</div>
+              <div class="frame-title">Archive structure, stronger technical signals.</div>
+            </div>
+            <div class="meta">retained tone layer</div>
+          </div>
+          <div class="content">
+            <div class="signal-grid">
+              <article class="signal-stack">
+                <div class="mini-label">evidence module</div>
+                <strong>Legacy modernization / constrained delivery</strong>
+                <div class="path-note">Metadata is more explicit, labels are sharper, and the module feels more authored without changing the overall structure.</div>
+                <div class="pill-row">
+                  <div class="pill">[ evaluator ]</div>
+                  <div class="pill">trade-off log</div>
+                  <div class="pill">delivery under pressure</div>
+                </div>
+              </article>
+              <article class="signal-stack">
+                <div class="mini-label">why it stays</div>
+                <strong>Bridge to the geek lens</strong>
+                <div class="path-note">The secondary lens can later increase mood and personality, but the directional choice is already preserved here through tone and metadata behavior.</div>
+              </article>
+            </div>
+          </div>
+        </div>
+        <ul class="notes">
+          <li>Use the Technical Signal Layer in modules, not as a competing homepage structure.</li>
+          <li>It strengthens identity without reopening the direction decision.</li>
+          <li>This is how the chosen model persists even if the separate geek showcase disappears.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section">
+      <div>
+        <div class="eyebrow">Restraint Control</div>
+        <h2>Balanced archive baseline</h2>
+        <p>The Restraint Baseline remains as a control sample. It is the reminder that the project should stay calm, readable, and editorially composed if the combination of the chosen structure and the tonal layer starts to feel too dense or over-authored.</p>
+      </div>
+      <div>
+        <div class="preview">
+          <div class="frame-head">
+            <div>
+              <div class="tag">fallback reference</div>
+              <div class="frame-title">If the page gets too busy, return here.</div>
+            </div>
+            <div class="meta">control reference</div>
+          </div>
+          <div class="content">
+            <div class="balanced-grid">
+              <article class="tile">
+                <div class="mini-label">calm baseline</div>
+                <strong>Neutral card rhythm</strong>
+                <p>Balanced spacing and low-friction reading.</p>
+              </article>
+              <article class="tile">
+                <div class="mini-label">calm baseline</div>
+                <strong>Editorial breathing room</strong>
+                <p>Useful whenever the other layers become too insistent.</p>
+              </article>
+              <article class="tile">
+                <div class="mini-label">calm baseline</div>
+                <strong>Clear hierarchy first</strong>
+                <p>Identity never overrides readability.</p>
+              </article>
+            </div>
+          </div>
+        </div>
+        <ul class="notes">
+          <li>The Restraint Baseline is kept only as a reference, not as an active candidate.</li>
+          <li>Its job is to prevent the final UI from becoming too programmatic or too stylized.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section">
+      <div>
+        <div class="eyebrow">Persistence</div>
+        <h2>How directions remain recognizable after this page</h2>
+        <p>The HTML page is supporting documentation only. The durable record of the direction decision belongs in the UX design specification, where the retained references are defined by role, rationale, and implementation behavior.</p>
+      </div>
+      <div>
+        <div class="preview">
+          <div class="frame-head">
+            <div>
+              <div class="tag">documentation rule</div>
+              <div class="frame-title">Persist the decision in the spec, not in multiple mockups.</div>
+            </div>
+            <div class="meta">single source of truth</div>
+          </div>
+          <div class="content">
+            <div class="path-layout">
+              <aside class="rail">
+                <div class="mini-label">roles retained</div>
+                <div class="rail-title">The retained references stay distinct because their jobs stay distinct.</div>
+                <a class="rail-link" href="#">Restraint Baseline = calm control</a>
+                <a class="rail-link" href="#">Persona-First Homepage TOC = homepage structure</a>
+                <a class="rail-link" href="#">Technical Signal Layer = tonal influence</a>
+              </aside>
+              <div class="content">
+                <article class="section-card">
+                  <div class="mini-label">what this means</div>
+                  <strong>The page can be simplified or even removed later.</strong>
+                  <div class="mini-copy">Once Step 9 is saved, the real persistence happens in the written decision inside the UX design specification. This page remains useful only as a visual reminder, not as the canonical definition.</div>
+                </article>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</body>
+</html>
