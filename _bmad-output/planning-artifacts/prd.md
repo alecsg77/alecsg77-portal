@@ -15,7 +15,7 @@ stepsCompleted:
   - step-11-polish
   - step-12-complete
 inputDocuments:
-  - /workspaces/alecsg77-portal/_bmad-output/planning-artifacts/product-brief-alecsg77-portal-2026-02-27.md
+  - /workspaces/alecsg77-portal/_bmad-archive/planning-artifacts/product-brief-alecsg77-portal-2026-02-27.md
   - /workspaces/alecsg77-portal/_bmad-output/brainstorming/brainstorming-session-2026-02-25.md
 date: '2026-02-27'
 classification:

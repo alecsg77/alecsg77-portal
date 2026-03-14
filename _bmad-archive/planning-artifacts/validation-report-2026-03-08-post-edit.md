@@ -3,7 +3,7 @@ validationTarget: '/workspaces/alecsg77-portal/_bmad-output/planning-artifacts/p
 validationDate: '2026-03-08'
 inputDocuments:
   - /workspaces/alecsg77-portal/_bmad-output/planning-artifacts/prd.md
-  - /workspaces/alecsg77-portal/_bmad-output/planning-artifacts/product-brief-alecsg77-portal-2026-02-27.md
+  - /workspaces/alecsg77-portal/_bmad-archive/planning-artifacts/product-brief-alecsg77-portal-2026-02-27.md
 validationStepsCompleted:
   - step-v-01-discovery
   - step-v-02-format-detection
@@ -30,7 +30,7 @@ overallStatus: Pass
 ## Input Documents
 
 - PRD: /workspaces/alecsg77-portal/_bmad-output/planning-artifacts/prd.md
-- Product Brief: /workspaces/alecsg77-portal/_bmad-output/planning-artifacts/product-brief-alecsg77-portal-2026-02-27.md
+- Product Brief: /workspaces/alecsg77-portal/_bmad-archive/planning-artifacts/product-brief-alecsg77-portal-2026-02-27.md
 
 ## Validation Findings
 
