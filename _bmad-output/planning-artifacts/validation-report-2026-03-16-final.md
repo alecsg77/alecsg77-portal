@@ -1,10 +1,15 @@
 ---
-validationTarget: '/workspaces/alecsg77-portal/_bmad-output/planning-artifacts/prd.md'
+workflowType: 'validate-prd'
+workflow: 'validate'
+reportStage: 'final'
+precedence: 'authoritative'
+sourceOfTruth: true
+validationTarget: '_bmad-output/planning-artifacts/prd.md'
 validationDate: '2026-03-16'
 inputDocuments:
-  - /workspaces/alecsg77-portal/_bmad-output/planning-artifacts/prd.md
-  - /workspaces/alecsg77-portal/_bmad-archive/planning-artifacts/product-brief-alecsg77-portal-2026-02-27.md
-  - /workspaces/alecsg77-portal/_bmad-output/brainstorming/brainstorming-session-2026-03-15-0620.md
+  - _bmad-output/planning-artifacts/prd.md
+  - _bmad-archive/planning-artifacts/product-brief-alecsg77-portal-2026-02-27.md
+  - _bmad-output/brainstorming/brainstorming-session-2026-03-15-0620.md
 validationStepsCompleted:
   - step-v-01-discovery
   - step-v-02-format-detection
@@ -25,7 +30,7 @@ overallStatus: 'Pass'
 
 # PRD Validation Report - Final
 
-**PRD Being Validated:** /workspaces/alecsg77-portal/_bmad-output/planning-artifacts/prd.md
+**PRD Being Validated:** _bmad-output/planning-artifacts/prd.md
 **Validation Date:** 2026-03-16
 
 ## Final Verdict

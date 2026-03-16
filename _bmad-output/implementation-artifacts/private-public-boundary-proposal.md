@@ -1,148 +1,158 @@
-# Proposta Operativa: Boundary Privato e Promotion Flow verso Canonical Pubblico
+---
+artifactType: 'decision-proposal'
+workflowAlignment: 'supplemental-project-document'
+status: 'active'
+intendedPhase: 'implementation-planning'
+sourceArchitecture: '_bmad-output/planning-artifacts/architecture.md'
+sourcePrd: '_bmad-output/planning-artifacts/prd.md'
+date: '2026-03-16'
+---
 
-## Sintesi della decisione
+# Operational Proposal: Private Boundary and Promotion Flow toward Public Canonical
 
-La proposta raccomandata e' adottare un modello asimmetrico: il repository pubblico e' la codebase autorevole per pipeline, contratti, validazioni, publish workflow e frontend; il repository privato contiene solo dati sensibili, materiali raw e stato di lavoro non pubblicabile.
+## Summary of the decision
 
-L'esecuzione reale della pipeline avviene in un workspace privato che combina:
+The recommended proposal is to adopt an asymmetric model: the public repository is the authoritative codebase for pipeline, contracts, validations, publish workflow, and frontend; the private repository contains only sensitive data, raw materials, and non-publishable working state.
 
-- una revisione pinned del repository pubblico come codice eseguibile
-- una sorgente dati privata come input
+The actual execution of the pipeline takes place in a private workspace that combines:
 
-La promozione resta unidirezionale per i dati: dal privato al pubblico attraversano solo artifact canonical approvati, sanitizzati e validati. Il codice puo' invece fluire dal pubblico al privato, perche' e' proprio il motore pubblico a processare i dati sensibili.
+- a pinned revision of the public repository as executable code
+- a private data source as input
 
-Il brainstorming ha poi raffinato la natura degli artefatti gestiti:
+Promotion remains one-way for data: only approved, sanitized, and validated canonical artifacts cross from private to public. Code can instead flow from public to private, because it is precisely the public engine that processes sensitive data.
 
-- `raw-input` e' effimero e non persistito
-- `deep-knowledge` e' la prima memoria persistita, append-only e non rigenerabile
-- la knowledge base esiste come vista unificata di `knowledge-base-dk` e `knowledge-base-manual`
-- `hypercv-candidates` sono rigenerabili e non canonici
-- `editorial-resolution` e' persistita e canonica
-- `hypercv-final` e' il documento pubblico materializzato
-- `site-data` sono projection data derivate da `hypercv-final`
+The brainstorming then refined the nature of the managed artifacts:
 
-## Problema da risolvere
+- `raw-input` is ephemeral and not persisted
+- `deep-knowledge` is the first persisted memory, append-only and non-regenerable
+- the knowledge base exists as a unified view of `knowledge-base-dk` and `knowledge-base-manual`
+- `hypercv-candidates` are regenerable and non-canonical
+- `editorial-resolution` is persisted and canonical
+- `hypercv-final` is the materialized public document
+- `site-data` are projection data derived from `hypercv-final`
 
-Servono due cose:
+## Problem to solve
 
-1. Un boundary operativo chiaro tra materiale privato e artifact canonical pubblicabili.
-2. Un promotion flow che consenta di derivare artifact pubblici dal privato senza introdurre un flusso di ritorno di dati sensibili pubblico -> privato.
+Two things are needed:
 
-In piu', il codice della pipeline deve restare pubblico e dimostrabile come showcase, ma deve poter essere eseguito su dati privati reali senza assorbire quei dati nel repository pubblico.
+1. A clear operational boundary between private material and publishable canonical artifacts.
+2. A promotion flow that allows deriving public artifacts from the private side without introducing a return flow of sensitive public -> private data.
 
-## Pattern di riferimento
+In addition, the pipeline code must remain public and demonstrable as a showcase, but it must be executable on real private data without absorbing those data into the public repository.
 
-- Gatekeeper pattern: il passaggio tra i due domini e' mediato da un componente con privilegi limitati che valida e sanitizza.
-- Artifact promotion: si promuovono output derivati e approvati, non il workspace sorgente intero.
-- Public-code / private-data split: il codice puo' essere aperto e riusabile, mentre il boundary di sicurezza si applica alle classi di dato e ai permessi operativi.
-- Trunk-based / short-lived branch sul repo pubblico: una volta promossi gli artifact, il repo pubblico resta il trunk operativo del dominio pubblico.
-- Secrets detection pre-commit e in pipeline: il boundary non e' credibile se i secret possono entrare nella storia Git.
+## Reference patterns
 
-## Opzioni valutate
+- Gatekeeper pattern: the transition between the two domains is mediated by a component with limited privileges that validates and sanitizes.
+- Artifact promotion: approved, derived outputs are promoted, not the entire source workspace.
+- Public-code / private-data split: the code can be open and reusable, while the security boundary applies to data classes and operational permissions.
+- Trunk-based / short-lived branch on the public repo: once the artifacts are promoted, the public repo remains the operational trunk of the public domain.
+- Secrets detection pre-commit and in pipeline: the boundary is not credible if secrets can enter Git history.
 
-### 1. Monorepo con cartelle private e public
+## Evaluated options
 
-Pro:
-- setup semplice
-- un solo tooling
+### 1. Monorepo with private and public folders
 
-Contro:
-- boundary debole: la separazione e' organizzativa, non architetturale
-- alto rischio di leak accidentali
-- difficile sostenere l'assunto "solo privato -> pubblico"
+Pros:
+- simple setup
+- a single tooling stack
 
-Verdetto: da scartare.
+Cons:
+- weak boundary: separation is organizational, not architectural
+- high risk of accidental leakage
+- difficult to sustain the assumption "private -> public only"
 
-### 2. Repo privato con submodule del repo pubblico
+Verdict: discard.
 
-Pro:
-- sembra semplice perche' rende visibile il target pubblico dentro il privato
-- facilita un export locale verso il working tree del repo pubblico
+### 2. Private repo with public repo submodule
 
-Contro:
-- il submodule introduce forte accoppiamento operativo e fragilita' Git
-- confonde il boundary: il target pubblico appare come parte del workspace privato
-- rende piu' facile introdurre dipendenze indebite dal pubblico verso il privato
-- non offre da solo sanitizzazione, validazione, o regole di promotion
+Pros:
+- seems simple because it makes the public target visible inside the private
+- facilitates a local export toward the public repo working tree
 
-Verdetto: utilizzabile solo come meccanica locale transitoria, non raccomandato come assetto target.
+Cons:
+- the submodule introduces strong operational coupling and Git fragility
+- it confuses the boundary: the public target appears as part of the private workspace
+- it makes it easier to introduce improper dependencies from public toward private
+- by itself it offers no sanitization, validation, or promotion rules
 
-### 3. Repo pubblico per il codice + repo privato per i dati + export pipeline e PR sul repo pubblico
+Verdict: usable only as a transitional local mechanic, not recommended as the target setup.
 
-Pro:
-- allinea il design con il requisito showcase: il codice resta pubblico
-- boundary chiaro tra codebase pubblica e data source privata
-- promotion flow unidirezionale per i dati
-- audit trail completo: source revision privata, export manifest, PR/merge pubblica
-- il repo pubblico resta autonomo e dimostrabile anche con fixture sanitize
+### 3. Public repo for code + private repo for data + export pipeline and PR on the public repo
 
-Contro:
-- richiede un po' di plumbing iniziale su pipeline e manifest
-- impone disciplina sul contratto degli artifact e sul montaggio del workspace privato
+Pros:
+- aligns the design with the showcase requirement: the code remains public
+- clear boundary between public codebase and private data source
+- one-way promotion flow for data
+- complete audit trail: private source revision, export manifest, public PR/merge
+- the public repo remains autonomous and demonstrable even with sanitized fixtures
 
-Verdetto: raccomandato per l'MVP.
+Cons:
+- requires a bit of initial plumbing on pipeline and manifest
+- imposes discipline on the artifact contract and on mounting the private workspace
 
-### 4. Bundle firmato dal privato e import nel pubblico
+Verdict: recommended for the MVP.
 
-Pro:
-- separazione ancora piu' forte
-- ottimo per compliance e attestazioni future
+### 4. Bundle signed by the private side and imported into the public
 
-Contro:
-- maggiore complessita' operativa
-- overhead non necessario per l'MVP se il team non ha gia' questa infrastruttura
+Pros:
+- even stronger separation
+- excellent for future compliance and attestations
 
-Verdetto: ottima evoluzione successiva, non necessaria come primo passo.
+Cons:
+- greater operational complexity
+- unnecessary overhead for the MVP if the team does not already have this infrastructure
 
-## Modello raccomandato
+Verdict: excellent later evolution, not necessary as a first step.
 
-### Topologia
+## Recommended model
 
-- `repo-pubblico`: codebase autorevole per distillazione, normalizzazione, validazione, publish workflow, frontend e fixture showcase-safe.
-- `repo-privato`: raw notes, working materials, dati sensibili, review material non pubblicabile, eventuale stato locale di authoring.
-- `workspace-privato-di-esecuzione`: checkout del repo pubblico a una revisione pinned + accesso al repo privato o a una sua working copy.
-- `promotion job`: processo eseguito nel contesto privato che usa il codice del repo pubblico, produce artifact pubblicabili e aggiorna il repo pubblico tramite PR.
+### Topology
 
-### Boundary logico
+- `public-repo`: authoritative codebase for distillation, normalization, validation, publish workflow, frontend, and showcase-safe fixtures.
+- `private-repo`: raw notes, working materials, sensitive data, non-publishable review material, possible local authoring state.
+- `private-execution-workspace`: checkout of the public repo at a pinned revision + access to the private repo or one of its working copies.
+- `promotion job`: process executed in the private context that uses the code of the public repo, produces publishable artifacts, and updates the public repo via PR.
 
-Il boundary non e' tra due codebase equivalenti ma tra classi di dato. Tutto cio' che attraversa il confine dati deve essere:
+### Logical boundary
 
-1. esplicitamente ammesso da uno schema versionato
-2. associato a uno stato di approvazione
-3. sanitizzato da campi non pubblicabili
-4. tracciato con provenance e manifest
-5. validato prima di entrare nel repo pubblico
+The boundary is not between two equivalent codebases but between data classes. Everything that crosses the data boundary must be:
 
-## Regole del boundary privato
+1. explicitly allowed by a versioned schema
+2. associated with an approval state
+3. sanitized of non-publishable fields
+4. tracked with provenance and manifest
+5. validated before entering the public repo
 
-1. Il repo pubblico e' la source of truth del codice di pipeline e dei contratti pubblicabili.
-2. Il repo privato e' la source of truth dei dati sensibili: raw notes, working materials, prompt, appunti, review material, fonti non approvate e metadata riservati.
-3. Il pubblico puo' essere input di codice per il privato; il privato non puo' essere input di dato grezzo per il pubblico.
-4. Gli artifact esportabili devono essere derivati e dichiarati `publishable`, mai copiati in modo generico dal workspace privato.
-5. Il contratto di export deve essere allowlist-based, non denylist-based: si esportano solo i campi ammessi.
-6. Il repo pubblico non puo' contenere raw notes, campi di lavoro, commenti editoriali interni, riferimenti sensibili, secret, token, path interni o provenance non sanitizzata.
-7. Ogni export deve essere riproducibile dalla coppia: revisione del repo pubblico + revisione privata dei dati + versione dello schema.
-8. Ogni promotion deve fallire se trova secret, campi vietati, gap di localizzazione, stati non approvati o incoerenze di schema.
+## Private boundary rules
 
-## Regole del boundary codice/dati
+1. The public repo is the source of truth for pipeline code and publishable contracts.
+2. The private repo is the source of truth for sensitive data: raw notes, working materials, prompts, notes, review material, unapproved sources, and reserved metadata.
+3. The public can be a code input for the private; the private cannot be a raw data input for the public.
+4. Exportable artifacts must be derived and declared `publishable`, never copied generically from the private workspace.
+5. The export contract must be allowlist-based, not denylist-based: only permitted fields are exported.
+6. The public repo cannot contain raw notes, working fields, internal editorial comments, sensitive references, secrets, tokens, internal paths, or unsanitized provenance.
+7. Every export must be reproducible from the pair: public repo revision + private data revision + schema version.
+8. Every promotion must fail if it finds secrets, forbidden fields, localization gaps, unapproved states, or schema inconsistencies.
 
-1. Il codice della pipeline vive nel repo pubblico e deve girare sia in showcase mode con fixture pubbliche sia in private mode con dati reali privati.
-2. Il repo privato non deve contenere fork logici del codice pubblico, salvo configurazioni locali minime o bootstrap strettamente operativo.
-3. L'esecuzione privata deve puntare a una revisione pinned del repo pubblico, cosi' ogni output e' attribuibile a un commit preciso del codice.
-4. Il repo pubblico non deve assumere che i dati privati siano presenti nel tree Git; deve leggerli tramite path configurati, mount o checkout separato.
-5. Nessuna trasformazione privata deve richiedere modifiche manuali persistenti al codice pubblico per funzionare su dati reali.
+## Code/data boundary rules
 
-## Formato consigliato per il canonical artifact pubblico
+1. Pipeline code lives in the public repo and must run both in showcase mode with public fixtures and in private mode with real private data.
+2. The private repo must not contain logical forks of the public code, except for minimal local configuration or strictly operational bootstrap.
+3. Private execution must point to a pinned revision of the public repo, so every output is attributable to a precise code commit.
+4. The public repo must not assume that private data are present in the Git tree; it must read them through configured paths, mounts, or separate checkouts.
+5. No private transformation must require persistent manual changes to public code in order to work on real data.
 
-Nota di convergenza: nel prosieguo del brainstorming il focus si e' spostato da un generico `canonical artifact` a una struttura piu esplicita per HyperCV e site-data. Il formato qui sotto resta utile come contratto minimo per artefatti pubblici, ma il modello di dominio finale e' stato raffinato in:
+## Recommended format for the public canonical artifact
+
+Convergence note: later in the brainstorming the focus shifted from a generic `canonical artifact` to a more explicit structure for HyperCV and site-data. The format below remains useful as a minimum contract for public artifacts, but the final domain model was refined into:
 
 - `cv-experience`
 - `cv-project`
 - `cv-star`
 
-con revision log obbligatorio sugli oggetti CV e contenuto finale STAR distinto da candidate ed editorial-resolution.
+with a mandatory revision log on CV objects and final STAR content distinct from candidate and editorial-resolution.
 
-Usare artifact file-based, schema-versioned, con struttura minima simile a questa:
+Use file-based, schema-versioned artifacts, with a minimum structure similar to this:
 
 ```yaml
 schemaVersion: 1
@@ -165,101 +175,99 @@ provenance:
   redactionProfile: public-v1
 ```
 
-Regole importanti:
+Important rules:
 
-- `privateSourceRef` puo' esistere come riferimento tecnico, ma non deve rivelare percorsi, nomi interni o contenuto sensibile.
-- Nessun campo libero tipo `notes`, `draft`, `internal_comments`, `source_excerpt_raw` deve essere presente nel formato pubblico.
-- Gli artifact devono essere stabili e con ID duraturi, cosi' il repo pubblico puo' lavorare in modo indipendente sugli output generati.
+- `privateSourceRef` may exist as a technical reference, but it must not reveal paths, internal names, or sensitive content.
+- No free field such as `notes`, `draft`, `internal_comments`, `source_excerpt_raw` must be present in the public format.
+- Artifacts must be stable and have durable IDs, so the public repo can work independently on generated outputs.
 
-## Promotion flow raccomandato
+## Recommended promotion flow
 
-### Flusso standard
+### Standard flow
 
-1. L'autore lavora nel repo privato sui materiali raw.
-2. Il workspace privato checkouta il repo pubblico a una revisione pinned ed esegue la pipeline pubblica sui dati privati.
-3. Il risultato della distillazione produce artifact canonical candidati nel contesto privato.
-4. Un artifact passa a stato `approved` nel privato.
-5. Il promotion job materializza solo gli artifact approvati in una workspace effimera del repo pubblico.
-6. Il gatekeeper applica schema validation, leakage checks, secret scanning, publish eligibility, parity checks tra lingue e manifest generation.
-7. Se tutto e' verde, il job apre una PR nel repo pubblico con soli artifact canonical e derivati ammessi.
-8. La PR pubblica e' reviewable dal team del dominio pubblico/low-security.
-9. Merge della PR su `main` del repo pubblico.
-10. Il repo privato registra il riferimento dell'avvenuta promozione: `promotion_id`, `public_repo`, `public_commit_sha`, `public_code_sha_used_for_processing`.
+1. The author works in the private repo on raw materials.
+2. The private workspace checks out the public repo at a pinned revision and runs the public pipeline on private data.
+3. The result of the distillation produces candidate canonical artifacts in the private context.
+4. An artifact moves to `approved` state in the private.
+5. The promotion job materializes only approved artifacts in an ephemeral workspace of the public repo.
+6. The gatekeeper applies schema validation, leakage checks, secret scanning, publish eligibility, parity checks between languages, and manifest generation.
+7. If everything is green, the job opens a PR in the public repo with only canonical artifacts and permitted derived outputs.
+8. The public PR is reviewable by the public-domain / low-security team.
+9. The PR is merged into `main` of the public repo.
+10. The private repo records the reference of the completed promotion: `promotion_id`, `public_repo`, `public_commit_sha`, `public_code_sha_used_for_processing`.
 
-### Modalita' di composizione del workspace privato
+### Private workspace composition modes
 
-Le opzioni sane sono queste, in ordine di preferenza:
+The sound options are these, in order of preference:
 
-1. checkout separati affiancati: `public-code/` e `private-data/`
-2. clone temporanea del repo pubblico dentro un workspace privato effimero
-3. repo pubblico con submodule privato, usato solo come bootstrap del workspace
-4. package/tool release del codice pubblico consumato dal privato
+1. separate side-by-side checkouts: `public-code/` and `private-data/`
+2. temporary clone of the public repo inside an ephemeral private workspace
+3. public repo with private submodule, used only as workspace bootstrap
+4. released package/tool of the public code consumed by the private side
 
-Il submodule e' quindi una variante praticabile, ma solo se resta confinato al bootstrap del workspace. Non deve diventare il cuore della governance, del boundary logico o dell'audit trail di promotion.
+The submodule is therefore a workable variant, but only if it remains confined to workspace bootstrap. It must not become the heart of governance, the logical boundary, or the promotion audit trail.
 
-### Regola PR vs commit diretto
+### Rule: PR vs direct commit
 
-Per ora: PR di default.
+For now: PR by default.
 
-Motivo:
-- rende il confine osservabile dal team
-- abbassa il rischio di publication accidentale
-- crea un audit trail leggibile
+Reason:
+- makes the boundary observable to the team
+- lowers the risk of accidental publication
+- creates a readable audit trail
 
-Commit diretto su `main` del repo pubblico puo' essere introdotto solo piu' avanti, quando il gatekeeper sara' molto maturo e il rischio di leak sara' gia' stato abbassato con evidenza.
+Direct commit to `main` of the public repo can be introduced only later, when the gatekeeper is much more mature and the risk of leakage has already been lowered with evidence.
 
-## Come si continua a lavorare nel repo pubblico
+## How work continues in the public repo
 
-Il repo pubblico resta sempre il contesto di lavoro ordinario per:
+The public repo always remains the ordinary working context for:
 
-- sviluppo della pipeline
-- build del portale
-- routing e rendering
+- pipeline development
+- portal build
+- routing and rendering
 - search indexing
-- QA pubblica
-- deploy statico
+- public QA
+- static deploy
 
-Nel contesto privato, lo stesso repo pubblico viene eseguito contro dati reali tramite composizione del workspace, non tramite copia dei dati nel repo.
+In the private context, the same public repo is run against real data through workspace composition, not through copying the data into the repo.
 
-Questo funziona se il codice pubblico e' progettato per leggere input privati esterni al proprio tree Git e se il repo pubblico resta eseguibile anche senza accesso a quei dati, usando fixture sanitize.
+This works if the public code is designed to read private inputs external to its own Git tree and if the public repo remains executable even without access to those data, using sanitized fixtures.
 
-## Perche' evitare il ritorno pubblico -> privato
+## Why avoid public -> private return
 
-Il punto da preservare non e' evitare ogni uso del pubblico dentro il privato. Quello e' necessario e desiderabile, perche' il codice e' pubblico. Il punto e' evitare che dati sensibili o semantica raw ritornino nel pubblico senza passare per approvazione.
+The point to preserve is not to avoid any use of the public inside the private. That is necessary and desirable, because the code is public. The point is to avoid sensitive data or raw semantics returning to the public without going through approval.
 
-Se il pubblico iniziasse a contenere raw data o se il privato iniziasse a dipendere da canonical pubblici come sostituto della sorgente raw, il boundary collasserebbe: diventerebbe ambiguo dove nasce il significato e dove avviene la redazione.
+If the public started to contain raw data or if the private started to depend on public canonical artifacts as a substitute for the raw source, the boundary would collapse: it would become ambiguous where meaning is born and where redaction occurs.
 
-La regola quindi e':
+So the rule is:
 
-- dal pubblico al privato puo' fluire codice e configurazione pubblica
-- dal privato al pubblico puo' fluire solo contenuto derivato, approvato e sanitizzato
-- non deve esistere un ritorno di dati sensibili dal pubblico al privato per ricostruire il raw workflow
+- code and public configuration can flow from public to private
+- only derived, approved, and sanitized content can flow from private to public
+- there must be no return of sensitive data from public to private to reconstruct the raw workflow
 
-## Hardening minimo consigliato
+## Recommended minimum hardening
 
-1. Secret scanning pre-commit sul repo pubblico, sul repo privato e sul job di promotion.
-2. Esecuzione privata su workspace composta o temporanea, non su copia persistente dei dati nel repo pubblico.
-3. Allowlist esplicita dei file esportabili.
-4. Manifest di release con hash file, schema version, code SHA pubblico usato per il processing, source refs privati e checks eseguiti.
-5. Permessi distinti: chi puo' modificare raw privato non coincide necessariamente con chi puo' approvare la promotion pubblica.
+1. Secret scanning pre-commit on the public repo, on the private repo, and on the promotion job.
+2. Private execution on a composed or temporary workspace, not on a persistent copy of the data inside the public repo.
+3. Explicit allowlist of exportable files.
+4. Release manifest with file hash, schema version, public code SHA used for processing, private source refs, and checks performed.
+5. Separate permissions: whoever can modify private raw data does not necessarily coincide with whoever can approve public promotion.
 
-## Decisione proposta al team
+## Proposed decision for the team
 
-Proporrei questa formulazione:
+I would propose this wording:
 
-> Manteniamo due repository separati. Il dominio privato resta la source of truth per materiale raw e distillazione; il dominio pubblico riceve solo artifact canonical approvati tramite una pipeline di promotion unidirezionale con gatekeeper, validazioni e PR di default. Il repo pubblico non rientra nel ciclo di authoring privato se non per metadata di audit della release.
+> We keep two separate repositories. The private domain remains the source of truth for raw material and distillation; the public domain receives only approved canonical artifacts through a one-way promotion pipeline with gatekeeper, validations, and PR by default. The public repo does not re-enter the private authoring cycle except for release audit metadata.
 
-Proporrei invece questa formulazione aggiornata:
+I would instead propose this updated wording:
 
-> Manteniamo il repository pubblico come codebase autorevole della pipeline e del portale, cosi' il funzionamento resta ispezionabile e dimostrabile. Manteniamo il repository privato come sorgente dei dati sensibili e dei materiali raw. La pipeline pubblica viene eseguita in un contesto privato contro quei dati, ma nel repository pubblico entrano solo artifact canonical approvati tramite promotion governata, validazioni e PR di default.
+> We keep the public repository as the authoritative codebase for the pipeline and the portal, so that the behavior remains inspectable and demonstrable. We keep the private repository as the source of sensitive data and raw materials. The public pipeline is run in a private context against those data, but only approved canonical artifacts enter the public repository through governed promotion, validations, and PR by default.
 
-## Passi successivi minimi
+## Minimum next steps
 
-1. Definire l'interfaccia di esecuzione tra codice pubblico e dati privati: path, mount, config e revision pinning.
-2. Definire lo schema `canonical artifact` v1 con allowlist campi.
-3. Definire il `publish manifest` v1 includendo `public_code_sha_used_for_processing`.
-4. Implementare il workspace privato di esecuzione che checkouta il repo pubblico e legge il repo privato senza assorbirlo nel tree pubblico.
-5. Agganciare validazioni: schema, leakage, secret scan, locale parity.
-6. Attivare promotion via PR sul repo pubblico.
-
-La proposta implementativa concreta derivata da questa decisione e' documentata in `_bmad-output/implementation-artifacts/private-public-operational-implementation.md`.
+1. Define the execution interface between public code and private data: path, mount, config, and revision pinning.
+2. Define the `canonical artifact` v1 schema with field allowlist.
+3. Define the `publish manifest` v1 including `public_code_sha_used_for_processing`.
+4. Implement the private execution workspace that checks out the public repo and reads the private repo without absorbing it into the public tree.
+5. Hook up validations: schema, leakage, secret scan, locale parity.
+6. Enable promotion via PR on the public repo.

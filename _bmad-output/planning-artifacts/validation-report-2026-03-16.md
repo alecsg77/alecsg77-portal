@@ -1,10 +1,16 @@
 ---
-validationTarget: '/workspaces/alecsg77-portal/_bmad-output/planning-artifacts/prd.md'
+workflowType: 'validate-prd'
+workflow: 'validate'
+reportStage: 'initial-pass'
+precedence: 'superseded'
+sourceOfTruth: false
+supersededBy: '_bmad-output/planning-artifacts/validation-report-2026-03-16-final.md'
+validationTarget: '_bmad-output/planning-artifacts/prd.md'
 validationDate: '2026-03-16'
 inputDocuments:
-  - /workspaces/alecsg77-portal/_bmad-output/planning-artifacts/prd.md
-  - /workspaces/alecsg77-portal/_bmad-archive/planning-artifacts/product-brief-alecsg77-portal-2026-02-27.md
-  - /workspaces/alecsg77-portal/_bmad-output/brainstorming/brainstorming-session-2026-03-15-0620.md
+  - _bmad-output/planning-artifacts/prd.md
+  - _bmad-archive/planning-artifacts/product-brief-alecsg77-portal-2026-02-27.md
+  - _bmad-output/brainstorming/brainstorming-session-2026-03-15-0620.md
 validationStepsCompleted:
   - step-v-01-discovery
   - step-v-02-format-detection
@@ -25,14 +31,14 @@ overallStatus: 'Warning'
 
 # PRD Validation Report
 
-**PRD Being Validated:** /workspaces/alecsg77-portal/_bmad-output/planning-artifacts/prd.md
+**PRD Being Validated:** _bmad-output/planning-artifacts/prd.md
 **Validation Date:** 2026-03-16
 
 ## Input Documents
 
-- PRD: /workspaces/alecsg77-portal/_bmad-output/planning-artifacts/prd.md
-- Product Brief: /workspaces/alecsg77-portal/_bmad-archive/planning-artifacts/product-brief-alecsg77-portal-2026-02-27.md
-- Brainstorming: /workspaces/alecsg77-portal/_bmad-output/brainstorming/brainstorming-session-2026-03-15-0620.md
+- PRD: _bmad-output/planning-artifacts/prd.md
+- Product Brief: _bmad-archive/planning-artifacts/product-brief-alecsg77-portal-2026-02-27.md
+- Brainstorming: _bmad-output/brainstorming/brainstorming-session-2026-03-15-0620.md
 
 ## Validation Findings
 
@@ -97,22 +103,22 @@ PRD demonstrates good information density with minimal violations.
 ### Coverage Map
 
 **Vision Statement:** Fully Covered  
-Il PRD copre la trasformazione del CV statico in knowledge base esplorabile e mantiene il focus su recruiting e valutazione tecnica, pur aggiornando la forma del prodotto verso un MVP static-first.
+The PRD covers the transformation of the static CV into an explorable knowledge base and keeps the focus on recruiting and technical evaluation, while updating the product form toward a static-first MVP.
 
 **Target Users:** Fully Covered  
-Il PRD copre in modo esplicito valutatore tecnico, recruiter e autore. Le anti-persona del brief non sono formalizzate come sezione separata, ma la loro esclusione e riflessa nello scope del MVP.
+The PRD explicitly covers technical evaluator, recruiter, and author. The anti-personas from the brief are not formalized as a separate section, but their exclusion is reflected in the MVP scope.
 
 **Problem Statement:** Fully Covered  
-Il problema di overload informativo e mancato allineamento di contesto e presente nell'Executive Summary e nei journey principali.
+The problem of information overload and lack of context alignment is present in the Executive Summary and in the main journeys.
 
 **Key Features:** Partially Covered  
-Severity: Moderate. Il PRD copre pipeline privata, discovery guidata, progressive disclosure, ricerca lato client e analytics. Restano intenzionalmente esclusi o posticipati rispetto al brief originario il chatbot conversazionale runtime, l'Executive Match Report on demand e altri elementi di interazione live.
+Severity: Moderate. The PRD covers private pipeline, guided discovery, progressive disclosure, client-side search, and analytics. Intentionally excluded or postponed relative to the original brief are the runtime conversational chatbot, the on-demand Executive Match Report, and other live interaction elements.
 
 **Goals/Objectives:** Fully Covered  
-I criteri di successo nel PRD coprono time-to-value, deep-dive engagement, conversion e vincoli tecnici di rilascio in modo piu misurabile del brief.
+The success criteria in the PRD cover time-to-value, deep-dive engagement, conversion, and technical release constraints in a more measurable way than the brief.
 
 **Differentiators:** Partially Covered  
-Severity: Informational. Il PRD mantiene i differenziatori chiave su pipeline privata, contenuti verificabili e consultazione guidata, ma riduce o rinvia gli elementi del brief legati a "Digital Manager" conversazionale, open-source radicale dei dati e deliverable dinamici.
+Severity: Informational. The PRD maintains the key differentiators around private pipeline, verifiable content, and guided consultation, but reduces or postpones the brief elements related to a conversational "Digital Manager", radical open-source treatment of the data, and dynamic deliverables.
 
 ### Coverage Summary
 
@@ -133,13 +139,13 @@ PRD provides good coverage of Product Brief content. The main differences reflec
 **Format Violations:** 0
 
 **Subjective Adjectives Found:** 2
-- [prd.md](/_bmad-output/planning-artifacts/prd.md#L251): "leggibile e riutilizzabile"
-- [prd.md](/_bmad-output/planning-artifacts/prd.md#L262): "Call-to-Action pertinente"
+- [prd.md](/_bmad-output/planning-artifacts/prd.md#L251): "readable and reusable"
+- [prd.md](/_bmad-output/planning-artifacts/prd.md#L262): "relevant Call-to-Action"
 
 **Vague Quantifiers Found:** 3
-- [prd.md](/_bmad-output/planning-artifacts/prd.md#L238): "per piu output editoriali"
-- [prd.md](/_bmad-output/planning-artifacts/prd.md#L243): "in piu nodi di navigazione"
-- [prd.md](/_bmad-output/planning-artifacts/prd.md#L265): "in qualunque lingua"
+- [prd.md](/_bmad-output/planning-artifacts/prd.md#L238): "for multiple editorial outputs"
+- [prd.md](/_bmad-output/planning-artifacts/prd.md#L243): "in multiple navigation nodes"
+- [prd.md](/_bmad-output/planning-artifacts/prd.md#L265): "in any language"
 
 **Implementation Leakage:** 0
 
@@ -150,11 +156,11 @@ PRD provides good coverage of Product Brief content. The main differences reflec
 **Total NFRs Analyzed:** 25
 
 **Missing Metrics:** 1
-- [prd.md](/_bmad-output/planning-artifacts/prd.md#L316): "passaggi documentati" e "interventi manuali non descritti" sono verificabili, ma non ancora ancorati a una misura o evidenza minima esplicita.
+- [prd.md](/_bmad-output/planning-artifacts/prd.md#L316): "documented steps" and "undocumented manual interventions" are verifiable, but not yet anchored to an explicit minimum measure or evidence.
 
 **Incomplete Template:** 2
-- [prd.md](/_bmad-output/planning-artifacts/prd.md#L289): policy allowlist-based chiara, ma senza metodo di misurazione o evidenza esplicita nel requisito stesso
-- [prd.md](/_bmad-output/planning-artifacts/prd.md#L294): "provenienza verificabile" e "revisione identificabile" sono corretti come intent, ma il criterio di verifica non è esplicitato
+- [prd.md](/_bmad-output/planning-artifacts/prd.md#L289): clear allowlist-based policy, but without a measurement method or explicit evidence in the requirement itself
+- [prd.md](/_bmad-output/planning-artifacts/prd.md#L294): "verifiable provenance" and "identifiable revision" are correct as intent, but the verification criterion is not made explicit
 
 **Missing Context:** 0
 
@@ -174,17 +180,17 @@ Some requirements need refinement for measurability. Focus on replacing residual
 
 ### Chain Validation
 
-**Executive Summary → Success Criteria:** Intact  
-La visione di knowledge base pubblica, discovery guidata, leggibilita e contenuto verificabile si riflette nei criteri di successo utente, business e tecnici.
+**Executive Summary -> Success Criteria:** Intact  
+The vision of a public knowledge base, guided discovery, readability, and verifiable content is reflected in the user, business, and technical success criteria.
 
-**Success Criteria → User Journeys:** Intact  
-I journey di valutatore tecnico e recruiter supportano TTV, deep-dive e conversione; il journey dell'Autore supporta i criteri tecnici di publication safety, governance e rilascio.
+**Success Criteria -> User Journeys:** Intact  
+The technical evaluator and recruiter journeys support TTV, deep-dive, and conversion; the Author journey supports the technical criteria of publication safety, governance, and release.
 
-**User Journeys → Functional Requirements:** Intact  
-I requirement di discovery e consultazione pubblica tracciano a recruiter e valutatore tecnico; i requirement di ingestione, knowledge, revisione e publish safety tracciano al journey dell'Autore.
+**User Journeys -> Functional Requirements:** Intact  
+The public discovery and consultation requirements trace to recruiter and technical evaluator; the ingestion, knowledge, review, and publish safety requirements trace to the Author journey.
 
-**Scope → FR Alignment:** Intact  
-Le FR del MVP restano coerenti con uno scope static-first. Le capability conversazionali e di matching live sono correttamente rinviate alla Growth e non compaiono come FR del MVP.
+**Scope -> FR Alignment:** Intact  
+The MVP FRs remain coherent with a static-first scope. Conversational and live matching capabilities are correctly deferred to Growth and do not appear as MVP FRs.
 
 ### Orphan Elements
 
@@ -196,10 +202,10 @@ Le FR del MVP restano coerenti con uno scope static-first. Le capability convers
 
 ### Traceability Matrix
 
-- FR1-FR8, FR20-FR32 -> Journey Autore / obiettivi di governance, publish e rigenerazione
-- FR9-FR13, FR19, FR25 -> Journey Recruiter + Journey Valutatore Tecnico / obiettivi TTV e consultazione rapida
-- FR14-FR16 -> Executive Summary + Technical Success / accessibilita, indicizzazione e machine readability del portale pubblico
-- FR17-FR18 -> Success Criteria / misurazione di deep-dive engagement, TTV e conversione
+- FR1-FR8, FR20-FR32 -> Author Journey / governance, publication, and regeneration objectives
+- FR9-FR13, FR19, FR25 -> Recruiter Journey + Technical Evaluator Journey / TTV and fast consultation objectives
+- FR14-FR16 -> Executive Summary + Technical Success / accessibility, indexing, and machine readability of the public portal
+- FR17-FR18 -> Success Criteria / measurement of deep-dive engagement, TTV, and conversion
 
 **Total Traceability Issues:** 0
 
@@ -225,7 +231,7 @@ Traceability chain is intact - all requirements trace to user needs or business 
 **Libraries:** 0 violations
 
 **Other Implementation Details:** 1 violation
-- [prd.md](/_bmad-output/planning-artifacts/prd.md#L252): "ricerca globale lato client" in FR13 esprime una scelta di realizzazione piu che una capability pura; nel PRD potrebbe essere formulata come ricerca globale sul corpus statico, lasciando il HOW all'architettura.
+- [prd.md](/_bmad-output/planning-artifacts/prd.md#L252): "global client-side search" in FR13 expresses an implementation choice more than a pure capability; in the PRD it could be phrased as global search over the static corpus, leaving the HOW to architecture.
 
 ### Summary
 
@@ -236,7 +242,7 @@ Traceability chain is intact - all requirements trace to user needs or business 
 **Recommendation:**
 No significant implementation leakage found. Requirements mostly specify WHAT without HOW. Only a small amount of wording could be further abstracted.
 
-**Note:** Termini come HTML snapshot, JavaScript disabilitato o browser supportati restano accettabili quando servono a definire verifiche di qualita o machine-readability, non la tecnologia da adottare.
+**Note:** Terms such as HTML snapshot, JavaScript disabled, or supported browsers remain acceptable when they serve to define quality checks or machine readability, not the technology to adopt.
 
 ## Domain Compliance Validation
 
@@ -253,19 +259,19 @@ No significant implementation leakage found. Requirements mostly specify WHAT wi
 ### Required Sections
 
 **Browser Matrix:** Present  
-Documentata in "Browser Support Matrix".
+Documented in "Browser Support Matrix".
 
 **Responsive Design:** Present  
-Documentata in "Responsive Design".
+Documented in "Responsive Design".
 
 **Performance Targets:** Present  
-Documentati tra Success Criteria tecnici e NFR di Performance.
+Documented among the technical Success Criteria and the Performance NFRs.
 
 **SEO Strategy:** Present  
-Coperta tramite FR15-FR16 e dai vincoli di contenuto leggibile senza dipendenza da JavaScript client-side.
+Covered through FR15-FR16 and by the constraints on readable content without dependence on client-side JavaScript.
 
 **Accessibility Level:** Present  
-Coperta tramite FR14 e sezione NFR "Accessibility & Machine Readability" con WCAG 2.1 AA.
+Covered through FR14 and the NFR section "Accessibility & Machine Readability" with WCAG 2.1 AA.
 
 ### Excluded Sections (Should Not Be Present)
 
@@ -290,8 +296,8 @@ All required sections for web_app are present. No excluded sections found.
 
 ### Scoring Summary
 
-**All scores ≥ 3:** 75.0% (24/32)
-**All scores ≥ 4:** 62.5% (20/32)
+**All scores >= 3:** 75.0% (24/32)
+**All scores >= 4:** 62.5% (20/32)
 **Overall Average Score:** 4.3/5.0
 
 ### Scoring Table
@@ -338,21 +344,21 @@ All required sections for web_app are present. No excluded sections found.
 
 **Low-Scoring FRs:**
 
-**FR3:** sostituire "riutilizzabile per piu output editoriali" con un output scope piu definito o con esempi chiusi di output ammessi.
+**FR3:** replace "reusable for multiple editorial outputs" with a more defined output scope or with closed examples of permitted outputs.
 
-**FR6:** specificare in quali casi il contenuto deve essere riutilizzabile e quale verifica assicura l'assenza di divergenze tra viste.
+**FR6:** specify in which cases the content must be reusable and what verification ensures the absence of divergence between views.
 
-**FR12:** trasformare "struttura leggibile e riutilizzabile" in un criterio osservabile, ad esempio preservazione di heading, blocchi o formattazione minima nel copy.
+**FR12:** turn "readable and reusable structure" into an observable criterion, for example preservation of headings, blocks, or minimum formatting in copy.
 
-**FR20:** limitare "qualunque lingua" a un set target o a una regola verificabile di supporto linguistico minimo.
+**FR20:** limit "any language" to a target set or to a verifiable rule of minimum language support.
 
-**FR21:** esplicitare quando un contributo manuale approvato puo entrare nel catalogo canonico e con quali precondizioni.
+**FR21:** make explicit when an approved manual contribution can enter the canonical catalog and under which preconditions.
 
-**FR22:** sostituire "collegamento verificabile" con un meccanismo o un criterio di audit osservabile nel workflow.
+**FR22:** replace "verifiable link" with a mechanism or an observable audit criterion in the workflow.
 
-**FR26:** definire esempi o categorie minime di condizioni di localizzazione che devono bloccare il rilascio.
+**FR26:** define examples or minimum categories of localization conditions that must block the release.
 
-**FR29:** specificare meglio i criteri che distinguono contenuto knowledge-base, manuale e ibrido durante la rigenerazione.
+**FR29:** specify better the criteria that distinguish knowledge-base, manual, and hybrid content during regeneration.
 
 ### Overall Assessment
 
@@ -368,14 +374,14 @@ Some FRs would benefit from SMART refinement. Focus on flagged requirements abov
 **Assessment:** Good
 
 **Strengths:**
-- Il documento racconta una storia coerente da problema -> visione -> scope -> journey -> requirement.
-- L'aggiornamento sul boundary pubblico/privato ha reso molto piu credibile il prodotto e la sua governance.
-- Il PRD mantiene una struttura BMAD leggibile e ben consumabile a valle da UX, architettura ed epics.
+- The document tells a coherent story from problem -> vision -> scope -> journey -> requirement.
+- The update on the public/private boundary made the product much more credible and its governance much more credible.
+- The PRD maintains a BMAD structure that is readable and very consumable downstream by UX, architecture, and epics.
 
 **Areas for Improvement:**
-- Alcuni concetti di governance del contenuto canonico sono forti ma ancora leggermente astratti per lettori non tecnici.
-- Alcuni FR della parte knowledge/governance restano corretti ma non ancora abbastanza osservabili o chiusi.
-- Il documento sarebbe ancora piu scorrevole se i termini chiave del modello contenutistico fossero leggermente meglio consolidati in una formulazione breve e stabile.
+- Some concepts of canonical content governance are strong but still slightly abstract for non-technical readers.
+- Some FRs in the knowledge/governance area remain correct but not yet observable enough or fully closed.
+- The document would flow even better if the key terms of the content model were slightly better consolidated into a short and stable formulation.
 
 ### Dual Audience Effectiveness
 
@@ -397,12 +403,12 @@ Some FRs would benefit from SMART refinement. Focus on flagged requirements abov
 
 | Principle | Status | Notes |
 |-----------|--------|-------|
-| Information Density | Met | Nessun filler evidente e struttura ad alta densita informativa |
-| Measurability | Partial | Alcuni FR e pochi NFR di governance possono essere resi piu osservabili |
-| Traceability | Met | Catena vision -> success -> journeys -> FR integra |
-| Domain Awareness | Met | Dominio general correttamente classificato, con vincoli di boundary comunque esplicitati |
-| Zero Anti-Patterns | Met | Leakage basso e pochi residui di formulazione soggettiva |
-| Dual Audience | Partial | Forte per LLM e team di delivery, leggermente denso per stakeholder molto non tecnici |
+| Information Density | Met | No obvious filler and high-information-density structure |
+| Measurability | Partial | Some FRs and a few governance NFRs can be made more observable |
+| Traceability | Met | Vision -> success -> journeys -> FR chain intact |
+| Domain Awareness | Met | General domain correctly classified, with boundary constraints still made explicit |
+| Zero Anti-Patterns | Met | Low leakage and few residual subjective phrasings |
+| Dual Audience | Partial | Strong for LLM and delivery team, slightly dense for very non-technical stakeholders |
 | Markdown Format | Met | Struttura BMAD chiara, sezioni ben segmentate |
 
 **Principles Met:** 5/7
@@ -420,18 +426,18 @@ Some FRs would benefit from SMART refinement. Focus on flagged requirements abov
 
 ### Top 3 Improvements
 
-1. **Rendere piu testabili gli FR di content governance**  
-  I requirement sul catalogo canonico, provenance e classificazione dei contenuti sono concettualmente giusti, ma alcuni richiedono criteri di verifica piu espliciti.
+1. **Make content-governance FRs more testable**  
+  The requirements on the canonical catalog, provenance, and content classification are conceptually correct, but some need more explicit verification criteria.
 
-2. **Ridurre l'astrazione lessicale nei punti chiave del modello contenutistico**  
-  Un linguaggio leggermente piu chiuso su termini come knowledge base, contenuto canonico e composizione migliorerebbe l'immediatezza per stakeholder non tecnici.
+2. **Reduce lexical abstraction in the key points of the content model**  
+  Slightly more closed language around terms such as knowledge base, canonical content, and composition would improve immediacy for non-technical stakeholders.
 
-3. **Rafforzare alcuni NFR di governance con acceptance evidence esplicita**  
-  Alcuni NFR sono solidi come intent ma beneficerebbero di un legame piu diretto con audit, checklist o report attesi.
+3. **Strengthen some governance NFRs with explicit acceptance evidence**  
+  Some NFRs are solid in intent but would benefit from a more direct link to expected audit, checklist, or report evidence.
 
 ### Summary
 
-**This PRD is:** un PRD solido, aggiornato e pronto per guidare i workflow successivi, con pochi affinamenti necessari per diventare eccellente.
+**This PRD is:** a solid, updated PRD ready to guide subsequent workflows, with only a few refinements needed to become excellent.
 
 **To make it great:** Focus on the top 3 improvements above.
 
@@ -457,19 +463,19 @@ No template variables remaining ✓
 **Non-Functional Requirements:** Complete
 
 **Other Sections:** Complete  
-Project Classification, Innovation, Web App Specific Requirements & Architecture, Project Scoping & Phased Development risultano presenti e coerenti con il project type.
+Project Classification, Innovation, Web App Specific Requirements & Architecture, and Project Scoping & Phased Development are present and consistent with the project type.
 
 ### Section-Specific Completeness
 
 **Success Criteria Measurability:** Some measurable  
-La maggior parte e misurabile; resta solo qualche formulazione tecnica piu qualitativa, come "costi di erogazione prevedibili".
+Most are measurable; only a few more qualitative technical phrasings remain, such as "predictable delivery costs".
 
 **User Journeys Coverage:** Yes - covers all user types
 
 **FRs Cover MVP Scope:** Yes
 
 **NFRs Have Specific Criteria:** Some  
-La maggior parte dei NFR ha criteri espliciti; alcuni NFR di governance/operability restano corretti ma potrebbero esprimere meglio l'evidenza attesa.
+Most NFRs have explicit criteria; some governance/operability NFRs remain correct but could express the expected evidence better.
 
 ### Frontmatter Completeness
 
@@ -482,10 +488,10 @@ La maggior parte dei NFR ha criteri espliciti; alcuni NFR di governance/operabil
 
 ### Completeness Summary
 
-**Overall Completeness:** 100% (10/10 sezioni principali e campi critici presenti)
+**Overall Completeness:** 100% (10/10 main sections and critical fields present)
 
 **Critical Gaps:** 0
-**Minor Gaps:** 2 - alcune formulazioni nei success criteria tecnici e in pochi NFR possono essere rese piu osservabili
+**Minor Gaps:** 2 - some phrasings in the technical success criteria and in a few NFRs can be made more observable
 
 **Severity:** Warning
 

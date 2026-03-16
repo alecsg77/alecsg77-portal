@@ -9,9 +9,9 @@ stepsCompleted:
   - 7
   - 8
 inputDocuments:
-  - /workspaces/alecsg77-portal/_bmad-output/planning-artifacts/prd.md
-  - /workspaces/alecsg77-portal/_bmad-output/planning-artifacts/ux-design-specification.md
-  - /workspaces/alecsg77-portal/_bmad-output/brainstorming/brainstorming-session-2026-03-15-0620.md
+  - _bmad-output/planning-artifacts/prd.md
+  - _bmad-output/planning-artifacts/ux-design-specification.md
+  - _bmad-output/brainstorming/brainstorming-session-2026-03-15-0620.md
 workflowType: 'architecture'
 lastStep: 8
 status: 'complete'
@@ -279,7 +279,7 @@ Key dependencies remain explicit: routing depends on the canonical schema and lo
 
 ## Implementation Governance Summary
 
-Detailed implementation guidance has been extracted into the temporary operational addendum at [_bmad-output/implementation-artifacts/tech-spec-operational-guidelines.md](/workspaces/alecsg77-portal/_bmad-output/implementation-artifacts/tech-spec-operational-guidelines.md). Detailed validation evidence has been preserved separately in the permanent record at [_bmad-output/planning-artifacts/architecture-validation-record.md](/workspaces/alecsg77-portal/_bmad-output/planning-artifacts/architecture-validation-record.md). The implementation addendum remains temporary and can be archived once its decisions are consolidated in code, tests, and final documentation.
+Detailed implementation guidance has been extracted into the temporary operational addendum at [_bmad-output/implementation-artifacts/tech-spec-operational-guidelines.md](_bmad-output/implementation-artifacts/tech-spec-operational-guidelines.md). Detailed validation evidence has been preserved separately in the permanent record at [_bmad-output/planning-artifacts/architecture-validation-record.md](_bmad-output/planning-artifacts/architecture-validation-record.md). The implementation addendum remains temporary and can be archived once its decisions are consolidated in code, tests, and final documentation.
 
 The architecture-level constraints that remain mandatory are:
 - the content pipeline is the semantic center of the system and the frontend is only a delivery projection

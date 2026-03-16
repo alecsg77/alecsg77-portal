@@ -15,8 +15,8 @@ stepsCompleted:
   - step-13-responsive-accessibility
   - step-14-complete
 inputDocuments:
-  - /workspaces/alecsg77-portal/_bmad-archive/planning-artifacts/product-brief-alecsg77-portal-2026-02-27.md
-  - /workspaces/alecsg77-portal/_bmad-output/planning-artifacts/prd.md
+  - _bmad-archive/planning-artifacts/product-brief-alecsg77-portal-2026-02-27.md
+  - _bmad-output/planning-artifacts/prd.md
 date: '2026-03-08'
 author: Alessio
 workflowType: ux-design

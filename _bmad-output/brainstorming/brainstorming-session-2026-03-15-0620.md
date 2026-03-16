@@ -1,11 +1,11 @@
 ---
 stepsCompleted: [1]
 inputDocuments: []
-session_topic: 'Boundary operativo tra dati canonici privati, engine pubblico e deploy statico; classi di dati, trasformazioni, validazione, HyperCV e promotion flow'
-session_goals: 'Convergere su un modello dati e operativo plausibile per engine pubblico + dati canonici privati + deploy statico, con particolare attenzione a sicurezza, governabilita, review e publication safety'
+session_topic: 'Operational boundary between private canonical data, public engine, and static deploy; data classes, transformations, validation, HyperCV, and promotion flow'
+session_goals: 'Converge on a plausible data and operational model for public engine + private canonical data + static deploy, with particular attention to security, governance, review, and publication safety'
 selected_approach: 'AI-Recommended Techniques'
 techniques_used: ['First Principles Thinking', 'Constraint Mapping', 'Cross-Pollination', 'Six Thinking Hats']
-ideas_generated: ['Monorepo con cartelle private/public', 'Repo privato con submodule pubblico', 'Repo pubblico con clone operativo dei dati privati', 'Due repository separati con pipeline pubblica eseguita su dati privati', 'Candidate/editorial/final model per HyperCV']
+ideas_generated: ['Monorepo with private/public folders', 'Private repo with public submodule', 'Public repo with operational clone of private data', 'Two separate repositories with public pipeline run on private data', 'Candidate/editorial/final model for HyperCV']
 context_file: ''
 ---
 
@@ -16,223 +16,223 @@ context_file: ''
 
 ## Session Overview
 
-**Topic:** Boundary operativo tra dati canonici privati, engine pubblico e deploy statico; classi di dati, trasformazioni, validazione, HyperCV e promotion flow.
-**Goals:** Convergere su un modello dati e operativo plausibile per engine pubblico + dati canonici privati + deploy statico, con particolare attenzione a sicurezza, governabilita, review e publication safety.
+**Topic:** Operational boundary between private canonical data, public engine, and static deploy; data classes, transformations, validation, HyperCV, and promotion flow.
+**Goals:** Converge on a plausible data and operational model for public engine + private canonical data + static deploy, with particular attention to security, governance, review, and publication safety.
 
 ### Session Setup
 
-Il brainstorming e' partito da una domanda architetturale sulla promotion privata -> pubblica, ma si e' progressivamente spostato su un modello piu' profondo: classi di dati, trasformazioni tra classi, validatori, boundary di sicurezza, ruolo del repository pubblico, ruolo della parte privata, e struttura dell'HyperCV come artefatto canonico privato da cui derivare il sito pubblico statico.
+The brainstorming started from an architectural question about private -> public promotion, but progressively shifted toward a deeper model: data classes, transformations between classes, validators, security boundaries, the role of the public repository, the role of the private side, and the structure of HyperCV as a private canonical artifact from which the public static site is derived.
 
-L'approccio usato e' stato divergente all'inizio e progressivamente convergente. La parte finale della conversazione ha consolidato decisioni operative e semantiche abbastanza stabili da poter essere usate come fonte primaria per una successiva architecture review.
+The approach used was divergent at the beginning and progressively convergent. The final part of the conversation consolidated operational and semantic decisions stable enough to be used as a primary source for a subsequent architecture review.
 
 ## Decision Summary
 
-### 1. Modello repository e boundary pubblico/privato
+### 1. Repository model and public/private boundary
 
-Decisione:
+Decision:
 
-- Il repository pubblico e' la codebase autorevole per pipeline, contratti, validazioni, publish workflow e frontend.
-- Il dominio privato contiene tutti i dati reali, i materiali di lavoro, il contenuto canonico e gli artefatti intermedi.
-- Il boundary di sicurezza si applica ai dati, non al codice.
+- The public repository is the authoritative codebase for pipeline, contracts, validations, publish workflow, and frontend.
+- The private domain contains all real data, working materials, canonical content, and intermediate artifacts.
+- The security boundary applies to the data, not to the code.
 
-Motivazione:
+Rationale:
 
-- Il codice della pipeline deve restare pubblico per ragioni di showcase e ispezionabilita.
-- I dati reali devono poter essere processati dal motore pubblico senza entrare nel repository pubblico.
-- Il rischio principale non e' che il codice pubblico sia visibile, ma che i dati canonici o le loro projection sorgente siano facilmente replicabili o attraversino il confine senza controllo.
+- The pipeline code must remain public for showcase and inspectability reasons.
+- Real data must be processable by the public engine without entering the public repository.
+- The main risk is not that the public code is visible, but that the canonical data or their source projections can be easily replicated or cross the boundary without control.
 
-Conseguenze operative:
+Operational consequences:
 
-- Dal pubblico al privato puo' fluire codice.
-- Dal privato al pubblico possono fluire solo artefatti di deploy statico derivati, approvati e sanitizzati.
-- Il ritorno di dati sensibili o raw dal pubblico al privato non deve diventare parte del workflow.
+- Code can flow from public to private.
+- Only approved, sanitized, derived static deploy artifacts can flow from private to public.
+- The return of sensitive or raw data from public to private must not become part of the workflow.
 
-Decisione aggiuntiva maturata a fine brainstorming:
+Additional decision matured at the end of the brainstorming:
 
-- Il repository pubblico non deve contenere i dati reali del sito, neppure quando quei dati descrivono contenuto pubblicabile.
-- Il repository pubblico deve distribuire un engine riusabile; il repository privato resta il luogo in cui i dati reali vengono trasformati in output statico deployabile.
-- Il contenuto pubblico online resta copiabile in quanto pubblicato, ma non e' necessario pubblicarne anche le sorgenti strutturate e i layer canonici.
+- The public repository must not contain the real site data, not even when those data describe publishable content.
+- The public repository must distribute a reusable engine; the private repository remains the place where real data are transformed into deployable static output.
+- The public online content remains copyable because it is published, but it is not necessary to also publish the structured sources and canonical layers.
 
-### 2. Workspace privato di esecuzione
+### 2. Private execution workspace
 
-Decisione:
+Decision:
 
-- Il workspace privato di esecuzione puo' essere composto operativamente in piu' modi.
-- L'architettura target e' che il repository privato consumi il motore pubblico come dipendenza installabile.
-- In sviluppo locale resta valido usare checkout affiancati di repository pubblico e repository privato per evitare di ripubblicare il package a ogni modifica.
+- The private execution workspace can be composed operationally in multiple ways.
+- The target architecture is that the private repository consumes the public engine as an installable dependency.
+- In local development, using side-by-side checkouts of public repository and private repository remains valid to avoid republishing the package on every change.
 
-Motivazione:
+Rationale:
 
-- Il processo deve dipendere da un contratto di esecuzione tra motore pubblico e dati privati, non da un meccanismo Git specifico.
-- Il submodule e' tecnicamente possibile ma introduce metadata pubblici del repo privato, maggiore complessita' Git e piu' rischi di uso improprio.
-- Un workspace locale con checkout affiancati soddisfa il requisito di sviluppo senza introdurre una dipendenza Git formale nel repository pubblico.
+- The process must depend on an execution contract between public engine and private data, not on a specific Git mechanism.
+- The submodule is technically possible but introduces public metadata of the private repo, greater Git complexity, and more risk of improper use.
+- A local workspace with side-by-side checkouts satisfies the development requirement without introducing a formal Git dependency into the public repository.
 
-Vincolo di sicurezza:
+Security constraint:
 
-- La presenza di checkout o mount locali del repository dati nel workspace di sviluppo non li rende pubblici.
-- La protezione reale resta basata sui permessi del repository o storage privato e sulle credenziali dei workflow che lo leggono.
+- The presence of local checkouts or mounts of the data repository in the development workspace does not make them public.
+- Real protection remains based on private repository or storage permissions and on the credentials of the workflows that read it.
 
-Varianti operative considerate:
+Operational variants considered:
 
-1. package/tool pubblico consumato dal repository privato in automazione
-2. checkout separati affiancati di repo pubblico e repo privato nello sviluppo locale
-3. submodule del repo privato dentro il pubblico, tollerato solo come bootstrap locale
+1. public package/tool consumed by the private repository in automation
+2. separate side-by-side checkouts of public repo and private repo in local development
+3. submodule of the private repo inside the public one, tolerated only as local bootstrap
 
-Conclusione:
+Conclusion:
 
-- il processo deve dipendere da un contratto stabile tra engine pubblico e repository dati privato, non da una dipendenza Git formale
-- il submodule non e' il boundary di sicurezza e non deve diventare il cuore della governance
+- the process must depend on a stable contract between the public engine and the private data repository, not on a formal Git dependency
+- the submodule is not the security boundary and must not become the heart of governance
 
-### 3. Input raw
+### 3. Raw input
 
-Decisione:
+Decision:
 
-- I dati raw non sono una classe persistita del sistema.
-- Sono input effimeri di ingestione, opzionali e transitori.
+- Raw data are not a persisted class of the system.
+- They are ephemeral, optional, and transient ingestion inputs.
 
-Motivazione:
+Rationale:
 
-- Non ha senso trattarli come patrimonio stabile del sistema.
-- Non ha senso investirci in lineage forte, versioning o validazione semantica estesa.
-- Il sistema inizia davvero a prendersi responsabilita persistite dal livello deep knowledge in poi.
+- It makes no sense to treat them as stable system assets.
+- It makes no sense to invest in strong lineage, versioning, or extended semantic validation for them.
+- The system truly begins to take persisted responsibility only from the deep knowledge level onward.
 
-Conseguenze:
+Consequences:
 
-- I raw hanno solo ingestion checks minimi, non veri class validators.
-- Il passaggio `raw -> deep-knowledge` va pensato come ingestione, non come trasformazione tra due classi persistite equivalenti.
+- Raw inputs have only minimal ingestion checks, not real class validators.
+- The `raw -> deep-knowledge` step should be thought of as ingestion, not as a transformation between two equivalent persisted classes.
 
-### 4. Classi di dati private
+### 4. Private data classes
 
-Nota strutturale importante:
+Important structural note:
 
-- il modello distingue tra `classi` e `sottoclassi`
-- le regole di classe si applicano a tutte le sottoclassi di quella classe
-- le regole di sottoclasse raffinano o restringono il comportamento della classe padre
+- the model distinguishes between `classes` and `subclasses`
+- class rules apply to all subclasses of that class
+- subclass rules refine or restrict the behavior of the parent class
 
-Classi e sottoclassi private consolidate:
+Consolidated private classes and subclasses:
 
-- classe privata persistita `deep-knowledge`
-- classe privata `knowledge-base`
-	- sottoclasse `knowledge-base-dk`
-	- sottoclasse `knowledge-base-manual`
+- persisted private class `deep-knowledge`
+- private class `knowledge-base`
+	- subclass `knowledge-base-dk`
+	- subclass `knowledge-base-manual`
 
-Decisioni di classe e sottoclasse:
+Class and subclass decisions:
 
 - `deep-knowledge`
-	- persistita
+	- persisted
 	- append-only
-	- immutabile
-	- non rigenerabile
+	- immutable
+	- non-regenerable
 
 - `knowledge-base-dk`
-	- generata dalla deep knowledge
-	- rigenerabile
-	- non modificabile direttamente senza rischio di perdere i cambiamenti al riprocessamento
+	- generated from deep knowledge
+	- regenerable
+	- not directly editable without the risk of losing changes during reprocessing
 
 - `knowledge-base-manual`
-	- creata e modificata manualmente
-	- persistita e versionabile
-	- mai toccata dal riprocessamento della deep knowledge
+	- created and edited manually
+	- persisted and versionable
+	- never touched by deep knowledge reprocessing
 
-Motivazione:
+Rationale:
 
-- La deep knowledge non e' una cache: e' memoria ricca privata consolidata.
-- La knowledge base serve sia come derivato curato della deep knowledge sia come punto di ingresso di conoscenza manuale gia' pronta.
-- Separare KB generata e KB manuale evita ambiguita' su cosa sia sovrascrivibile e cosa no.
+- Deep knowledge is not a cache: it is consolidated private rich memory.
+- The knowledge base serves both as a curated derivative of deep knowledge and as an entry point for manual knowledge that is already ready.
+- Separating generated KB and manual KB avoids ambiguity about what can be overwritten and what cannot.
 
-Punto importante:
+Important point:
 
-- La distinzione tra `knowledge-base-dk` e `knowledge-base-manual` smette di essere rilevante nella generazione di HyperCV e delle projection successive.
-- Per i passi successivi esiste una vista logica unica della knowledge base, indipendentemente dalla sorgente.
+- The distinction between `knowledge-base-dk` and `knowledge-base-manual` stops being relevant in the generation of HyperCV and subsequent projections.
+- For later steps there is a single logical view of the knowledge base, regardless of source.
 
-### 5. Classi di dati derivate per HyperCV e sito
+### 5. Derived data classes for HyperCV and site
 
-Classi e sottoclassi derivate consolidate:
+Consolidated derived classes and subclasses:
 
-- classe derivata privata `hypercv-draft`
-	- draft KB per `cv-experience`, `cv-project`, `cv-star`
-	- draft manuali per `cv-experience`, `cv-project`, `cv-star`
-- classe privata separata `hypercv-composition`
-	- composition per `cv-experience`, `cv-project`, `cv-star`
-- classe canonica privata `hypercv-final`
+- private derived class `hypercv-draft`
+	- KB drafts for `cv-experience`, `cv-project`, `cv-star`
+	- manual drafts for `cv-experience`, `cv-project`, `cv-star`
+- separate private class `hypercv-composition`
+	- composition for `cv-experience`, `cv-project`, `cv-star`
+- private canonical class `hypercv-final`
 	- `cv-experience`
 	- `cv-project`
 	- `cv-star`
-- classe derivata privata `site-data`
+- private derived class `site-data`
 
-Decisioni di classe e sottoclasse:
+Class and subclass decisions:
 
 - `hypercv-draft`
-	- famiglia di artefatti di draft per HyperCV
-	- puo' contenere contributi KB e contributi manuali, anche parziali
-	- i draft KB sono derivati dalla knowledge base; i draft manuali sono inseriti o corretti manualmente
-	- non e' canonica
-	- la persistenza e' utile per review, confronto e rigenerazione controllata
+	- family of draft artifacts for HyperCV
+	- may contain KB contributions and manual contributions, even partial ones
+	- KB drafts are derived from the knowledge base; manual drafts are entered or corrected manually
+	- it is not canonical
+	- persistence is useful for review, comparison, and controlled regeneration
 
 - `hypercv-composition`
-	- classe separata dai draft
-	- contiene le regole di convergenza tra contributi draft e i riferimenti alle revisioni approvate
-	- puo' essere esplicita oppure implicita tramite i default del modello
-	- diventa esplicita ogni volta che partecipa una sorgente KB o quando la convergenza non e' banale
+	- class separate from drafts
+	- contains the convergence rules between draft contributions and references to approved revisions
+	- may be explicit or implicit through model defaults
+	- becomes explicit whenever a KB source participates or when convergence is not trivial
 
 - `hypercv-final`
-	- contenuto canonico finale in formato CV/STAR
-	- persistito e materializzato nel dominio privato
-	- sorgente canonica della projection verso il sito
-	- non deve mescolare al proprio interno logiche di draft o composition
+	- final canonical content in CV/STAR format
+	- persisted and materialized in the private domain
+	- canonical source for projection toward the site
+	- must not mix draft or composition logic within itself
 
 - `site-data`
-	- projection data per il sito statico
-	- mai modificata a mano
-	- rigenerabile
-	- persistita solo come cache/materialization quando utile per build, DevOps e deploy
-	- contiene i persona profiles pubblici e i path model derivati da essi
+	- projection data for the static site
+	- never edited by hand
+	- regenerable
+	- persisted only as cache/materialization when useful for build, DevOps, and deploy
+	- contains the public persona profiles and the path model derived from them
 
-Motivazione:
+Rationale:
 
-- Serve separare chiaramente contenuto canonico privato, contributi draft, regole di composizione, projection per il web e output pubblico finale.
-- Il sito statico deployato non deve coincidere con i layer sorgente del contenuto.
+- It is necessary to clearly separate private canonical content, draft contributions, composition rules, web projection, and final public output.
+- The deployed static site must not coincide with the source layers of the content.
 
-### 6. Trasformazioni tra classi
+### 6. Transformations between classes
 
-Decisioni:
+Decisions:
 
 1. `raw -> deep-knowledge`
-	Tipo: ingestione / normalizzazione.
-	Regola: e' ammesso ripulire rumore formale e ristrutturare; non e' ammessa perdita di significato rilevante.
+	Type: ingestion / normalization.
+	Rule: formal noise cleanup and restructuring are allowed; loss of relevant meaning is not allowed.
 
 2. `deep-knowledge -> knowledge-base-dk`
-	Tipo: distillazione.
-	Regola: si sintetizza, si deduplica, si rende LLM-friendly, si prova a rimuovere ridondanza e sensibilita; il processo deve poter essere rieseguito nel tempo.
+	Type: distillation.
+	Rule: it is synthesized, deduplicated, made LLM-friendly, and attempts are made to remove redundancy and sensitivity; the process must be rerunnable over time.
 
-3. `knowledge-base (vista unificata) -> hypercv-draft`
-	Tipo: generazione di draft KB.
-	Regola: si producono contributi draft derivati dalla knowledge base, anche parziali, destinati alla successiva convergenza editoriale.
+3. `knowledge-base (unified view) -> hypercv-draft`
+	Type: generation of KB drafts.
+	Rule: draft contributions derived from the knowledge base are produced, even partial ones, intended for subsequent editorial convergence.
 
 4. `hypercv-draft + hypercv-composition -> hypercv-final`
-	Tipo: materializzazione editoriale.
-	Regola: il contenuto finale va generato esplicitamente a partire da draft e composition; non va dedotto informalmente e non va usato come contenitore di logica interna.
+	Type: editorial materialization.
+	Rule: final content must be generated explicitly from draft and composition; it must not be deduced informally and must not be used as a container for internal logic.
 
 5. `hypercv-final -> site-data`
-	Tipo: proiezione tecnica.
-	Regola: si genera tutto da zero o comunque senza modifiche manuali dei site-data; qui nascono la doppia lingua, i persona profiles pubblici, le citation navigabili e la verticalizzazione per percorsi del sito.
+	Type: technical projection.
+	Rule: everything is generated from scratch or in any case without manual edits to site-data; this is where dual language, public persona profiles, navigable citations, and verticalization by site paths are born.
 
 6. `site-data -> static-site`
-	Tipo: rendering statico.
-	Regola: l'output pubblico e' il pacchetto statico deployato, non i dati sorgente o intermedi.
+	Type: static rendering.
+	Rule: the public output is the deployed static package, not the source or intermediate data.
 
-Regola trasversale di boundary:
+Cross-cutting boundary rule:
 
-- tutti i passaggi dal dominio dati privato all'output pubblico deployato devono essere allowlist-based, non denylist-based
-- la publication safety deve essere verificata prima che un artefatto possa contribuire all'output pubblico statico
+- all transitions from the private data domain to the deployed public output must be allowlist-based, not denylist-based
+- publication safety must be verified before an artifact can contribute to the public static output
 
-### 7. Validatori
+### 7. Validators
 
-Decisioni:
+Decisions:
 
-- I validatori veri partono da `deep-knowledge` in poi.
-- Per i raw ci sono solo ingestion checks minimi.
-- Per le classi persistite servono almeno questi domini validativi:
+- Real validators start from `deep-knowledge` onward.
+- For raw inputs there are only minimal ingestion checks.
+- For persisted classes at least these validation domains are required:
 	- structure
 	- lineage
 	- safety
@@ -240,68 +240,68 @@ Decisioni:
 	- consistency
 	- publication-readiness
 
-Principi di design:
+Design principles:
 
-- I validator non devono essere duplicati per classe se la stessa logica puo' essere riutilizzata.
-- I validator appartengono a domini di controllo riusabili, non a una singola classe concreta.
-- Ogni classe dichiara quali domini e quali validator riusabili sono pertinenti per i propri artefatti.
-- Una pipeline puo' riusare gli stessi validator su classi diverse, applicandoli dove il dominio e' rilevante.
-- La validazione e' separata dalla transformation e dalla promotion: descrive lo stato di un artefatto, non decide da sola il passaggio di pipeline.
+- Validators must not be duplicated per class if the same logic can be reused.
+- Validators belong to reusable control domains, not to a single concrete class.
+- Each class declares which domains and reusable validators are relevant for its artifacts.
+- A pipeline can reuse the same validators on different classes, applying them where the domain is relevant.
+- Validation is separate from transformation and promotion: it describes the state of an artifact, it does not by itself decide the pipeline transition.
 
-Modello di output dei validator:
+Validator output model:
 
-- I validator producono osservazioni diagnostiche, non severita operative.
-- Ogni osservazione deve avere almeno un `code` stabile usato dalle policy e un'identita confrontabile nel tempo.
-- Le policy di pipeline devono lavorare sui `code`, non sugli `observation_id`.
-- Lo stesso `code` puo' essere emesso da rule diverse se rappresenta la stessa categoria semantica di problema per le policy.
-- Una rule che non trova la condizione che controlla non emette nulla.
+- Validators produce diagnostic observations, not operational severities.
+- Every observation must have at least one stable `code` used by policies and a comparable identity over time.
+- Pipeline policies must work on `code`, not on `observation_id`.
+- The same `code` can be emitted by different rules if it represents the same semantic category of problem for policies.
+- A rule that does not find the condition it checks emits nothing.
 
-Modello di governance delle osservazioni:
+Observation governance model:
 
-- Le severity operative come `blocking`, `non-blocking` o equivalenti non fanno parte del validator: derivano dalla policy del contesto che consuma le osservazioni.
-- Le suppression sono parte del design del sistema di validazione e devono poter agire a granularita diverse.
-- L'identita di un'osservazione deve essere sufficientemente semantica da permettere confronto tra report e suppression mirate.
-- Il formato esatto dell'`observation_id` e i dettagli di serializzazione sono decisioni implementative da rinviare.
+- Operational severities such as `blocking`, `non-blocking`, or equivalents are not part of the validator: they derive from the policy of the context that consumes the observations.
+- Suppressions are part of the validation system design and must be able to act at different granularities.
+- The identity of an observation must be semantic enough to allow comparison between reports and targeted suppressions.
+- The exact format of `observation_id` and the serialization details are implementation decisions to defer.
 
-Ruolo delle pipeline:
+Role of the pipelines:
 
-- Le pipeline automatiche verificano che l'input soddisfi le precondizioni richieste dalla trasformazione.
-- Dopo la trasformazione, le pipeline rieseguono i validator pertinenti sulla classe di destinazione.
-- La promotion non va usata come sinonimo generico di trasformazione: resta un concetto di governance applicato solo ai passaggi che alzano il livello di responsabilita, canonicalita o visibilita.
+- Automatic pipelines verify that the input satisfies the preconditions required by the transformation.
+- After transformation, the pipelines rerun the relevant validators on the target class.
+- Promotion must not be used as a generic synonym for transformation: it remains a governance concept applied only to transitions that raise the level of responsibility, canonicity, or visibility.
 
-Linee guida della matrice per classe:
+Matrix guidelines by class:
 
-- `deep-knowledge`: privilegia `structure`, `lineage`, `safety`, `consistency`; `semantic-quality` resta utile ma non definisce da sola la validita del layer.
-- `knowledge-base-dk` e `knowledge-base-manual`: richiedono soprattutto `structure`, `lineage`, `consistency`, `safety`; `semantic-quality` diventa piu rilevante per il valore editoriale dell'output.
-- vista logica `knowledge-base`: deve essere validata come risultato di integrazione, quindi con forte enfasi su `lineage` e `consistency`.
-- `hypercv-draft`: richiede validazioni che aiutino review e consolidamento; `publication-readiness` puo' essere osservata ma non e' ancora il criterio dominante.
-- `hypercv-composition`: richiede validazioni orientate a coerenza, tracciabilita delle revisioni referenziate e preparazione alla materializzazione finale.
-- `hypercv-final`: richiede tutti i domini rilevanti, inclusi quelli legati alla readiness per projection e deploy statico.
-- `site-data`: richiede soprattutto controlli su integrita della projection, tracciabilita verso `hypercv-final` e assenza di leakage.
+- `deep-knowledge`: prioritize `structure`, `lineage`, `safety`, `consistency`; `semantic-quality` remains useful but does not by itself define the validity of the layer.
+- `knowledge-base-dk` and `knowledge-base-manual`: mainly require `structure`, `lineage`, `consistency`, `safety`; `semantic-quality` becomes more relevant for the editorial value of the output.
+- logical `knowledge-base` view: must be validated as an integration result, therefore with strong emphasis on `lineage` and `consistency`.
+- `hypercv-draft`: requires validations that help review and consolidation; `publication-readiness` may be observed but is not yet the dominant criterion.
+- `hypercv-composition`: requires validations oriented toward coherence, traceability of referenced revisions, and preparation for final materialization.
+- `hypercv-final`: requires all relevant domains, including those related to readiness for projection and static deploy.
+- `site-data`: mainly requires controls on projection integrity, traceability toward `hypercv-final`, and absence of leakage.
 
-Linee guida per le sottoclassi HyperCV:
+Guidelines for HyperCV subclasses:
 
-- `cv-experience`, `cv-project` e `cv-star` ereditano i domini del layer in cui vivono.
-- Le sottoclassi possono aggiungere validator specifici del proprio ruolo catalografico senza introdurre una tassonomia separata.
-- Le rule specifiche di sottoclasse andranno raffinate durante l'implementazione e le review reali, non chiuse in anticipo in questo brainstorming.
+- `cv-experience`, `cv-project`, and `cv-star` inherit the domains of the layer in which they live.
+- Subclasses may add validators specific to their catalog role without introducing a separate taxonomy.
+- Subclass-specific rules will need to be refined during implementation and real reviews, not closed in advance in this brainstorming.
 
-Conseguenza pratica:
+Practical consequence:
 
-- La matrice dei validator va intesa come guida architetturale sui domini di controllo attesi per classe e sottoclasse.
-- Il catalogo concreto delle rule verra' affinato progressivamente quando emergeranno problemi reali da automatizzare.
+- The validator matrix should be understood as architectural guidance on the expected control domains for each class and subclass.
+- The concrete rule catalog will be refined progressively as real problems emerge to automate.
 
-### 8. HyperCV come catalogo CV, non solo come raccolta di STAR isolate
+### 8. HyperCV as a CV catalog, not only as a collection of isolated STARs
 
-Decisione:
+Decision:
 
-- HyperCV deve mantenere la natura di CV catalogato.
-- La struttura finale non e' solo un elenco di documenti STAR indipendenti.
-- Serve una gerarchia catalografica esplicita.
+- HyperCV must maintain the nature of a cataloged CV.
+- The final structure is not only a list of independent STAR documents.
+- An explicit catalog hierarchy is needed.
 
-Catalogo deciso:
+Chosen catalog:
 
 1. `cv-experience`
-	Campi minimi obbligatori:
+	Minimum required fields:
 	- `experience_id`
 	- `kind`
 	- `label`
@@ -311,7 +311,7 @@ Catalogo deciso:
 	- `policy`
 
 2. `cv-project`
-	Campi minimi obbligatori:
+	Minimum required fields:
 	- `project_id`
 	- `experience_id`
 	- `label`
@@ -319,7 +319,7 @@ Catalogo deciso:
 	- `policy`
 
 3. `cv-star`
-	Campi minimi obbligatori:
+	Minimum required fields:
 	- `star_id`
 	- `experience_id`
 	- `project_id`
@@ -331,221 +331,214 @@ Catalogo deciso:
 	- `public_sources`
 	- `policy`
 
-Relazioni:
+Relationships:
 
-- una `cv-experience` contiene `1..n` `cv-project`
-- un `cv-project` contiene `1..n` `cv-star`
+- one `cv-experience` contains `1..n` `cv-project`
+- one `cv-project` contains `1..n` `cv-star`
 
-Decisione aggiuntiva:
+Additional decision:
 
-- i concetti di draft, composition, policy e revisioni si estendono non solo a `cv-star` ma anche a `cv-experience` e `cv-project`
-- quindi il catalogo HyperCV e' interamente generabile e revisionabile a piu livelli, non solo nella parte narrativa STAR
+- the concepts of draft, composition, policy, and revisions extend not only to `cv-star` but also to `cv-experience` and `cv-project`
+- therefore the entire HyperCV catalog is generable and reviewable at multiple levels, not only in the STAR narrative part
 
-### 9. Draft, composition e contenuto finale
+### 9. Draft, composition, and final content
 
-Decisioni:
+Decisions:
 
-- Il contenuto finale HyperCV e' distinto dai draft e dalla composition.
-- `hypercv-final` e' sempre un documento S.T.A.R. materializzato e canonico nel dominio privato.
-- Draft e composition non devono contaminare il contenuto finale canonico.
-- Il contenuto finale deve essere generato, non dedotto informalmente leggendo layer interni.
-- La `hypercv-composition` e' una classe separata, legata a draft e final tramite lo stesso `artifact_id` logico.
-- Ogni `hypercv-final` e' il risultato di una composition valida, esplicita o implicita.
+- Final HyperCV content is distinct from drafts and composition.
+- `hypercv-final` is always a materialized and canonical S.T.A.R. document in the private domain.
+- Draft and composition must not contaminate canonical final content.
+- Final content must be generated, not informally deduced by reading internal layers.
+- `hypercv-composition` is a separate class, linked to draft and final through the same logical `artifact_id`.
+- Every `hypercv-final` is the result of a valid composition, explicit or implicit.
 
-### 10. Revisioni e stale detection
+### 10. Revisions and stale detection
 
-Decisioni:
+Decisions:
 
-- Tutti gli artefatti HyperCV devono avere un campo `revision` obbligatorio.
-- Per i contributi generati (`*.kb.md`) e per i `hypercv-final` la revision iniziale puo' essere un timestamp `YYYYMMDDHHMMSS` della generazione.
-- La `hypercv-composition` deve referenziare esplicitamente la revisione KB approvata e, quando presente, la revisione manuale a cui si riferisce.
-- I vincoli sulle revisioni hanno precedenza sulla strategy di composition.
-- Se cambia una revisione referenziata da una composition, la composition diventa `stale` e il `hypercv-final` non e' piu rigenerabile automaticamente senza nuova review.
-- Per l'MVP il pinning delle revisioni puo' avvenire a livello di artifact, non di singolo campo.
+- All HyperCV artifacts must have a mandatory `revision` field.
+- For generated contributions (`*.kb.md`) and for `hypercv-final` the initial revision can be a generation timestamp `YYYYMMDDHHMMSS`.
+- `hypercv-composition` must explicitly reference the approved KB revision and, when present, the manual revision it refers to.
+- Revision constraints take precedence over the composition strategy.
+- If a revision referenced by a composition changes, the composition becomes `stale` and the `hypercv-final` can no longer be automatically regenerated without a new review.
+- For the MVP revision pinning can happen at artifact level, not at single-field level.
 
-Default della composition implicita:
+Defaults of implicit composition:
 
 - `manual revision`: `0..1`
 - `kb revision`: `none`
 - `section scope`: `all`
 - `strategy`: `manual XOR kb`
 
-Regole operative:
+Operational rules:
 
-- La composition implicita e' semplicemente la composition ottenuta applicando tutti i default.
-- Una composition esplicita puo' ridefinire solo i campi necessari, lasciando gli altri ai default.
-- Se partecipa una sorgente KB, la composition deve referenziare esplicitamente la revisione KB approvata.
-- Se esistono contributi multipli incompatibili o merge non banali, la composition deve essere esplicita.
-- La composizione di default consente il caso manual-only non ambiguo; la KB non entra mai implicitamente nel final.
+- Implicit composition is simply the composition obtained by applying all defaults.
+- An explicit composition can redefine only the necessary fields, leaving the others to defaults.
+- If a KB source participates, the composition must explicitly reference the approved KB revision.
+- If there are multiple incompatible contributions or non-trivial merges, the composition must be explicit.
+- The default composition allows the unambiguous manual-only case; KB never enters the final implicitly.
 
-### 11. Contenuti manuali destinati al sito pubblico
+### 11. Manual content intended for the public site
 
-Decisione:
+Decision:
 
-- HyperCV ammette contenuti manuali nativi anche senza sorgente a monte nella KB.
-- Questi casi sono considerati legittimi, anche se nel tempo si auspica una progressiva migrazione verso contenuti derivati dalla KB.
+- HyperCV allows native manual content even without an upstream source in the KB.
+- These cases are considered legitimate, even if over time a gradual migration toward KB-derived content is hoped for.
 
-### 12. Politiche di gestione degli oggetti CV
+### 12. Policies for managing CV objects
 
-Decisione:
+Decision:
 
-- Tutti gli oggetti `cv-experience`, `cv-project` e `cv-star` possono essere trattati con policy come `kb-managed`, `manual-managed` o `hybrid`.
+- All `cv-experience`, `cv-project`, and `cv-star` objects can be handled with policies such as `kb-managed`, `manual-managed`, or `hybrid`.
 
-### 13. Lingua e localizzazione
+### 13. Language and localization
 
-Decisione:
+Decision:
 
-- `hypercv-final` e' monolingua, presumibilmente italiano con eventuale terminologia inglese quando naturale per il dominio professionale.
-- La doppia lingua nasce solo nel passaggio `hypercv-final -> site-data`.
+- `hypercv-final` is monolingual, presumably Italian with possible English terminology when natural for the professional domain.
+- Dual language appears only in the `hypercv-final -> site-data` transition.
 
 ### 14. Site-data
 
-Decisione:
+Decision:
 
-- I `site-data` non sono mai modificati manualmente.
-- Eventuali correzioni vanno fatte su HyperCV o sulla pipeline di trasformazione.
-- La rigenerazione deve poter azzerare ogni modifica manuale dei site-data.
-- I `site-data` restano artefatti privati.
-- I `site-data` sono rigenerabili da `hypercv-final` e non diventano source of truth.
-- La persistenza dei `site-data` e' una scelta di cache/materialization, non di ownership canonica del contenuto.
-- Il rendering HTML canonico parte da `site-data`, non direttamente da `hypercv-final`.
-- `site-data` non e' un mirror del catalogo HyperCV: e' una projection specializzata per il web.
-- Ogni content node significativo di `site-data` deve mantenere provenance interna rintracciabile verso uno o piu frammenti di `hypercv-final`, con almeno `artifact_id`, `revision` e selettore stabile del frammento sorgente.
-- Le citation user-facing non devono risolvere verso `hypercv-final`, che resta privato e monolingua, ma verso target pubblici localizzati derivati nella projection web.
-- I persona profiles sono entita pubbliche di primo livello nel modello `site-data`.
-- I percorsi pubblici derivano dai persona profiles e dalla projection del contenuto canonico, non da una duplicazione autonoma del contenuto.
-- Il contratto `hypercv-final -> site-data` richiede quindi quattro elementi stabili: provenance interna, target di citation localizzati, persona profiles pubblici e path derivation coerente con il canonico.
+- `site-data` are never edited manually.
+- Any corrections must be made on HyperCV or on the transformation pipeline.
+- Regeneration must be able to wipe out any manual modification of site-data.
+- `site-data` remain private artifacts.
+- `site-data` are regenerable from `hypercv-final` and do not become the source of truth.
+- Persisting `site-data` is a cache/materialization choice, not canonical ownership of the content.
+- Canonical HTML rendering starts from `site-data`, not directly from `hypercv-final`.
+- `site-data` are not a mirror of the HyperCV catalog: they are a specialized projection for the web.
+- Every significant content node in `site-data` must maintain internally traceable provenance toward one or more fragments of `hypercv-final`, with at least `artifact_id`, `revision`, and a stable selector of the source fragment.
+- User-facing citations must not resolve toward `hypercv-final`, which remains private and monolingual, but toward localized public targets derived in the web projection.
+- Persona profiles are first-level public entities in the `site-data` model.
+- Public paths derive from persona profiles and from the projection of canonical content, not from an autonomous duplication of content.
+- The `hypercv-final -> site-data` contract therefore requires four stable elements: internal provenance, localized citation targets, public persona profiles, and path derivation coherent with the canonical content.
 
-### 15. Determinismo e LLM
+### 15. Determinism and LLM
 
-Decisione:
+Decision:
 
-- Le trasformazioni LLM-driven devono essere rese il piu possibile deterministiche a livello operativo, usando temperature molto basse e istruzioni precise.
-- Non viene pero' assunto un determinismo forte, perche' il comportamento dei modelli non e' completamente sotto controllo.
+- LLM-driven transformations must be made as operationally deterministic as possible, using very low temperatures and precise instructions.
+- Strong determinism is not assumed, however, because model behavior is not completely under control.
 
-### 16. Sicurezza del submodule e delle credenziali
+### 16. Security of the submodule and credentials
 
-Decisioni:
+Decisions:
 
-- Un submodule privato dentro un repo pubblico non rende leggibile il contenuto del privato a chi non ha i permessi sul privato.
-- Il submodule espone comunque metadata del repo privato e introduce piu' attrito operativo; per questo e' stato declassato da architettura target a variante possibile del workspace.
-- Il vero rischio di sicurezza non e' il submodule in se, ma credenziali troppo ampie o workflow non trusted con accesso al privato.
+- A private submodule inside a public repo does not make the content of the private readable to anyone who does not have permissions on the private.
+- The submodule still exposes metadata of the private repo and introduces more operational friction; for this reason it was downgraded from target architecture to possible workspace variant.
+- The real security risk is not the submodule itself, but overly broad credentials or untrusted workflows with access to the private.
 
-Guardrail minimi emersi:
+Minimum guardrails that emerged:
 
-- secret scanning su repo pubblico, repo privato e job di release/deploy
-- credenziali a privilegio minimo per leggere il privato
-- nessun workflow pubblico non trusted deve poter leggere dati privati
-- leakage checks espliciti prima del deploy dello `static-site` e prima delle release del motore pubblico
-- il manifest di release/deploy resta la fonte di audit, non lo stato Git del mount o del submodule
+- secret scanning on public repo, private repo, and release/deploy jobs
+- least-privilege credentials to read the private
+- no untrusted public workflow must be able to read private data
+- explicit leakage checks before deploy of the `static-site` and before releases of the public engine
+- the release/deploy manifest remains the audit source, not the Git state of the mount or the submodule
 
 ### 17. Promotion flow
 
-Decisione:
+Decision:
 
-- Nel nuovo modello non esiste piu una promotion di dati dal repository privato al repository pubblico.
-- Tutte le trasformazioni tra classi dati (`raw`, `deep-knowledge`, `knowledge-base`, `hypercv-*`, `site-data`) avvengono nel dominio privato.
-- La promotion verso il pubblico coincide con il deploy dello `static-site` generato nel dominio privato.
-- In parallelo esiste una promotion distinta del motore pubblico: release del codice, del package o del tool consumato dal repository privato.
+- In the new model there is no longer any promotion of data from the private repository to the public repository.
+- All transformations between data classes (`raw`, `deep-knowledge`, `knowledge-base`, `hypercv-*`, `site-data`) happen in the private domain.
+- Promotion toward the public coincides with deploy of the `static-site` generated in the private domain.
+- In parallel there is a distinct promotion of the public engine: release of the code, package, or tool consumed by the private repository.
 
-Motivazione della governance esplicita:
+Rationale for explicit governance:
 
-- separa nettamente la release del motore dalla publication del contenuto
-- rende osservabile il momento in cui si rilascia il motore pubblico o si aggiorna il workflow condiviso
-- abbassa il rischio di publication accidentale e di drift tra motore usato e sito deployato
+- clearly separates engine release from content publication
+- makes observable the moment when the public engine is released or the shared workflow is updated
+- lowers the risk of accidental publication and of drift between the engine used and the deployed site
 
-Due promotion distinte nel modello:
+Two distinct promotions in the model:
 
-1. promotion del motore pubblico
-	- avviene nel repository pubblico
-	- produce una versione installabile del motore
-	- e' rilevante per CI/CD, automazione e ambienti non locali
+1. promotion of the public engine
+	- happens in the public repository
+	- produces an installable version of the engine
+	- is relevant for CI/CD, automation, and non-local environments
 
-2. promotion del sito pubblico
-	- avviene nel repository privato
-	- usa una versione esplicita del motore pubblico
-	- parte dai dati canonici privati e termina con il deploy dello `static-site`
+2. promotion of the public site
+	- happens in the private repository
+	- uses an explicit version of the public engine
+	- starts from private canonical data and ends with deployment of the `static-site`
 
-Contratto operativo minimo emerso:
+Minimum operational contract that emerged:
 
-- il repo pubblico deve poter girare in `showcase mode` con sample/demo data senza accesso ai dati reali
-- il runtime privato deve poter consumare il motore pubblico come package/tool installabile
-- lo sviluppo locale deve poter usare checkout affiancati senza ripubblicare il package a ogni modifica
-- lo `static-site` e' l'unico artefatto che attraversa il boundary verso il pubblico
+- the public repo must be able to run in `showcase mode` with sample/demo data and without access to real data
+- the private runtime must be able to consume the public engine as an installable package/tool
+- local development must be able to use side-by-side checkouts without republishing the package on every change
+- the `static-site` is the only artifact that crosses the boundary toward the public
 
-Gate minimi della promotion del sito:
+Minimum gates of site promotion:
 
-- selezione esplicita della versione del motore pubblico da usare
-- validazione dei layer privati richiesti dal build
-- applicazione dei controlli di publication safety e leakage
-- generazione di `site-data` e rendering dello `static-site`
-- evidenza di release, provenance e controlli eseguiti
+- explicit selection of the public engine version to use
+- validation of the private layers required by the build
+- application of publication safety and leakage checks
+- generation of `site-data` and rendering of the `static-site`
+- evidence of release, provenance, and checks performed
 
-Decisioni successive consolidate:
+Subsequent consolidated decisions:
 
-- il repository privato non promuove dati nel repository pubblico; promuove solo il deploy dello `static-site`
-- `hypercv-final` e `site-data` restano nel lato privato anche quando contribuiscono all'output pubblico
-- la versione del motore usata per generare il sito deve essere tracciabile
-- il repository privato puo' usare checkout affiancati in locale, ma in automazione il contratto ufficiale resta il package/tool pubblico versionato
+- the private repository does not promote data into the public repository; it promotes only deployment of the `static-site`
+- `hypercv-final` and `site-data` remain on the private side even when they contribute to the public output
+- the version of the engine used to generate the site must be traceable
+- the private repository can use side-by-side checkouts locally, but in automation the official contract remains the versioned public package/tool
 
 ## Consolidated Model
 
-1. `raw-input` effimero
-2. `deep-knowledge` persistita e immutabile
-3. `knowledge-base-dk` rigenerabile dalla deep knowledge
-4. `knowledge-base-manual` modificabile manualmente
-5. vista logica unificata della `knowledge-base`
-6. `hypercv-draft` persistiti per review e convergenza editoriale
-7. `hypercv-composition` come classe separata di convergenza
-8. `hypercv-final` materializzato e canonico nel dominio privato
-9. `site-data` generati, privati e mai editati a mano
-10. `static-site` generato e deployato pubblicamente
+1. ephemeral `raw-input`
+2. persisted and immutable `deep-knowledge`
+3. `knowledge-base-dk` regenerable from deep knowledge
+4. manually editable `knowledge-base-manual`
+5. unified logical view of the `knowledge-base`
+6. `hypercv-draft` persisted for review and editorial convergence
+7. `hypercv-composition` as a separate convergence class
+8. `hypercv-final` materialized and canonical in the private domain
+9. `site-data` generated, private, and never edited by hand
+10. `static-site` generated and publicly deployed
 
 ## Closed Decisions
 
-Decisioni chiuse in questa sessione:
+Decisions closed in this session:
 
-- modello `public code + private data`
-- repository pubblico come codebase autorevole
-- repository pubblico come engine installabile consumato dal repository privato
-- raw come input effimero e non come classe persistita
-- `deep-knowledge` append-only, immutabile e non rigenerabile
-- distinzione tra `knowledge-base-dk` e `knowledge-base-manual`
-- vista logica unificata della knowledge base nella generazione di HyperCV
-- `hypercv-draft` come famiglia di contributi KB e manuali, anche parziali
-- `hypercv-composition` come classe separata, esplicita o implicita, che governa la convergenza verso il final
-- `hypercv-final` come contenuto canonico privato materializzato
-- `site-data` come projection privata derivata, rigenerabile e persistibile solo come cache/materialization
-- `site-data` come projection web specializzata, con provenance interna, citation pubbliche localizzate e persona profiles pubblici
-- output pubblico identificato con il sito statico deployato, non con i dati sorgente
-- catalogo HyperCV `cv-experience -> cv-project -> cv-star`
-- `revision` mandatory per gli artefatti HyperCV
-- pinning della revisione KB nella composition e stato `stale` quando cambia una revisione referenziata
-- doppia lingua solo nel passaggio `hypercv-final -> site-data`
-- governance esplicita per release del motore pubblico e deploy del sito statico
-- package/tool pubblico come contratto ufficiale per automazione, checkout affiancati come modalita pratica di sviluppo locale
-- env var per-classe:
-	- `DEEP_KNOWLEDGE_PATH`
-	- `KNOWLEDGE_BASE_PATH`
-	- `HYPERCV_PATH`
-	- `SITE_DATA_PATH`
-- una sola root dati canonica nel repository privato
+- `public code + private data` model
+- public repository as authoritative codebase
+- public repository as installable engine consumed by the private repository
+- raw as ephemeral input and not as a persisted class
+- `deep-knowledge` append-only, immutable, and non-regenerable
+- distinction between `knowledge-base-dk` and `knowledge-base-manual`
+- unified logical view of the knowledge base in HyperCV generation
+- `hypercv-draft` as a family of KB and manual contributions, even partial ones
+- `hypercv-composition` as a separate class, explicit or implicit, that governs convergence toward the final
+- `hypercv-final` as materialized private canonical content
+- `site-data` as a private derived projection, regenerable and persistable only as cache/materialization
+- `static-site` as the only public production artifact
+- validator model by control domains instead of one validator family per class
+- diagnostic observations with stable codes and policy-defined severities
+- HyperCV catalog `cv-experience -> cv-project -> cv-star`
+- revision mandatory for all HyperCV artifacts
+- explicit stale detection when a referenced revision changes
+- monolingual `hypercv-final`, dual language only in `site-data`
+- internal provenance required in `site-data` and localized public citation targets
+- public engine promotion distinct from site publication promotion
 
 ## Open Questions Residue
 
-Non restano open point architetturali nel perimetro di questo brainstorming.
+No architectural open points remain within the scope of this brainstorming.
 
-Note rimaste, ma non piu considerate open point architetturali:
+Notes that remain, but are no longer considered architectural open points:
 
-- la matrice dei validator e' chiusa a livello di brainstorming come guida di design; il catalogo concreto delle rule verra' raffinato in implementazione e review
-- il dettaglio del contratto dati di `site-data` andra' raffinato a livello di schema o file layout in fase implementativa
-- la strategia full rebuild vs delta rebuild e' una scelta implementativa
-- il bootstrap del workspace (checkout affiancati, script di init, fallback operativi) e' una scelta implementativa
+- the validator matrix is closed at brainstorming level as a design guide; the concrete rule catalog will be refined during implementation and review
+- the detail of the `site-data` data contract will need refinement at schema or file layout level during implementation
+- the full rebuild vs delta rebuild strategy is an implementation choice
+- workspace bootstrap (side-by-side checkouts, init scripts, operational fallbacks) is an implementation choice
 
 ## Status
 
-La sessione di brainstorming e' considerata chiusa.
+The brainstorming session is considered closed.
 
-Questo file e' la fonte primaria consolidata della sessione e puo' essere usato come input della successiva architecture review, della formalizzazione architetturale o della pianificazione implementativa.
-
-Gli artefatti in `_bmad-output/implementation-artifacts/` restano utili come supporto storico o operativo, ma non sono piu necessari come fonte primaria.
+This file is the consolidated primary source of the session and can be used as input for the subsequent architecture review, architectural formalization, or implementation planning.

@@ -1,11 +1,17 @@
 ---
 artifactType: 'architecture-validation-record'
+workflowAlignment: 'supplemental-project-document'
 status: 'complete'
-sourceArchitecture: '/workspaces/alecsg77-portal/_bmad-output/planning-artifacts/architecture.md'
+sourceArchitecture: '_bmad-output/planning-artifacts/architecture.md'
+canonicalPlanningArtifacts:
+	- _bmad-output/planning-artifacts/prd.md
+	- _bmad-output/planning-artifacts/ux-design-specification.md
+	- _bmad-output/planning-artifacts/architecture.md
+note: 'Preserved as supplemental validation evidence. The canonical BMAD workflow artifact for future cross-document validation should be produced through the current check-implementation-readiness workflow once epics/stories exist.'
 date: '2026-03-16'
 ---
 
-# Architecture Validation Record
+# Architecture Supplemental Validation Record
 
 This document preserves the architecture validation evidence as a permanent planning artifact. It captures the post-brainstorming validation state after the architecture was updated to reflect the private class model, revision-aware composition, and `site-data` as a private projection.
 

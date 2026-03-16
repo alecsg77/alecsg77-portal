@@ -1,94 +1,104 @@
-# Proposta Tecnica Operativa: Esecuzione Public Code + Private Data
+---
+artifactType: 'implementation-proposal'
+workflowAlignment: 'supplemental-project-document'
+status: 'active'
+intendedPhase: 'implementation-planning'
+sourceArchitecture: '_bmad-output/planning-artifacts/architecture.md'
+sourcePrd: '_bmad-output/planning-artifacts/prd.md'
+date: '2026-03-16'
+---
 
-## Obiettivo operativo
+# Operational Technical Proposal: Public Code + Private Data Execution
 
-Rendere eseguibile il modello architetturale aggiornato senza ambiguita:
+## Operational objective
 
-- il codice della pipeline resta nel repository pubblico
-- i dati reali e tutte le classi di contenuto di produzione restano nel dominio privato
-- l'elaborazione reale avviene in un workspace privato composto
-- l'unico output che attraversa il boundary runtime pubblico e' il package statico deployabile
+Make the updated architectural model executable without ambiguity:
 
-Questa proposta e' pensata come assetto MVP plausibile e implementabile senza introdurre una seconda codebase.
+- the pipeline code remains in the public repository
+- the real data and all production content classes remain in the private domain
+- real processing happens in a composed private workspace
+- the only output that crosses the public runtime boundary is the deployable static package
 
-## Modello dati operativo da supportare
+This proposal is designed as a plausible and implementable MVP setup without introducing a second codebase.
 
-Il modello finale da rispettare e' questo:
+## Operational data model to support
 
-- `raw` come input effimero di ingestione
-- `deep-knowledge` come primo livello persistito, append-only e immutabile
-- `knowledge-base-dk` e `knowledge-base-manual` come sottoclassi private gestite separatamente
-- vista logica unificata della knowledge base per la generazione HyperCV
-- `hypercv-draft` come layer di contributi draft
-- `hypercv-composition` come layer separato di convergenza e pinning delle revisioni
-- `hypercv-final` come contenuto canonico privato materializzato
-- `site-data` come projection privata del web, rigenerabile e mai editata a mano
-- `static-site` come unico output pubblico di produzione
+The final model to respect is this:
 
-Regola chiave: il sito deve consumare `site-data`, non `hypercv-final` e non la logica interna di composition.
+- `raw` as ephemeral ingestion input
+- `deep-knowledge` as the first persisted level, append-only and immutable
+- `knowledge-base-dk` and `knowledge-base-manual` as private subclasses managed separately
+- unified logical view of the knowledge base for HyperCV generation
+- `hypercv-draft` as the draft contribution layer
+- `hypercv-composition` as the separate convergence and revision pinning layer
+- `hypercv-final` as materialized private canonical content
+- `site-data` as the private projection of the web, regenerable and never edited by hand
+- `static-site` as the only public production output
 
-## Decisione tecnica raccomandata
+Key rule: the site must consume `site-data`, not `hypercv-final` and not the internal logic of composition.
 
-Usare due checkout affiancati nello stesso workspace privato, non un submodule come meccanica primaria.
+## Recommended technical decision
 
-Layout raccomandato su computer o runner privato:
+Use two side-by-side checkouts in the same private workspace, not a submodule as the primary mechanism.
+
+Recommended layout on a private computer or runner:
 
 ```text
 workspace/
-  portal-code/      # clone del repository pubblico
-  portal-private/   # clone del repository privato o directory mountata privata
-  portal-runtime/   # output effimeri locali ignorati da git
+  portal-code/      # clone of the public repository
+  portal-private/   # clone of the private repository or mounted private directory
+  portal-runtime/   # local ephemeral outputs ignored by git
 ```
 
-Motivo:
+Reason:
 
-- il repo pubblico resta pulito e dimostrabile
-- il dominio privato non ingloba la codebase pubblica come dipendenza Git fragile
-- il boundary resta leggibile anche per il team
-- la pipeline puo essere eseguita da locale o da secure runner con la stessa semantica
+- the public repo remains clean and demonstrable
+- the private domain does not absorb the public codebase as a fragile Git dependency
+- the boundary remains readable even for the team
+- the pipeline can be run locally or from a secure runner with the same semantics
 
-## Variante operativa: submodule privato
+## Operational variant: private submodule
 
-Il submodule resta tollerabile solo come bootstrap del workspace:
+The submodule remains tolerable only as workspace bootstrap:
 
 ```text
 portal-code/
   .git/
   .gitmodules
-  private-data/   # submodule verso il repository privato
+  private-data/   # submodule toward the private repository
 ```
 
-Questa variante e' accettabile solo se:
+This variant is acceptable only if:
 
-1. il team controlla entrambi i repository
-2. il repo privato non contiene fork logici del codice pubblico
-3. il submodule serve solo a fornire un path stabile ai dati privati
-4. la pipeline continua a supportare `PRIVATE_DATA_ROOT` arbitrario
-5. la governance resta nei gate applicativi e nei manifest, non nello stato Git del submodule
+1. the team controls both repositories
+2. the private repo does not contain logical forks of the public code
+3. the submodule serves only to provide a stable path to private data
+4. the pipeline continues to support arbitrary `PRIVATE_DATA_ROOT`
+5. governance remains in the application gates and in the manifests, not in the Git state of the submodule
 
-Se il submodule inizia a rappresentare il boundary di sicurezza o la fonte di audit, diventa la scelta sbagliata.
+If the submodule starts to represent the security boundary or the audit source, it becomes the wrong choice.
 
-## Contratto operativo tra pubblico e privato
+## Operational contract between public and private
 
-Il repo pubblico deve assumere solo questo contratto esterno:
+The public repo must assume only this external contract:
 
-- esiste una root privata leggibile via filesystem
-- da quella root puo leggere solo cartelle attese e file con schema noto
-- tutta l'uscita della pipeline privata viene scritta nel dominio privato o in una directory runtime effimera
-- il deploy pubblico consuma solo il package statico validato
+- there is a private root readable via filesystem
+- from that root it can read only expected folders and files with known schema
+- all output of the private pipeline is written in the private domain or in an ephemeral runtime directory
+- public deploy consumes only the validated static package
 
-Variabili minime:
+Minimum variables:
 
 ```bash
 PRIVATE_DATA_ROOT=../portal-private
 PIPELINE_MODE=showcase|private
 PIPELINE_RUNTIME_DIR=../portal-runtime
-PUBLIC_CODE_SHA=<sha del commit pubblico usato>
+PUBLIC_CODE_SHA=<sha of the public commit used>
 ```
 
-## Schema concreto di cartelle e file
+## Concrete folder and file schema
 
-### Dominio pubblico del codice
+### Public code domain
 
 ```text
 portal-code/
@@ -133,13 +143,13 @@ portal-code/
     layouts/
 ```
 
-Semantica:
+Semantics:
 
-- il repo pubblico contiene solo codice, configurazione e fixture safe
-- non contiene dati reali, `hypercv-final` di produzione o `site-data` di produzione
-- le fixture sanitized devono simulare il contratto privato abbastanza bene da supportare showcase e test
+- the public repo contains only code, configuration, and safe fixtures
+- it does not contain real data, production `hypercv-final`, or production `site-data`
+- sanitized fixtures must simulate the private contract well enough to support showcase and tests
 
-### Dominio privato dei dati
+### Private data domain
 
 ```text
 portal-private/
@@ -203,17 +213,17 @@ portal-private/
     releases/
 ```
 
-Semantica:
+Semantics:
 
-- `deep-knowledge` non e rigenerabile e non e un cache layer
-- `knowledge-base/dk` e rigenerabile dalla deep knowledge
-- `knowledge-base/manual` e persistita e non deve essere sovrascritta dal reprocessing
-- `hypercv-draft` puo contenere contributi parziali
-- `hypercv-composition` governa la convergenza e le revisioni approvate da usare
-- `hypercv-final` e la source of truth privata per pubblicazione e riuso
-- `site-data` e una projection privata web-specialized e non deve essere modificata a mano
+- `deep-knowledge` is not regenerable and is not a cache layer
+- `knowledge-base/dk` is regenerable from deep knowledge
+- `knowledge-base/manual` is persisted and must not be overwritten by reprocessing
+- `hypercv-draft` can contain partial contributions
+- `hypercv-composition` governs convergence and the approved revisions to use
+- `hypercv-final` is the private source of truth for publication and reuse
+- `site-data` is a private web-specialized projection and must not be edited by hand
 
-### Directory runtime effimera
+### Ephemeral runtime directory
 
 ```text
 portal-runtime/
@@ -223,18 +233,18 @@ portal-runtime/
   previews/
 ```
 
-Questa directory non fa parte della governance dei dati. Serve solo per artefatti effimeri, debug locale e staging temporaneo.
+This directory is not part of data governance. It serves only for ephemeral artifacts, local debugging, and temporary staging.
 
-## Naming e contratti minimi dei file
+## Naming and minimum file contracts
 
-Regole minime:
+Minimum rules:
 
-- gli artifact ID devono essere stabili e in kebab-case
-- tutte le classi HyperCV devono esporre `artifact_id` e `revision`
-- le composition devono referenziare in modo esplicito le revisioni approvate che materializzano
-- i final devono essere materializzati, non ricostruiti implicitamente leggendo draft e composition durante il rendering
+- artifact IDs must be stable and in kebab-case
+- all HyperCV classes must expose `artifact_id` and `revision`
+- compositions must explicitly reference the approved revisions they materialize
+- finals must be materialized, not implicitly reconstructed by reading draft and composition during rendering
 
-Esempio minimale di composition:
+Minimum composition example:
 
 ```yaml
 artifact_id: ai-distillation-pipeline
@@ -246,7 +256,7 @@ strategy: explicit
 status: approved
 ```
 
-Esempio minimale di final:
+Minimum final example:
 
 ```yaml
 artifact_id: ai-distillation-pipeline
@@ -264,7 +274,7 @@ materialized_from:
   manual_revision: 20260316091000
 ```
 
-Esempio minimale di nodo `site-data`:
+Minimum `site-data` node example:
 
 ```yaml
 node_id: ai-distillation-pipeline
@@ -278,43 +288,43 @@ source:
   fragment: result-summary
 ```
 
-## Modalita di esecuzione
+## Execution modes
 
 ### 1. Showcase mode
 
-Scopo: demo pubblica, sviluppo frontend, test ripetibili.
+Purpose: public demo, frontend development, repeatable tests.
 
 Input:
 
 - `fixtures/sanitized/private-domain/`
 - `fixtures/sanitized/site-data/`
 
-Comando:
+Command:
 
 ```bash
 npm run pipeline:showcase
 ```
 
-Effetto:
+Effect:
 
-- esegue la pipeline solo su fixture sanitize
-- non richiede accesso al repo privato
-- deve funzionare su qualsiasi clone pubblico
+- runs the pipeline only on sanitized fixtures
+- does not require access to the private repo
+- must work on any public clone
 
 ### 2. Private mode
 
-Scopo: authoring reale, validazione e rilascio.
+Purpose: real authoring, validation, and release.
 
 Input:
 
 - `PRIVATE_DATA_ROOT`
 
-Valori tipici:
+Typical values:
 
-- `../portal-private` nel modello a checkout affiancati
-- `./private-data` nel modello a submodule
+- `../portal-private` in the side-by-side checkout model
+- `./private-data` in the submodule model
 
-Comando:
+Command:
 
 ```bash
 PRIVATE_DATA_ROOT=../portal-private \
@@ -322,13 +332,13 @@ PIPELINE_RUNTIME_DIR=../portal-runtime \
 npm run pipeline:private
 ```
 
-Effetto:
+Effect:
 
-- esegue la pipeline pubblica sui dati privati
-- scrive intermedi solo nel dominio privato o nel runtime effimero
-- fallisce subito se il path privato non e presente o contiene classi inattese
+- runs the public pipeline on private data
+- writes intermediates only in the private domain or in the ephemeral runtime
+- fails immediately if the private path is not present or contains unexpected classes
 
-## Script npm raccomandati
+## Recommended npm scripts
 
 ```json
 {
@@ -344,27 +354,27 @@ Effetto:
 }
 ```
 
-Responsabilita di `run-pipeline.ts`:
+Responsibilities of `run-pipeline.ts`:
 
-1. leggere config e mode
-2. risolvere il data root corretto
-3. eseguire i passi `ingest -> distill -> build-kb -> draft -> composition-check -> final -> site-data`
-4. scrivere artifact nel target coerente con la mode
-5. emettere un manifest macchina-leggibile di esecuzione
+1. read config and mode
+2. resolve the correct data root
+3. execute the steps `ingest -> distill -> build-kb -> draft -> composition-check -> final -> site-data`
+4. write artifacts to the target consistent with the mode
+5. emit a machine-readable execution manifest
 
-## Workflow operativo completo
+## Complete operational workflow
 
-### Fase A: authoring e approvazione privata
+### Phase A: private authoring and approval
 
-1. L'operatore aggiorna i dati in `portal-private/raw/`.
-2. Esegue `npm run pipeline:private` dal repo pubblico.
-3. Gli output vengono aggiornati in `deep-knowledge/`, `knowledge-base/`, `hypercv/drafts/` e `site-data/` secondo le regole di stage.
-4. La revisione umana approva o corregge draft, composition e final.
+1. The operator updates data in `portal-private/raw/`.
+2. Runs `npm run pipeline:private` from the public repo.
+3. Outputs are updated in `deep-knowledge/`, `knowledge-base/`, `hypercv/drafts/`, and `site-data/` according to the stage rules.
+4. Human review approves or corrects draft, composition, and final.
 
-### Fase B: validazione di rilascio privata
+### Phase B: private release validation
 
-1. Il sistema rileva composition stale rispetto alle revisioni referenziate.
-2. Esegue gates:
+1. The system detects stale compositions relative to referenced revisions.
+2. It executes gates:
    - schema validation
    - revision traceability
    - stale detection
@@ -372,21 +382,21 @@ Responsabilita di `run-pipeline.ts`:
    - localization parity
    - leakage checks
    - secret scanning
-3. Se tutto passa, genera:
-   - `site-data` finale
+3. If everything passes, it generates:
+   - final `site-data`
    - search index
    - release evidence
-   - package statico in `portal-private/release/deployable/<release-id>/`
+   - static package in `portal-private/release/deployable/<release-id>/`
 
-### Fase C: deploy pubblico
+### Phase C: public deploy
 
-1. Il package statico validato viene deployato su hosting/CDN.
-2. Il dominio privato registra il riferimento di rilascio in `portal-private/manifests/releases/`.
-3. Il repository pubblico non riceve dati di produzione; riceve solo eventuali cambi di codice, configurazione o fixture safe tramite normale workflow Git.
+1. The validated static package is deployed to hosting/CDN.
+2. The private domain records the release reference in `portal-private/manifests/releases/`.
+3. The public repository does not receive production data; it receives only possible changes to code, configuration, or safe fixtures through the normal Git workflow.
 
-## Modello HyperCV da supportare
+## HyperCV model to support
 
-HyperCV e un catalogo CV gerarchico composto da:
+HyperCV is a hierarchical CV catalog composed of:
 
 - `cv-experience`
   - `experience_id`
@@ -416,16 +426,16 @@ HyperCV e un catalogo CV gerarchico composto da:
   - `public_sources`
   - `policy`
 
-Regole importanti:
+Important rules:
 
-- esiste revision log su `cv-experience`, `cv-project` e `cv-star`
-- `hypercv-final` e privato e materializzato
-- `hypercv-composition` e separato da `hypercv-final`
-- `site-data` introduce lingua, percorsi, citation target e persona profiles pubblici
+- there is a revision log on `cv-experience`, `cv-project`, and `cv-star`
+- `hypercv-final` is private and materialized
+- `hypercv-composition` is separate from `hypercv-final`
+- `site-data` introduces language, paths, citation targets, and public persona profiles
 
-## Publish manifest minimo
+## Minimum publish manifest
 
-Ogni rilascio dovrebbe emettere un manifest simile:
+Every release should emit a manifest similar to this:
 
 ```yaml
 manifestVersion: 1
@@ -447,29 +457,29 @@ checks:
 createdAt: 2026-03-16T10:00:00Z
 ```
 
-Questo manifest va mantenuto nel dominio privato; un estratto sanitizzato puo essere esportato nella release evidence pubblicabile se utile.
+This manifest must be kept in the private domain; a sanitized extract can be exported in publishable release evidence if useful.
 
-## Regole di implementazione importanti
+## Important implementation rules
 
-1. Il repo pubblico non deve mai scrivere output intermedi sensibili nel proprio tree Git.
-2. La pipeline privata non deve leggere da output pubblici deployati per ricostruire il workflow raw.
-3. Ogni output pubblico deve essere riproducibile da `publicCodeSha + privateDataRevision + schemaVersion`.
-4. I test automatici del repo pubblico devono usare solo fixture synthetic o sanitized.
-5. Il codice pubblico deve degradare chiaramente quando `PRIVATE_DATA_ROOT` non e presente, non fallire in modo opaco.
-6. Se cambia una revisione referenziata da una composition, il final derivato va trattato come stale fino a nuova review.
+1. The public repo must never write sensitive intermediate outputs into its Git tree.
+2. The private pipeline must not read from deployed public outputs to reconstruct the raw workflow.
+3. Every public output must be reproducible from `publicCodeSha + privateDataRevision + schemaVersion`.
+4. Automatic tests of the public repo must use only synthetic or sanitized fixtures.
+5. The public code must degrade clearly when `PRIVATE_DATA_ROOT` is not present, not fail opaquely.
+6. If a revision referenced by a composition changes, the derived final must be treated as stale until a new review.
 
-## Cosa implementerei per primo
+## What I would implement first
 
-Ordine consigliato:
+Recommended order:
 
-1. `config/content-pipeline.ts` con supporto a `showcase` e `private` mode.
-2. `scripts/pipeline/run-pipeline.ts` come orchestratore unico.
-3. `scripts/pipeline/materialize-hypercv-final.ts` e `scripts/pipeline/build-site-data.ts`.
+1. `config/content-pipeline.ts` with support for `showcase` and `private` mode.
+2. `scripts/pipeline/run-pipeline.ts` as the single orchestrator.
+3. `scripts/pipeline/materialize-hypercv-final.ts` and `scripts/pipeline/build-site-data.ts`.
 4. `scripts/pipeline/detect-stale-compositions.ts`.
 5. `scripts/release/verify-no-private-leakage.ts`.
-6. `scripts/release/build-publish-manifest.ts` e `scripts/release/build-static-package.ts`.
-7. Una fixture sanitized completa per rendere il repo pubblico realmente dimostrabile.
+6. `scripts/release/build-publish-manifest.ts` and `scripts/release/build-static-package.ts`.
+7. A complete sanitized fixture to make the public repo genuinely demonstrable.
 
-## Proposta breve da portare al team
+## Short proposal to bring to the team
 
-> Implementiamo il sistema con un'unica codebase pubblica e una sorgente dati privata separata. In locale o su runner sicuro la codebase pubblica viene eseguita contro il dominio privato tramite un workspace composto. Tutte le trasformazioni dati avvengono nel privato fino a `site-data`, e solo il package statico validato viene pubblicato nel runtime pubblico.
+> We implement the system with a single public codebase and a separate private data source. Locally or on a secure runner, the public codebase is executed against the private domain through a composed workspace. All data transformations happen in the private up to `site-data`, and only the validated static package is published into the public runtime.

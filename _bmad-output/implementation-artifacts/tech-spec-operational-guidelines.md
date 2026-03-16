@@ -1,10 +1,14 @@
 ---
 artifactType: 'implementation-guidelines'
+workflowAlignment: 'supplemental-project-document'
 status: 'active'
 scope: 'operational-definition'
-sourceArchitecture: '/workspaces/alecsg77-portal/_bmad-output/planning-artifacts/architecture.md'
+sourceArchitecture: '_bmad-output/planning-artifacts/architecture.md'
 intendedPhase: 'implementation'
 archiveWhen: 'implementation decisions are consolidated in code, tests, and final documentation'
+canonicalPlanningArtifacts:
+  - _bmad-output/planning-artifacts/architecture.md
+  - _bmad-output/planning-artifacts/prd.md
 date: '2026-03-16'
 ---
 

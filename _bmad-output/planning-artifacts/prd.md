@@ -18,9 +18,9 @@ stepsCompleted:
   - step-e-02-review
   - step-e-03-edit
 inputDocuments:
-  - /workspaces/alecsg77-portal/_bmad-archive/planning-artifacts/product-brief-alecsg77-portal-2026-02-27.md
-  - /workspaces/alecsg77-portal/_bmad-output/brainstorming/brainstorming-session-2026-02-25.md
-  - /workspaces/alecsg77-portal/_bmad-output/brainstorming/brainstorming-session-2026-03-15-0620.md
+  - _bmad-archive/planning-artifacts/product-brief-alecsg77-portal-2026-02-27.md
+  - _bmad-archive/brainstorming/brainstorming-session-2026-02-25.md
+  - _bmad-output/brainstorming/brainstorming-session-2026-03-15-0620.md
 date: '2026-02-27'
 classification:
   projectType: web_app
@@ -28,10 +28,10 @@ classification:
   complexity: low
   projectContext: greenfield
 productVision:
-  vision: Trasformare l'esperienza lavorativa in una knowledge base pubblica esplorabile, capace di esporre fatti tangibili e lessons learned oggettive tramite discovery guidata e contenuti strutturati verificabili.
-  differentiator: "Un HyperCV alimentato da una pipeline privata offline-first che distilla memorie e note grezze in artifact canonici validati umanamente, poi pubblicati in un portale statico bilingue ad alta leggibilita."
-  insight: L'obiettivo non e sostituire il colloquio con un assistente che parli al posto del candidato, ma ridurre l'attrito della valutazione esponendo un database reale di esperienze consultabile con navigazione, ricerca e progressive disclosure.
-  oneLiner: "Un portale pubblico statico che rende la carriera consultabile come una knowledge base, alimentato da una pipeline privata che distilla contenuti verificabili."
+  vision: Transform the work experience into an explorable public knowledge base, capable of exposing tangible facts and objective lessons learned through guided discovery and verifiable structured content.
+  differentiator: "A HyperCV powered by an offline-first private pipeline that distills memories and raw notes into canonically structured artifacts validated by humans, then published in a highly readable bilingual static portal."
+  insight: The goal is not to replace the interview with an assistant that speaks on behalf of the candidate, but to reduce evaluation friction by exposing a real database of experiences that can be consulted through navigation, search, and progressive disclosure.
+  oneLiner: "A public static portal that makes a career consultable like a knowledge base, powered by a private pipeline that distills verifiable content."
 lastEdited: '2026-03-16'
 editHistory:
   - date: '2026-03-08'
@@ -55,268 +55,268 @@ workflow: 'edit'
 
 ## Executive Summary
 
-HyperCV è una web app che trasforma il CV statico in una knowledge base esplorabile. Il problema da risolvere è duplice: un CV tradizionale comprime troppo il contesto per recruiter e valutatori tecnici, mentre un portfolio narrativo richiede troppo tempo per arrivare al punto utile. La V1 risponde a questo gap con un portale pubblico statico bilingue, progettato per offrire discovery guidata, ricerca sul corpus statico e progressive disclosure su contenuti verificabili. Il valore del portale deriva da una pipeline privata offline-first che mantiene nel dominio privato sia i materiali di lavoro sia il contenuto canonico, e che pubblica verso il dominio pubblico solo artefatti statici approvati e sanitizzati. Le funzionalita conversazionali e il matching real-time restano esplicitamente fuori dal MVP.
+HyperCV is a web app that transforms the static CV into an explorable knowledge base. The problem to solve is twofold: a traditional CV compresses too much context for recruiters and technical evaluators, while a narrative portfolio requires too much time to get to the useful point. V1 addresses this gap with a bilingual public static portal, designed to offer guided discovery, search over the static corpus, and progressive disclosure over verifiable content. The portal's value derives from an offline-first private pipeline that keeps both working materials and canonical content in the private domain, and publishes to the public domain only approved and sanitized static artifacts. Conversational features and real-time matching remain explicitly out of scope for the MVP.
 
 ### What Makes This Special
 
-Il differenziatore è la separazione tra preparazione privata del contenuto e consultazione pubblica:
+The differentiator is the separation between private content preparation and public consultation:
 
-1. **Private canonical model:** l'Autore raccoglie input grezzi, li consolida in contenuto privato persistito e li converte in un catalogo HyperCV canonico soggetto a review umana.
-2. **Public engine, private data boundary:** il repository pubblico resta autorevole per engine, contratti e frontend, mentre i dati reali e i layer canonici restano nel dominio privato; il boundary si applica ai dati, non al codice.
-3. **Safe static publication:** il portale espone solo output statici bilingui approvati, con controlli di publication safety e assenza di leakage come vincoli di rilascio.
-4. **Contextual progressive disclosure:** l'esperienza pubblica mostra prima la domanda rilevante e poi il frammento strutturato, facilitando valutazione rapida e copy-paste operativo.
+1. **Private canonical model:** the Author collects raw inputs, consolidates them into persisted private content, and converts them into a canonical HyperCV catalog subject to human review.
+2. **Public engine, private data boundary:** the public repository remains authoritative for engine, contracts, and frontend, while the real data and canonical layers remain in the private domain; the boundary applies to data, not code.
+3. **Safe static publication:** the portal exposes only approved bilingual static outputs, with publication safety controls and absence of leakage as release constraints.
+4. **Contextual progressive disclosure:** the public experience first shows the relevant question and then the structured fragment, making rapid evaluation and operational copy-paste easier.
 
-**Core Insight:** *"Un portale pubblico statico che rende la carriera consultabile come una knowledge base, alimentato da un dominio privato che consolida contenuto canonico verificabile e pubblica solo output statici sicuri."*
+**Core Insight:** *"A public static portal that makes a career consultable like a knowledge base, powered by a private domain that consolidates verifiable canonical content and publishes only safe static outputs."*
 
 ## Project Classification
 
 * **Project Type:** Web App (SPA/PWA)
 * **Domain:** General 
-* **Complexity Level:** Low (nessuna compliance di settore, si applica GDPR base per la conservazione Dati Raw)
+* **Complexity Level:** Low (no industry-specific compliance; basic GDPR applies to Raw Data retention)
 * **Project Context:** Greenfield 
 
 ## Success Criteria
 
-### User Success (Il Recruiter)
-Il successo per l'utente coincide con tre esiti osservabili nella stessa sessione:
-* raggiunge un frammento rilevante entro 15 secondi;
-* espande almeno un approfondimento utile;
-* ottiene testo riutilizzabile per screening o handoff interni senza riformattazione sostanziale.
+### User Success (The Recruiter)
+Success for the user consists of three observable outcomes within the same session:
+* they reach a relevant fragment within 15 seconds;
+* they expand at least one useful deep dive;
+* they obtain reusable text for screening or internal handoffs without substantial reformatting.
 
-### Business Success (L'Autore/Candidato)
-Il successo business dell'Autore e dimostrato da due segnali misurabili di qualificazione e ritorno:
-* **Generazione d'interesse circolare:** Stabilire un volano di traffico in cui i visitatori del profilo LinkedIn accedono al portale e almeno il 5% delle visite uniche del portale genera un click di ritorno verso LinkedIn o una CTA di contatto professionale.
-* **Qualificazione del contatto:** Almeno il 50% dei contatti professionali generati dal portale deve arrivare dopo la consultazione di almeno un approfondimento tecnico o metodologico tracciato negli analytics o confermato nel contesto del contatto.
+### Business Success (The Author/Candidate)
+Business success for the Author is demonstrated by two measurable signals of qualification and return:
+* **Circular interest generation:** Establish a traffic flywheel in which LinkedIn profile visitors access the portal and at least 5% of unique portal visits generate a return click to LinkedIn or a professional contact CTA.
+* **Contact qualification:** At least 50% of professional contacts generated by the portal must arrive after consultation of at least one technical or methodological deep dive tracked in analytics or confirmed in the context of the contact.
 
 ### Technical Success
-La V1 raggiunge il successo tecnico se rispetta simultaneamente cinque condizioni di rilascio:
-* costi di erogazione pubblica entro il budget operativo approvato per la V1 e con scostamento mensile non superiore al 10% in condizioni di traffico comparabili;
-* interazioni pubbliche principali entro 100 ms dopo il caricamento iniziale;
-* cambio lingua entro 500 ms nei browser supportati;
-* punteggio Lighthouse di almeno 95 sulle pagine benchmark di release, senza dipendenze runtime critiche per la consultazione del contenuto pubblico;
-* evidenza di release che conferma assenza di leakage di dati privati o materiali di lavoro nel package pubblico.
+V1 achieves technical success if it simultaneously meets five release conditions:
+* public delivery costs within the approved operating budget for V1 and with monthly variance not exceeding 10% under comparable traffic conditions;
+* main public interactions within 100 ms after initial load;
+* language switch within 500 ms in supported browsers;
+* Lighthouse score of at least 95 on release benchmark pages, with no runtime-critical dependencies for consultation of public content;
+* release evidence confirming absence of leakage of private data or working materials in the public package.
 
 ### Measurable Outcomes
-* **Time-to-Value (TTV) < 15 secondi:** L'utente esplora le tassonomie e raggiunge il suo primo livello di approfondimento entro i primi secondi.
-* **Deep-Dive Engagement (>40%):** Il 40% delle visite uniche deve arrivare ad espandere le descrizioni metodologiche (S.T.A.R) e non restare sulla Root List.
-* **Conversion / Click-through-Rate (CTR) >= 5%:** Almeno il 5% delle visite uniche del portale deve generare un click in uscita verso la CTA professionale primaria, con tracciamento separato del traffico in entrata da LinkedIn e del traffico di ritorno dal portale.
+* **Time-to-Value (TTV) < 15 seconds:** The user explores the taxonomies and reaches their first level of deep dive within the first few seconds.
+* **Deep-Dive Engagement (>40%):** 40% of unique visits must expand the methodological descriptions (S.T.A.R) and not remain on the Root List.
+* **Conversion / Click-through-Rate (CTR) >= 5%:** At least 5% of unique portal visits must generate an outbound click to the primary professional CTA, with separate tracking of inbound traffic from LinkedIn and return traffic from the portal.
 
-Questi obiettivi impongono una scelta architetturale conservativa per la V1: contenuti verificabili, costi operativi bassi e massima leggibilità pubblica prima di introdurre capacità real-time più costose e rischiose.
+These goals impose a conservative architectural choice for V1: verifiable content, low operating costs, and maximum public readability before introducing more costly and risky real-time capabilities.
 
 ## Product Scope
 
 ### MVP - Minimum Viable Product
-Costruisce il valore minimo riducendo costo, rischio di allucinazione e superficie d'attacco:
-* Private pipeline offline-first per trasformare input effimeri in contenuto privato persistito, knowledge base curata e catalogo HyperCV finale soggetto a review.
-* Portale pubblico statico bilingue con navigazione gerarchica come modalita primaria e ricerca sul corpus statico come supporto secondario.
-* **Progressive Disclosure:** i link espongono domande contestuali e aprono frammenti S.T.A.R. leggibili e copiabili.
-* Analytics per TTV, deep-dive engagement e CTR verso LinkedIn.
-* Publication workflow con evidence package, controlli di safety e promozione verso il pubblico consentita solo per output statici approvati.
-* Esclusioni esplicite del MVP: nessun chatbot runtime, nessun job matching live, nessun report dinamico generato on demand, nessuna autenticazione.
+Builds the minimum value while reducing cost, hallucination risk, and attack surface:
+* Offline-first private pipeline to transform ephemeral inputs into persisted private content, curated knowledge base, and final HyperCV catalog subject to review.
+* Bilingual public static portal with hierarchical navigation as the primary mode and search over the static corpus as secondary support.
+* **Progressive Disclosure:** links expose contextual questions and open readable, copyable S.T.A.R. fragments.
+* Analytics for TTV, deep-dive engagement, and CTR toward LinkedIn.
+* Publication workflow with evidence package, safety controls, and promotion to the public allowed only for approved static outputs.
+* Explicit MVP exclusions: no runtime chatbot, no live job matching, no dynamic on-demand report generation, no authentication.
 
 ### Growth Features (Post-MVP)
-Estende la stessa knowledge base canonica con capacità real-time e governance operativa:
-* Autenticazione e gating delle funzionalita avanzate.
-* Retrieval e matching contestuale su Job Description dietro login.
-* Esperienze conversazionali e output dinamici generati a runtime.
-* Dashboard amministrativa per ingestione, validazione e aggiornamento dei contenuti.
+Extends the same canonical knowledge base with real-time capabilities and operational governance:
+* Authentication and gating of advanced features.
+* Retrieval and contextual matching on Job Descriptions behind login.
+* Conversational experiences and dynamic outputs generated at runtime.
+* Administrative dashboard for ingestion, validation, and content updates.
 
-Lo scope dell'MVP e sufficiente se dimostra che discovery guidata, copy-paste operativo e consultazione rapida generano valore reale prima di introdurre capacita AI in tempo reale.
+The MVP scope is sufficient if it demonstrates that guided discovery, operational copy-paste, and rapid consultation generate real value before introducing real-time AI capabilities.
 
 ### Canonical Content Boundary
-Il prodotto distingue quattro layer a livello di requisito, senza trasformare il PRD in un design tecnico dettagliato:
-* **Input effimeri:** note e vocali di lavoro usati per l'ingestione iniziale, non destinati alla pubblicazione.
-* **Contenuto privato persistito:** memoria ricca, knowledge base curata e materiali editoriali che restano fuori dal dominio pubblico.
-* **Catalogo HyperCV canonico:** rappresentazione privata approvata di esperienze, progetti e casi S.T.A.R. usata come sorgente autorevole per il publish.
-* **Output pubblico derivato:** site-data e pagine statiche bilingui generate dal catalogo approvato e sanitizzate prima del rilascio.
+The product distinguishes four layers at the requirement level, without turning the PRD into a detailed technical design:
+* **Ephemeral inputs:** work notes and voice notes used for initial ingestion, not intended for publication.
+* **Persisted private content:** rich memory, curated knowledge base, and editorial materials that remain outside the public domain.
+* **Canonical HyperCV catalog:** approved private representation of experiences, projects, and S.T.A.R. cases used as the authoritative source for publishing.
+* **Derived public output:** bilingual site-data and static pages generated from the approved catalog and sanitized before release.
 
-Il MVP richiede che solo l'output pubblico derivato attraversi il boundary verso il sito pubblicato; i layer privati restano sempre esclusi dal package pubblico.
+The MVP requires that only the derived public output crosses the boundary toward the published site; private layers always remain excluded from the public package.
 
 ## User Journeys
 
-In questa fase MVP, l'esperienza e static-first: la navigazione gerarchica e il pattern principale, mentre la ricerca globale sul corpus statico serve come acceleratore secondario per il recupero di contenuti noti. Le informazioni vengono organizzate in percorsi coerenti e declinate contestualmente in base al nodo di navigazione.
+At this MVP stage, the experience is static-first: hierarchical navigation is the primary pattern, while global search over the static corpus serves as a secondary accelerator for retrieving known content. Information is organized into coherent paths and adapted contextually based on the navigation node.
 
-Il pattern di interazione primario è la **Progressive Disclosure**: una richiesta contestuale mostra prima la domanda rilevante e poi il frammento di risposta strutturato, in modo da favorire lettura rapida e copia del contenuto utile.
+The primary interaction pattern is **Progressive Disclosure**: a contextual request first shows the relevant question and then the structured answer fragment, in order to favor rapid reading and copying of useful content.
 
-### 1. Il Valutatore Tecnico (CTO / Tech Lead)
-* **Goal:** Validare le competenze (es. architettura, problem solving) in modo approfondito ma senza perdere tempo in test narrativi noiosi.
-* **Journey:** L'utente atterra sul portale e naviga attraverso le categorie tecniche o per progetto. Quando individua uno stack o una competenza di interesse, richiama il contesto relativo e poi espande il caso di studio nel formato S.T.A.R. inverso ("Risultato -> Problema -> Azione"), ottimizzato per la lettura tecnica veloce e per permettere di copiare dati quantitativi senza riformattazione manuale.
+### 1. The Technical Evaluator (CTO / Tech Lead)
+* **Goal:** Validate skills (for example, architecture, problem solving) thoroughly but without wasting time on boring narrative tests.
+* **Journey:** The user lands on the portal and navigates through technical categories or by project. When they identify a stack or skill of interest, they call up the related context and then expand the case study in inverse S.T.A.R. format ("Result -> Problem -> Action"), optimized for fast technical reading and to allow copying quantitative data without manual reformatting.
 
-### 2. Il Talent Sourcer (Recruiter / HR)
-* **Goal:** Capire rapidamente se il profilo merita approfondimento e raccogliere elementi chiari da condividere con gli Hiring Manager.
-* **Journey:** Il recruiter accede senza barriere o login, legge un executive summary chiaro e usa navigazione e ricerca per trovare stack, risultati e contesti rilevanti. Espande i dettagli di interesse e usa i frammenti formattati a schermo per un rapido copia e incolla in ATS, email o note di screening.
+### 2. The Talent Sourcer (Recruiter / HR)
+* **Goal:** Quickly understand whether the profile deserves further investigation and gather clear elements to share with Hiring Managers.
+* **Journey:** The recruiter accesses without barriers or login, reads a clear executive summary, and uses navigation and search to find relevant stacks, outcomes, and contexts. They expand the details of interest and use the on-screen formatted fragments for quick copy and paste into ATS, email, or screening notes.
 
-### 3. L'Autore (Alessio / Admin)
-* **Goal:** Inserire e mantenere aggiornato il proprio vissuto professionale riducendo l'attrito e massimizzando la qualità del dato, usando una private pipeline **completamente locale** composta da uno o più agenti o processi offline.
-* **Journey (Backend Offline):**
-  1. **Input iniziale:** Alessio registra un vocale o appunta note destrutturate dopo una giornata di lavoro.
-  2. **Consolidamento privato:** processi locali trasformano gli input in contenuto privato persistito, mantenendo il contesto utile alla revisione futura.
-  3. **Knowledge base curatoriale:** il contenuto consolidato viene distillato in una knowledge base curata, integrabile anche con contributi manuali nativi.
-  4. **Draft e composizione HyperCV:** la pipeline produce e rifinisce draft di esperienze, progetti e casi S.T.A.R., poi li converte in un catalogo HyperCV finale pronto per la review.
-  5. **Human validation:** Alessio revisiona, approva o corregge il contenuto finale prima che diventi sorgente pubblicabile.
-  6. **Projection e publish safety:** processi locali generano site-data e pagine statiche bilingui, eseguono i controlli di safety e preparano l'evidence package di release.
-  7. **Aggiornamento pubblico:** solo il package statico approvato viene distribuito, senza introdurre interazioni runtime complesse nel MVP.
+### 3. The Author (Alessio / Admin)
+* **Goal:** Enter and keep their professional experience up to date while reducing friction and maximizing data quality, using a **completely local** private pipeline made up of one or more agents or offline processes.
+* **Journey (Offline Backend):**
+  1. **Initial input:** Alessio records a voice note or writes unstructured notes after a day of work.
+  2. **Private consolidation:** local processes transform the inputs into persisted private content, preserving the context useful for future review.
+  3. **Curatorial knowledge base:** the consolidated content is distilled into a curated knowledge base, which can also be integrated with native manual contributions.
+  4. **HyperCV drafting and composition:** the pipeline produces and refines drafts of experiences, projects, and S.T.A.R. cases, then converts them into a final HyperCV catalog ready for review.
+  5. **Human validation:** Alessio reviews, approves, or corrects the final content before it becomes a publishable source.
+  6. **Projection and publish safety:** local processes generate bilingual site-data and static pages, execute safety checks, and prepare the release evidence package.
+  7. **Public update:** only the approved static package is distributed, without introducing complex runtime interactions in the MVP.
 
-Questi journey mostrano perche il prodotto combina un'esperienza pubblica leggibile e veloce con un ciclo editoriale privato governato dall'Autore.
+These journeys show why the product combines a readable, fast public experience with a private editorial cycle governed by the Author.
 
 ## Innovation & Novel Patterns
 
 ### Detected Innovation Areas
-* **Offline-First AI Pipeline:** la distillazione avviene a monte, fuori dal runtime pubblico, riducendo costi, rischio di leakage e allucinazioni.
-* **Canonical HyperCV Catalog:** il CV non e un documento statico ma una vista derivata da un catalogo privato approvato di esperienze, progetti e casi S.T.A.R. riutilizzabili in piu percorsi.
-* **Public Engine / Private Data Split:** il motore del sito e della pipeline puo restare pubblico e ispezionabile, mentre i dati reali e i layer editoriali restano nel dominio privato.
-* **Contextual Progressive Disclosure:** la navigazione espone prima la domanda e poi la risposta strutturata, favorendo lettura rapida e copy-paste operativo.
+* **Offline-First AI Pipeline:** distillation happens upstream, outside the public runtime, reducing costs, leakage risk, and hallucinations.
+* **Canonical HyperCV Catalog:** the CV is not a static document but a view derived from an approved private catalog of experiences, projects, and reusable S.T.A.R. cases across multiple paths.
+* **Public Engine / Private Data Split:** the site and pipeline engine can remain public and inspectable, while the real data and editorial layers remain in the private domain.
+* **Contextual Progressive Disclosure:** navigation first exposes the question and then the structured answer, favoring fast reading and operational copy-paste.
 
 ### Market Context & Competitive Landscape
-Le alternative oggi sono polarizzate tra portfolio statici poco interrogabili e chatbot su CV con rischio di allucinazione, costi runtime e fiducia limitata. HyperCV si posiziona tra questi estremi: esperienza esplorativa guidata, ma con contenuti precompilati, verificabili e serviti da infrastruttura statica.
+Current alternatives are polarized between static portfolios that are hard to query and CV chatbots with hallucination risk, runtime costs, and limited trust. HyperCV positions itself between these extremes: guided exploratory experience, but with precompiled, verifiable content served by static infrastructure.
 
 ### Validation Approach
-Il modello è stato validato tramite First Principles Analysis: separa chiaramente esigenze di recruiter e valutatori tecnici, senza introdurre complessità cloud nella V1. L'ipotesi verrà considerata valida se il prodotto supera il 40% di deep-dive engagement oltre la view iniziale.
+The model was validated through First Principles Analysis: it clearly separates the needs of recruiters and technical evaluators, without introducing cloud complexity in V1. The hypothesis will be considered valid if the product exceeds 40% deep-dive engagement beyond the initial view.
 
 ### Risk Mitigation
-* **Rischio:** la pipeline locale diventa troppo onerosa da mantenere e rallenta gli aggiornamenti.
-* **Mitigazione:** il sistema deve prevedere fallback manuale e automazione minima. Poiché il nucleo resta basato su file editabili localmente, l'Autore può continuare a pubblicare anche in assenza degli agenti AI.
+* **Risk:** the local pipeline becomes too burdensome to maintain and slows down updates.
+* **Mitigation:** the system must provide a manual fallback and minimum automation. Since the core remains based on locally editable files, the Author can continue publishing even in the absence of AI agents.
 
 ## Web App Specific Requirements & Architecture
 
 ### Browser Support Matrix
 
-* La V1 supporta le ultime due major release stabili di Chrome, Edge, Firefox e Safari su desktop.
-* La V1 supporta Safari iOS e Chrome Android su smartphone moderni, mantenendo accessibili i flussi core di discovery, cambio lingua, approfondimento e CTA.
-* Se un enhancement secondario non e disponibile in un browser supportato, la consultazione del contenuto pubblico deve restare possibile senza perdita del percorso principale.
+* V1 supports the latest two stable major releases of Chrome, Edge, Firefox, and Safari on desktop.
+* V1 supports Safari iOS and Chrome Android on modern smartphones, keeping core discovery, language switch, deep-dive, and CTA flows accessible.
+* If a secondary enhancement is not available in a supported browser, consultation of public content must remain possible without loss of the primary path.
 
 ### Responsive Design
 
-* I flussi core del MVP devono restare utilizzabili da viewport mobili a partire da 360 px di larghezza fino a layout desktop ampi, senza perdita di contenuto essenziale o scroll orizzontale nei contenuti principali.
-* Navigazione, ricerca, progressive disclosure, cambio lingua e CTA devono preservare la stessa gerarchia logica su mobile e desktop.
+* MVP core flows must remain usable from mobile viewports starting at 360 px width up to wide desktop layouts, without loss of essential content or horizontal scrolling in the main content.
+* Navigation, search, progressive disclosure, language switch, and CTA must preserve the same logical hierarchy on mobile and desktop.
 
-### Architettura di Transizione (V1 $\rightarrow$ V2)
+### Transition Architecture (V1 $\rightarrow$ V2)
 
-Questa sezione definisce un vincolo di decisione, non una soluzione tecnica definitiva: la V1 deve restare statica e a basso rischio; la Growth puo introdurre runtime e servizi aggiuntivi solo dopo validazione del valore e del costo operativo.
+This section defines a decision constraint, not a final technical solution: V1 must remain static and low-risk; Growth may introduce runtime and additional services only after validating value and operating cost.
 
-Il principio operativo emerso dalla discovery di sistema e che il contratto chiave non e tra due repository specifici, ma tra un **motore pubblico** e un **dominio dati privato**. Il codice della pipeline, le regole di validazione e il frontend possono restare pubblici; i dati reali, i materiali editoriali e il catalogo canonico restano privati.
+The operational principle that emerged from system discovery is that the key contract is not between two specific repositories, but between a **public engine** and a **private data domain**. Pipeline code, validation rules, and frontend can remain public; real data, editorial materials, and the canonical catalog remain private.
 
-#### Fase V1 (Minimum Viable Product):
-* **Boundary:** esperienza pubblica statica con contenuti approvati prima del publish.
-* **Decision Driver:** massimizzare leggibilita, SEO, semplicita operativa e prevedibilita del rilascio.
-* **Esperienza Utente Core:** navigazione gerarchica primaria, ricerca sul corpus statico come modalita secondaria e progressive disclosure su contenuti pubblici in inglese e italiano, mantenute coerenti su desktop e mobile nei browser supportati.
-* **Promotion Chain del contenuto:** catalogo HyperCV finale privato -> projection site-data -> static site deployato, con controlli allowlist-based prima di ogni rilascio.
-* **Promotion Chain del motore:** evoluzione separata del codice pubblico di pipeline, contratti e frontend, consumabile dal workspace privato senza richiedere che i dati reali entrino nel repository pubblico.
+#### V1 Phase (Minimum Viable Product):
+* **Boundary:** static public experience with content approved before publishing.
+* **Decision Driver:** maximize readability, SEO, operational simplicity, and release predictability.
+* **Core User Experience:** primary hierarchical navigation, search over the static corpus as a secondary mode, and progressive disclosure over public content in English and Italian, kept consistent across desktop and mobile in supported browsers.
+* **Content Promotion Chain:** final private HyperCV catalog -> projection site-data -> deployed static site, with allowlist-based controls before every release.
+* **Engine Promotion Chain:** separate evolution of public pipeline code, contracts, and frontend, consumable by the private workspace without requiring real data to enter the public repository.
 
-#### Fase 2 (Growth & Backend Migration):
-* **Activation Condition:** introduzione opzionale di runtime o servizi aggiuntivi solo dopo validazione della V1.
-* **Decision Driver:** il pattern definitivo della Growth resta aperto finche costo operativo e valore delle feature avanzate non sono stati misurati.
-* **Capacita aggiuntive:** autenticazione, gating, matching contestuale e altre funzionalita AI runtime.
-* **Invariante da preservare:** anche in Growth il confine dati privati -> contenuto pubblico resta governato da policy di publication safety e review esplicita.
+#### Phase 2 (Growth & Backend Migration):
+* **Activation Condition:** optional introduction of runtime or additional services only after V1 validation.
+* **Decision Driver:** the final Growth pattern remains open until operating cost and the value of advanced features have been measured.
+* **Additional capabilities:** authentication, gating, contextual matching, and other runtime AI features.
+* **Invariant to preserve:** even in Growth, the private data -> public content boundary remains governed by publication safety policy and explicit review.
 
 ## Project Scoping & Phased Development
 
 ### MVP Strategy & Philosophy
-**MVP Approach:** *Problem-Solving MVP.* L'obiettivo della prima iterazione è dimostrare il valore del formato strutturato S.T.A.R. interattivo, riducendo l'attrito per i veri recruiter che hanno poco tempo. L'assunzione zero è che un portale velocissimo con informazioni condensate pragmaticamente batta un portale narrativo tradizionale. Se l'MVP statico converte (alto tasso di ingaggio in deep-dive), è autorizzato a procedere verso un'architettura backend avanzata (V2).
+**MVP Approach:** *Problem-Solving MVP.* The goal of the first iteration is to demonstrate the value of the structured interactive S.T.A.R. format, reducing friction for real recruiters who have little time. The zero assumption is that a very fast portal with pragmatically condensed information beats a traditional narrative portal. If the static MVP converts (high deep-dive engagement rate), it is authorized to proceed toward an advanced backend architecture (V2).
 
 ### Scope Boundaries (In vs Out)
 
-#### Fase 1: Minimum Viable Product (Static Publish)
-* **[IN SCOPE] Dominio Privato:** contenuto persistito, knowledge base curata, draft editoriali e catalogo HyperCV finale gestiti esclusivamente nella private pipeline locale dell'Autore.
-* **[IN SCOPE] Front-end Web:** generatore statico distribuito come esperienza pubblica a basso costo operativo.
-* **[IN SCOPE] Localizzazione Pubblica:** pubblicazione delle pagine statiche in inglese e italiano a partire dalla knowledge base canonica approvata.
-* **[IN SCOPE] Esperienza Utente (UX):** dinamica esplorativa a progressive disclosure con contesto esplicito e approfondimento a richiesta.
-* **[IN SCOPE] Search sul corpus statico:** ricerca globale su indice statico come modalita secondaria di discovery.
-* **[IN SCOPE] Governance di Publish:** release evidence package, review umana dei contenuti modificati e controlli automatici di publication safety prima del deploy.
-* **[OUT OF SCOPE]** Nessun database in cloud. Nessun backend operativo live. Nessun log-in. Nessun retrieval semantico, chatbot o inferenza LLM prodotta dalle interazioni degli utenti a run-time.
-* **[OUT OF SCOPE]** Pubblicazione di materiali raw, knowledge base private, draft editoriali o altre sorgenti strutturate interne al dominio privato.
+#### Phase 1: Minimum Viable Product (Static Publish)
+* **[IN SCOPE] Private Domain:** persisted content, curated knowledge base, editorial drafts, and final HyperCV catalog managed exclusively in the Author's local private pipeline.
+* **[IN SCOPE] Web Front-end:** static generator distributed as a public experience with low operating cost.
+* **[IN SCOPE] Public Localization:** publication of static pages in English and Italian from the approved canonical knowledge base.
+* **[IN SCOPE] User Experience (UX):** exploratory progressive disclosure dynamic with explicit context and on-demand deep dive.
+* **[IN SCOPE] Search over the static corpus:** global search over a static index as a secondary discovery mode.
+* **[IN SCOPE] Publish Governance:** release evidence package, human review of modified content, and automatic publication safety checks before deploy.
+* **[OUT OF SCOPE]** No cloud database. No live operational backend. No log-in. No semantic retrieval, chatbot, or LLM inference produced by user interactions at run time.
+* **[OUT OF SCOPE]** Publication of raw materials, private knowledge bases, editorial drafts, or other structured sources internal to the private domain.
 
-#### Fase 2: Growth (Backend Evaluation)
-* **[IN SCOPE]** Introduzione di backend e servizi gestiti solo dopo validazione V1.
-* **[IN SCOPE]** Autenticazione per gating delle funzionalita avanzate.
-* **[IN SCOPE]** Attivazione di inferenza AI real-time per matching e retrieval contestuale.
-* **[OUT OF SCOPE]** Sistemi multi-tenancy (se il portale non apre ad altri utenti/portfolio esterni).
+#### Phase 2: Growth (Backend Evaluation)
+* **[IN SCOPE]** Introduction of backend and managed services only after V1 validation.
+* **[IN SCOPE]** Authentication for gating advanced features.
+* **[IN SCOPE]** Activation of real-time AI inference for matching and contextual retrieval.
+* **[OUT OF SCOPE]** Multi-tenancy systems (if the portal does not open to other users/external portfolios).
 
 ## Functional Requirements (MVP V1)
 
-Le sezioni precedenti definiscono il problema, il modello di prodotto, i journey da servire e l'architettura minima che rende credibile la V1. I seguenti requisiti rappresentano quindi il capability contract della V1. Da questo punto il documento passa dalle decisioni di scope ai comportamenti richiesti del sistema e, subito dopo, agli attributi di qualità che ne vincolano l'implementazione.
+The previous sections define the problem, the product model, the journeys to support, and the minimum architecture that makes V1 credible. The following requirements therefore represent the V1 capability contract. From this point the document moves from scope decisions to required system behaviors and, immediately after, to the quality attributes that constrain the implementation.
 
 ### Data Ingestion & Distillation (Offline AI Pipeline)
-* **FR1:** L'Autore può inserire "memorie" destrutturate (note di testo o vocali) relative alla propria carriera nell'ambiente locale.
-* **FR2:** La pipeline locale può consolidare gli input in contenuto privato persistito, preservando il contesto necessario a review e aggiornamenti futuri.
-* **FR3:** L'Agente Distillatore (locale) può derivare dal contenuto persistito una knowledge base curata riutilizzabile per il catalogo HyperCV canonico e per le projection pubbliche approvate della stessa release.
-* **FR4:** L'Autore può leggere, editare e approvare manualmente i contenuti generati e i contributi manuali nativi che confluiscono nel catalogo canonico.
+* **FR1:** The Author can enter unstructured "memories" (text notes or voice notes) related to their career in the local environment.
+* **FR2:** The local pipeline can consolidate inputs into persisted private content, preserving the context needed for review and future updates.
+* **FR3:** The Distiller Agent (local) can derive from persisted content a curated knowledge base reusable for the canonical HyperCV catalog and for approved public projections of the same release.
+* **FR4:** The Author can read, edit, and manually approve the generated content and native manual contributions that flow into the canonical catalog.
 
 ### Content Assembly & Generation
-* **FR5:** La pipeline locale può organizzare il contenuto approvato in un catalogo HyperCV composto da esperienze, progetti e casi S.T.A.R. pronti per la pubblicazione.
-* **FR6:** L'Agente Generatore (locale) può riutilizzare lo stesso contenuto canonico approvato nei diversi nodi di navigazione approvati del portale mantenendo coerenza semantica, collegamento alla stessa fonte canonica e assenza di divergenze testuali non approvate tra le viste pubblicate della stessa release.
-* **FR7:** Il Sistema locale può pubblicare l'output statico del portale tramite la pipeline di hosting pubblico.
-* **FR8:** L'Autore può aggirare gli Agenti (degradazione manuale) ed editare direttamente i contenuti approvati prima della pubblicazione.
+* **FR5:** The local pipeline can organize approved content into a HyperCV catalog composed of experiences, projects, and S.T.A.R. cases ready for publication.
+* **FR6:** The Generator Agent (local) can reuse the same approved canonical content across the different approved navigation nodes of the portal while maintaining semantic consistency, linkage to the same canonical source, and absence of unapproved textual divergences between published views of the same release.
+* **FR7:** The local System can publish the static output of the portal through the public hosting pipeline.
+* **FR8:** The Author can bypass the Agents (manual degradation) and directly edit approved content before publication.
 
 ### Navigation & Discovery (UX)
-* **FR9:** Il Visitatore può accedere a un Executive Summary generale e navigare la carriera tramite cluster logici.
-* **FR10:** Il Visitatore può richiamare il contesto di uno stack o di una competenza e vedere la domanda esatta a cui quel contenuto risponde.
-* **FR11:** Il Visitatore può eseguire un "click" (Progressive Disclosure) sull'elemento per far espandere il blocco di testo contenente il caso di studio S.T.A.R.
-* **FR12:** Il Visitatore può selezionare e copiare i frammenti S.T.A.R. a schermo preservando heading, paragrafi e blocchi elenco sufficienti al riuso in strumenti terzi senza riformattazione sostanziale.
-* **FR13:** Il Visitatore può utilizzare una barra di ricerca globale sul corpus statico come modalita secondaria per interrogare l'indice del CV.
+* **FR9:** The Visitor can access a general Executive Summary and navigate the career through logical clusters.
+* **FR10:** The Visitor can call up the context of a stack or a skill and see the exact question that content answers.
+* **FR11:** The Visitor can perform a "click" (Progressive Disclosure) on the element to expand the text block containing the S.T.A.R. case study.
+* **FR12:** The Visitor can select and copy the on-screen S.T.A.R. fragments while preserving headings, paragraphs, and list blocks sufficient for reuse in third-party tools without substantial reformatting.
+* **FR13:** The Visitor can use a global search bar over the static corpus as a secondary mode for querying the CV index.
 
 ### Accessibility, SEO & AI Ingestion
-* **FR14:** Il Visitatore con disabilita, cosi come gli strumenti assistivi non visivi, può navigare l'intera alberatura del sito e accedere ai contenuti contestuali e agli approfondimenti.
-* **FR15:** Sistemi esterni di crawling e retrieval documentale possono leggere il contenuto pubblico strutturato e recuperare il contenuto principale delle pagine benchmark di release senza dipendere dall'esecuzione di JavaScript client-side.
-* **FR16:** I motori di ricerca pubblici possono indicizzare i contenuti professionali esposti in modo che le pagine benchmark di release risultino eleggibili per query professionali prioritarie definite dall'Autore.
+* **FR14:** The Visitor with disabilities, as well as non-visual assistive tools, can navigate the entire site tree and access contextual content and deep dives.
+* **FR15:** External crawling and document retrieval systems can read the structured public content and retrieve the main content of release benchmark pages without depending on client-side JavaScript execution.
+* **FR16:** Public search engines can index the exposed professional content so that release benchmark pages are eligible for priority professional queries defined by the Author.
 
 ### Analytics & Conversion
-* **FR17:** Il Sistema web traccia l'engagement misurando percentualmente i visitatori che espandono le descrizioni (Deep-Dive).
-* **FR18:** Il Sistema web traccia il "Time-to-Value", calcolando il tempo intercorso al momento del primo click esplorativo.
-* **FR19:** Il Visitatore può cliccare su una Call-to-Action primaria di contatto professionale a fine pagina per atterrare direttamente sul profilo LinkedIn.
+* **FR17:** The web System tracks engagement by measuring the percentage of visitors who expand descriptions (Deep-Dive).
+* **FR18:** The web System tracks "Time-to-Value", calculating the elapsed time until the first exploratory click.
+* **FR19:** The Visitor can click on a primary professional contact Call-to-Action at the end of the page to land directly on the LinkedIn profile.
 
 ### Canonical Knowledge, Localization & Reprocessing
-* **FR20:** L'Autore può acquisire dati raw in italiano e inglese; lingue ulteriori sono ammesse solo quando il workflow editoriale attivo dichiara supporto esplicito.
-* **FR21:** Il sistema di distillazione può creare un catalogo HyperCV canonico monolingua solo a partire da sorgenti eterogenee e contributi manuali che, per la release corrente, abbiano stato `approved`, review umana completata e assenza di finding bloccanti di publishability.
-* **FR22:** Il sistema può mantenere un collegamento verificabile tra il catalogo canonico, i contributi che lo compongono e le sorgenti che ne supportano la revisione in modo che, durante la review, l'Autore possa risalire da ogni elemento canonico ad almeno una sorgente o contributo approvato con revisione identificabile.
-* **FR23:** L'Autore può ispezionare provenienza, stato di review e componenti approvate del contenuto canonico durante review e decisioni di publish.
-* **FR24:** Il sistema di generazione statica può pubblicare varianti di pagina in inglese e italiano a partire dal catalogo canonico approvato, senza esporre i layer editoriali privati.
-* **FR25:** Il Visitatore può cambiare lingua mantenendo, quando disponibile, lo stesso contenuto logico o nodo di navigazione.
-* **FR26:** Il sistema può rilevare prima del rilascio pubblico placeholder non tradotti, varianti mancanti per pagine richieste e incoerenze manifeste tra nodi equivalenti che impediscono una pubblicazione coerente.
-* **FR27:** L'Autore può avviare una rigenerazione selettiva o completa quando cambiano input sorgente o regole di trasformazione approvate.
-* **FR28:** Il sistema può pubblicare soltanto uno stato del corpus che sia stato revisionato come coerente per il rilascio pubblico previsto.
-* **FR29:** Il sistema può distinguere contenuti gestiti principalmente dalla knowledge base, contenuti manuali e contenuti ibridi assegnando a ogni contenuto una sola classificazione attiva tra `knowledge-base-managed`, `manual-managed` o `hybrid-managed`, visibile in review e rispettata in fase di rigenerazione.
-* **FR30:** Il sistema può associare una revisione verificabile ai contenuti canonici e ai riferimenti usati per comporli.
-* **FR31:** Il sistema può segnalare quando una composizione approvata diventa stale a causa del cambiamento di una revisione referenziata.
-* **FR32:** L'Autore può ispezionare quali revisioni e quali contributi sono stati materializzati nel contenuto pronto per la pubblicazione.
+* **FR20:** The Author can acquire raw data in Italian and English; additional languages are allowed only when the active editorial workflow declares explicit support.
+* **FR21:** The distillation system can create a monolingual canonical HyperCV catalog only from heterogeneous sources and manual contributions that, for the current release, have `approved` status, completed human review, and no blocking publishability findings.
+* **FR22:** The system can maintain a verifiable link between the canonical catalog, the contributions that compose it, and the sources that support its review so that, during review, the Author can trace every canonical element back to at least one approved source or contribution with identifiable review.
+* **FR23:** The Author can inspect provenance, review status, and approved components of the canonical content during review and publish decisions.
+* **FR24:** The static generation system can publish page variants in English and Italian from the approved canonical catalog, without exposing private editorial layers.
+* **FR25:** The Visitor can change language while preserving, when available, the same logical content or navigation node.
+* **FR26:** The system can detect before public release untranslated placeholders, missing variants for required pages, and manifest inconsistencies between equivalent nodes that prevent coherent publication.
+* **FR27:** The Author can trigger selective or full regeneration when source inputs or approved transformation rules change.
+* **FR28:** The system can publish only a state of the corpus that has been reviewed as coherent for the intended public release.
+* **FR29:** The system can distinguish content managed primarily by the knowledge base, manual content, and hybrid content by assigning each content item a single active classification among `knowledge-base-managed`, `manual-managed`, or `hybrid-managed`, visible in review and respected during regeneration.
+* **FR30:** The system can associate a verifiable revision with canonical content and the references used to compose it.
+* **FR31:** The system can signal when an approved composition becomes stale due to a change in a referenced revision.
+* **FR32:** The Author can inspect which revisions and which contributions were materialized into the content ready for publication.
 
 ## Non-Functional Requirements
 
 ### Performance
-* Le interazioni pubbliche principali di navigazione, ricerca sul corpus statico e progressive disclosure devono completarsi entro 100 ms dopo il caricamento iniziale della pagina, misurate nei browser supportati su build di release.
-* Le principali pagine pubbliche di benchmark release (homepage, una pagina esperienza rappresentativa e un percorso bilingue con cambio lingua) devono raggiungere un punteggio Lighthouse almeno pari a 95 su mobile e desktop nelle verifiche pre-release.
-* Una nuova release pubblica non deve peggiorare di oltre il 10% i tempi di interazione o il peso pagina rispetto alla release pubblica precedente, misurato nel release evidence package.
-* Il cambio lingua deve completarsi entro 500 ms su pagine pubbliche gia caricate nei browser supportati.
+* The main public interactions of navigation, search over the static corpus, and progressive disclosure must complete within 100 ms after the initial page load, measured in supported browsers on release builds.
+* The main public release benchmark pages (homepage, one representative experience page, and one bilingual path with language switch) must achieve a Lighthouse score of at least 95 on mobile and desktop in pre-release checks.
+* A new public release must not degrade interaction times or page weight by more than 10% compared to the previous public release, as measured in the release evidence package.
+* Language switch must complete within 500 ms on already loaded public pages in supported browsers.
 
 ### Security & Boundary Enforcement
-* I controlli pre-publish devono verificare su tutti i contenuti modificati che dati raw, knowledge base private, draft editoriali e materiali di lavorazione non siano inclusi nel package pubblico.
-* La build pubblica deve includere soltanto contenuti e projection marcati come pubblicabili tramite policy allowlist-based; ogni elemento privo di approvazione deve essere escluso dal bundle di release, come verificato nel release evidence package per il 100% dei contenuti modificati.
-* Il numero di riferimenti privati non autorizzati nel layer pubblico deve essere pari a 0 in ogni review di rilascio.
-* Il release evidence package deve confermare che metadata sensibili, riferimenti interni, dettagli coperti da NDA e layer strutturati non destinati alla pubblicazione siano assenti dalle pagine pubbliche modificate.
+* Pre-publish checks must verify on all modified content that raw data, private knowledge bases, editorial drafts, and working materials are not included in the public package.
+* The public build must include only content and projections marked as publishable through allowlist-based policy; every element lacking approval must be excluded from the release bundle, as verified in the release evidence package for 100% of modified content.
+* The number of unauthorized private references in the public layer must be 0 in every release review.
+* The release evidence package must confirm that sensitive metadata, internal references, NDA-covered details, and structured layers not intended for publication are absent from modified public pages.
 
 ### Governance & Traceability
-* Ogni contenuto pubblicato deve avere uno stato di review, una provenienza verificabile e una revisione identificabile prima del rilascio, come attestato per il 100% dei contenuti modificati dalla checklist di release o da evidenza equivalente allegata al release evidence package.
-* L'Autore deve poter risalire da un contenuto approvato ad almeno una sorgente o contributo di supporto durante la review pre-publish.
-* Se una revisione referenziata cambia dopo l'approvazione, il contenuto derivato deve essere trattato come stale finché non viene riesaminato.
-* Il release evidence package deve verificare stato di review, collegamento di provenienza e revisioni materializzate per il 100% dei contenuti modificati in una release.
+* Every published content item must have a review status, verifiable provenance, and an identifiable revision before release, as attested for 100% of modified content by the release checklist or equivalent evidence attached to the release evidence package.
+* The Author must be able to trace an approved content item back to at least one supporting source or contribution during pre-publish review.
+* If a referenced revision changes after approval, the derived content must be treated as stale until it is reviewed again.
+* The release evidence package must verify review status, provenance linkage, and materialized revisions for 100% of modified content in a release.
 
 ### Localization & Content Consistency
-* Ogni pagina pubblica in inglese deve avere una variante italiana equivalente oppure un'eccezione esplicita approvata prima del rilascio.
-* Il cambio lingua deve preservare lo stesso contenuto logico o nodo di navigazione nel 100% delle pagine bilingui verificate in release QA.
-* I controlli pre-release devono rilevare il 100% dei placeholder non tradotti e dei contenuti palesemente incoerenti nelle pagine modificate.
+* Every public page in English must have an equivalent Italian variant or an explicit approved exception before release.
+* Language switch must preserve the same logical content or navigation node in 100% of bilingual pages verified in release QA.
+* Pre-release checks must detect 100% of untranslated placeholders and manifestly inconsistent content in modified pages.
 
 ### Accessibility & Machine Readability
-* Tutte le interazioni pubbliche principali devono essere utilizzabili via tastiera nei browser supportati durante la QA di release.
-* I template pubblici del MVP devono soddisfare WCAG 2.1 AA in review automatizzata e manuale prima della pubblicazione.
-* Il release evidence package deve includere snapshot HTML o catture equivalenti con JavaScript disabilitato per homepage, una pagina esperienza rappresentativa e un percorso bilingue, dimostrando che il contenuto pubblico principale resta leggibile senza dipendere dall'esecuzione client-side.
+* All main public interactions must be usable via keyboard in supported browsers during release QA.
+* MVP public templates must satisfy WCAG 2.1 AA in automated and manual review before publication.
+* The release evidence package must include HTML snapshots or equivalent captures with JavaScript disabled for the homepage, one representative experience page, and one bilingual path, demonstrating that the main public content remains readable without depending on client-side execution.
 
 ### Validation & Publish Readiness
-* I controlli pre-publish devono bloccare la release in presenza di leakage, metadata non ammessi o contenuti incompleti nelle pagine modificate.
-* La review umana deve coprire il 100% delle pagine pubbliche modificate in una release.
-* Il release evidence package deve dimostrare che il package pubblico non contiene dati raw né riferimenti privati non autorizzati.
+* Pre-publish checks must block the release in the presence of leakage, non-allowed metadata, or incomplete content on modified pages.
+* Human review must cover 100% of modified public pages in a release.
+* The release evidence package must demonstrate that the public package contains neither raw data nor unauthorized private references.
 
 ### Operability
-* Un aggiornamento standard del contenuto pubblicabile deve poter essere completato da un singolo autore-operatore in meno di 30 minuti, esclusa la stesura delle note raw, durante una dry run di processo.
-* Un full rebuild del corpus deve poter essere eseguito tramite una checklist end-to-end documentata, senza interventi manuali non descritti e con esito verificabile in dry run completata con successo almeno una volta per ogni modifica sostanziale del workflow.
-* Il workflow operativo deve poter essere eseguito in un workspace privato che consuma il motore pubblico senza richiedere che i dati reali entrino nel repository pubblico.
-* Il release evidence package e la checklist di rebuild, review e publish devono poter essere eseguiti da un singolo autore usando la documentazione del repository come unica guida operativa.
+* A standard update of publishable content must be completable by a single author-operator in less than 30 minutes, excluding raw note drafting, during a process dry run.
+* A full corpus rebuild must be executable through a documented end-to-end checklist, without undescribed manual interventions and with a verifiable outcome in a dry run completed successfully at least once for every substantial workflow change.
+* The operational workflow must be executable in a private workspace that consumes the public engine without requiring real data to enter the public repository.
+* The release evidence package and the rebuild, review, and publish checklist must be executable by a single author using repository documentation as the only operational guide.
