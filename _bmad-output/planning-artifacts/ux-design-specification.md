@@ -909,7 +909,7 @@ This means accessibility is not only about contrast, keyboard support, and seman
 - continuity when switching identity lens
 - readability of proof under time pressure
 
-WCAG 2.2 AA is the right target, but the deeper principle is journey preservation, not checklist completion.
+WCAG 2.1 AA is the right target, but the deeper principle is journey preservation, not checklist completion.
 
 The most important accessibility priorities are:
 - semantic structure that preserves meaning across sections and paths
