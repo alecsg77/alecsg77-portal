@@ -11,6 +11,7 @@ stepsCompleted:
 inputDocuments:
   - /workspaces/alecsg77-portal/_bmad-output/planning-artifacts/prd.md
   - /workspaces/alecsg77-portal/_bmad-output/planning-artifacts/ux-design-specification.md
+  - /workspaces/alecsg77-portal/_bmad-output/brainstorming/brainstorming-session-2026-03-15-0620.md
 workflowType: 'architecture'
 lastStep: 8
 status: 'complete'
@@ -30,24 +31,26 @@ _This document builds collaboratively through step-by-step discovery. Sections a
 
 The project combines two tightly coupled domains: a private offline-first authoring and distillation pipeline, and a public static-first bilingual portal. Architecturally, this is a controlled content supply chain rather than a website with supporting scripts.
 
-The architecture is shaped by 28 functional requirements across those two domains and by strict non-functional constraints: static-first performance, Lighthouse 95+ targets on key pages, sub-500 ms context-preserving language switching, no-critical-JS resilience, strong public/private separation, provenance-aware publishing, bilingual parity, accessibility, crawlability, and release evidence.
+The architecture is shaped by 32 functional requirements across those two domains and by strict non-functional constraints: static-first performance, Lighthouse 95+ targets on key pages, sub-500 ms context-preserving language switching, no-critical-JS resilience, strong public/private separation, provenance-aware publishing, bilingual parity, accessibility, crawlability, stale-aware regeneration, and release evidence.
+
+The updated PRD and the March 15 brainstorming session clarify that the key architectural boundary is not between code repositories but between a public engine and private data classes. The public repository remains authoritative for the engine, contracts, validators, and frontend delivery layer, while all real content classes and transformations remain in the private domain until a sanitized static package is produced.
 
 - Primary domain: static-first bilingual web application with local content pipeline
 - Complexity level: medium
-- Estimated architectural components: 7
+- Estimated architectural components: 9
 
 ### Architectural Decision Drivers
 
 The current project context already implies a set of strong architectural drivers that will constrain later design choices.
 
 **Driver 1: Public/private separation is non-negotiable**
-The public portal must remain strictly isolated from raw notes, working materials, and non-approved artifacts. This is not only a security concern; it is a product principle and a publishing constraint.
+The public portal must remain strictly isolated from raw notes, working materials, non-approved artifacts, and private structured source layers. This is not only a security concern; it is a product principle and a publishing constraint. The boundary applies to data, not to code.
 
 **Driver 2: Static-first delivery is a core MVP constraint**
 The MVP is not allowed to rely on live backend systems for public consumption. This strongly pushes architecture toward build-time generation, static hosting, precomputed navigation structures, and client-side enhancement only where it does not break the no-critical-JS requirement.
 
 **Driver 3: Canonical content reuse must not drift**
-The same approved artifact may appear in multiple routes and perspectives. This means the architecture needs a canonical content model with stable identifiers, controlled derivations, and strong consistency guarantees across generated outputs.
+The same approved artifact may appear in multiple routes and perspectives. This means the architecture needs a canonical content model with stable identifiers, explicit composition rules, revision pinning, and strong consistency guarantees across generated outputs.
 
 **Driver 4: Bilingual parity is structural, not cosmetic**
 English and Italian are not a late translation layer. The architecture must preserve logical node equivalence, detect localization gaps before publish, and maintain context across language switches.
@@ -57,6 +60,9 @@ The persona-first TOC, top-topic entry points, progressive disclosure, and evide
 
 **Driver 6: Release evidence is part of the system boundary**
 The product is not complete at build output alone. It also requires a release discipline that verifies approval state, leakage prevention, localization consistency, accessibility, and benchmark performance before publication.
+
+**Driver 7: Projection layers must preserve provenance without becoming source of truth**
+The bilingual web projection is derived from private canonical content, but that projection must keep traceable provenance back to the approved canonical artifacts while remaining fully regenerable and non-authoritative.
 
 ### Product, UX, and Technical Alignment
 
@@ -71,7 +77,9 @@ Later architecture decisions should be evaluated against a three-part test:
 
 The MVP must avoid live backend dependencies for public consumption. V1 has no authentication, no cloud database, no runtime retrieval layer, and no chatbot behavior. The architecture must therefore support static hosting, publish-time generation from approved canonical artifacts, and client-side enhancements that do not weaken crawlability, accessibility, or no-critical-JS resilience.
 
-The UX specification adds concrete constraints: persona-first routing, progressive disclosure, evidence blocks, mobile/desktop continuity, and node-preserving language switching. The release model adds equally strong governance constraints: provenance-aware content management, bilingual parity, leakage prevention, and publish-time validation.
+The UX specification adds concrete constraints: persona-first routing, progressive disclosure, evidence blocks, mobile/desktop continuity, and node-preserving language switching. The release model adds equally strong governance constraints: provenance-aware content management, bilingual parity, leakage prevention, revision-aware validation, and publish-time validation.
+
+All transformations across `raw`, `deep-knowledge`, `knowledge-base`, `hypercv-*`, and `site-data` occur inside the private domain. The only artifact class allowed to cross into the public runtime boundary is the approved static site package derived through allowlist-based promotion.
 
 ### Core Architectural Tensions
 
@@ -83,7 +91,8 @@ The UX specification adds concrete constraints: persona-first routing, progressi
 ### Architectural Implications
 
 - Prefer build-time derivation over runtime interpretation.
-- Prefer a canonical content schema with stable identifiers, provenance metadata, and explicit locale linkage.
+- Prefer a canonical content schema with stable identifiers, provenance metadata, explicit locale linkage, and revision-aware composition.
+- Prefer explicit class boundaries between private persisted content, private canonical HyperCV artifacts, private web projections, and public deployable output.
 - Prefer route and language models that preserve logical equivalence explicitly.
 - Prefer progressive enhancement over JS-dependent core reading flows.
 - Prefer the smallest architecture that satisfies MVP constraints without introducing speculative V2 infrastructure.
@@ -91,9 +100,11 @@ The UX specification adds concrete constraints: persona-first routing, progressi
 ### Architectural Risk Register
 
 - Weak canonical model: if approved artifacts do not keep stable identity and reuse rules, content will drift across routes and locales.
+- Weak class boundaries: if `deep-knowledge`, `knowledge-base`, `hypercv-final`, and `site-data` are collapsed conceptually, ownership and regeneration rules will become ambiguous.
 - Excessive JS dependence: if core comprehension depends on client execution, crawlability, accessibility, and resilience goals will fail.
 - Late localization modeling: if bilingual parity is handled too late, language switching and semantic equivalence will become fragile.
 - Governance bolted on too late: if approval, provenance, and leakage rules are not modeled upstream, publishing will become manual and unsafe.
+- Missing revision pinning: if final artifacts do not pin the approved revisions they materialize, stale outputs will be undetectable and review trust will erode.
 - UX routing complexity trap: if persona-first and topic-first routing require route-specific authoring logic, frontend clarity will become operationally expensive.
 - V2 overengineering: if future backend evolution is optimized too early, the MVP will absorb complexity without validating present value.
 
@@ -102,7 +113,9 @@ The UX specification adds concrete constraints: persona-first routing, progressi
 - canonical content reuse across multiple routes
 - public/private boundary enforcement
 - provenance, approval state, and release gating
+- revision pinning, stale detection, and materialized review state
 - bilingual parity and context-preserving language switching
+- projection integrity between `hypercv-final`, `site-data`, and public routes
 - accessibility, semantic HTML, and crawlable delivery
 - SEO and machine-readable content without critical JS dependency
 - performance budgets for navigation, disclosure, and search
@@ -157,17 +170,22 @@ Use Astro with migration-aware boundaries: framework-light content contracts, ex
 ### Decision Priority Analysis
 
 **Critical Decisions (Block Implementation):**
-- Use a file-based canonical content architecture with stable identifiers, locale-linked records, and publish eligibility metadata.
-- Enforce schema validation at build time through shared TypeScript and schema definitions.
+- Use a file-based private canonical content architecture with explicit classes for `deep-knowledge`, `knowledge-base`, `hypercv-draft`, `hypercv-composition`, `hypercv-final`, and `site-data`.
+- Enforce schema validation through shared TypeScript and schema definitions across ingestion, transformation, review, and pre-publish release checks.
+- Materialize `hypercv-final` explicitly from draft plus composition rather than inferring final content implicitly from intermediate layers.
+- Require revision pinning and stale detection for HyperCV compositions and release candidates.
 - Keep the MVP free of runtime database, public authentication, and public backend APIs.
 - Implement search through a prebuilt static index or equivalent static-search strategy.
 - Deploy the public portal as a static build on CDN-backed hosting with atomic deploys.
+- Allow only approved static deploy artifacts to cross from the private data domain into the public runtime boundary.
 - Preserve explicit migration boundaries so future integration with ASP.NET MVC does not require redesigning the content model or route contracts.
 
 **Important Decisions (Shape Architecture):**
 - Use TypeScript in strict mode across content utilities, validation logic, and frontend code.
 - Use Astro as a delivery framework, but keep domain structure, content contracts, and route semantics as framework-light as practical.
 - Model localization explicitly with node-preserving language mappings rather than inferred route equivalence.
+- Generate bilingual `site-data` from monolingual private canonical HyperCV artifacts instead of making the canonical layer itself bilingual.
+- Treat `site-data` as a private projection with internal provenance and no manual edits.
 - Make release validation a pipeline concern, including provenance, bilingual parity, leakage checks, accessibility, and benchmark verification.
 - Produce build artifacts and validation manifests that remain usable even if a future .NET backend becomes the orchestration layer.
 
@@ -182,9 +200,20 @@ Use Astro with migration-aware boundaries: framework-light content contracts, ex
 
 ### Data Architecture
 
-Use a repository-backed, file-based canonical content model as the source of truth. Approved artifacts must carry stable IDs, locale linkage, approval metadata, provenance references, publish eligibility, and schema versioning.
+Use a repository-backed, file-based private data model with explicit class responsibilities rather than a single undifferentiated content store.
 
-Validation is schema-first and shared across content ingestion and pre-publish release checks. Migration remains lightweight through content-shape migrations rather than database migrations. Caching is static and CDN-oriented through immutable assets and prebuilt outputs.
+The class model is:
+- `raw` as ephemeral ingestion input, not a persistent governed class
+- `deep-knowledge` as append-only, immutable, private persisted memory
+- `knowledge-base-dk` and `knowledge-base-manual` as two managed subclasses that merge into a logical unified knowledge-base view for downstream generation
+- `hypercv-draft` as persistent draft contributions for `cv-experience`, `cv-project`, and `cv-star`
+- `hypercv-composition` as the explicit convergence layer that records approved revision references and composition defaults
+- `hypercv-final` as the private canonical materialization used as the source of truth for publication
+- `site-data` as a private, fully regenerable web projection that feeds the static renderer without becoming the content source of truth
+
+The canonical HyperCV catalog must preserve an explicit hierarchy of `cv-experience -> cv-project -> cv-star`, with policy classification on each object (`knowledge-base-managed`, `manual-managed`, or `hybrid-managed`). All HyperCV artifacts carry stable IDs and required revision metadata. If a referenced approved revision changes, the related composition becomes stale and the derived final content must be re-reviewed before reuse.
+
+Validation is schema-first but domain-oriented: structure, lineage, safety, semantic quality, consistency, and publication readiness are reusable validator domains applied to the classes where relevant. Migration remains lightweight through content-shape migrations rather than database migrations. Caching is static and CDN-oriented only at the public output layer; persistence of `site-data` is a materialization choice, not a statement of canonical ownership.
 
 ### Authentication & Security
 
@@ -202,7 +231,9 @@ Authenticated authorization is deferred to a future backend-supported release. T
 
 The MVP exposes no public runtime API as a core dependency. Private preparation and public delivery communicate through build-time artifact exchange using validated structured content and generated static outputs.
 
-The architectural contract is schema-based rather than endpoint-based: content artifacts, localization mappings, navigation structures, route manifests, and publish manifests must be versioned and validated before build completion. Build failures are fail-fast. Search is delivered through a precomputed static index decoupled from route internals.
+The architectural contract is schema-based rather than endpoint-based: content artifacts, localization mappings, navigation structures, route manifests, publish manifests, and revision references must be versioned and validated before build completion. Build failures are fail-fast. Search is delivered through a precomputed static index decoupled from route internals.
+
+The operational boundary is `public code + private data`, not `public repo + private repo` as a hard architectural invariant. The private workspace may consume the public engine as a package in automation and may use adjacent local checkouts in development. Git submodules are tolerated only as a local bootstrap convenience and must not become the governance mechanism.
 
 ### Frontend Architecture
 
@@ -213,9 +244,11 @@ Component architecture stays disciplined and migration-aware:
 - reusable evidence and disclosure components
 - locale-aware route and navigation helpers
 - strict separation between content rendering and interaction utilities
-- explicit contracts between canonical content nodes and rendered page structures
+- explicit contracts between `site-data` nodes and rendered page structures
 
 State management remains minimal: build-produced page state, URL and anchor state, and local component state. Routing uses explicit localized routes with canonical node mappings so language switching preserves logical context. Route semantics must stay stable independently of the rendering framework.
+
+The frontend must render from `site-data`, not directly from `hypercv-final`. `site-data` is where localized citation targets, persona-profile entities, path derivation, and user-facing route surfaces are established. Internal provenance must remain traceable back to `hypercv-final`, while user-facing citations resolve only to localized public targets.
 
 ### Infrastructure & Deployment
 
@@ -230,13 +263,19 @@ CI/CD must verify more than build success:
 - performance benchmarks on key pages
 - generation of publish manifests and validation evidence that remain reusable in future backend-supported workflows
 
-Environment configuration stays minimal and explicit, with public build variables cleanly separated from private pipeline configuration. V1 scales through CDN distribution and immutable static assets. If V2 introduces authentication, chatbot runtime, or SSR, the backend should be added as a separate boundary rather than eroding the current static delivery assumptions.
+Execution infrastructure must preserve the engine/data split:
+- the public repository ships the engine, contracts, validators, and frontend delivery code
+- private storage or a private repository holds `deep-knowledge`, knowledge-base content, HyperCV artifacts, `site-data`, and release evidence inputs
+- all transformations from private classes to public output run inside the private execution environment
+- the deployed public artifact is the static site package only
+
+Environment configuration stays minimal and explicit, with public build variables cleanly separated from private pipeline configuration such as content-root paths and release evidence locations. V1 scales through CDN distribution and immutable static assets. If V2 introduces authentication, chatbot runtime, or SSR, the backend should be added as a separate boundary rather than eroding the current static delivery assumptions.
 
 ### Decision Impact Analysis
 
-Implementation should proceed in this order: canonical schema and locale-linking rules, shared validation and publish eligibility, Astro route generation around framework-light contracts, static search indexing, release validation and publish manifests, then static hosting and deployment.
+Implementation should proceed in this order: private class schema and revision rules, shared validation and publish eligibility, HyperCV draft/composition/final materialization, `site-data` projection and provenance tracking, Astro route generation around framework-light contracts, static search indexing, release validation and publish manifests, then static hosting and deployment.
 
-Key dependencies remain explicit: routing depends on the canonical schema and locale linkage; release validation depends on provenance and publish eligibility; search depends on stable page generation and content chunking; future ASP.NET MVC integration depends on keeping content, route semantics, and interaction boundaries independent from Astro internals.
+Key dependencies remain explicit: routing depends on the canonical schema and locale linkage; `site-data` depends on explicit HyperCV final materialization; stale detection depends on revision-aware composition; release validation depends on provenance, publish eligibility, and materialized revision evidence; search depends on stable page generation and content chunking; future ASP.NET MVC integration depends on keeping content, route semantics, and interaction boundaries independent from Astro internals.
 
 ## Implementation Governance Summary
 
@@ -244,30 +283,31 @@ Detailed implementation guidance has been extracted into the temporary operation
 
 The architecture-level constraints that remain mandatory are:
 - the content pipeline is the semantic center of the system and the frontend is only a delivery projection
-- the public repository contains the full codebase, while private production data remains outside the repository in secure persistent storage
-- the system distinguishes private production data, public production artifacts, and dedicated test datasets
-- canonical artifacts remain the source of truth for publication, reuse, and future backend evolution
+- the public repository contains the full codebase, while private production data and private structured content classes remain outside the repository in secure persistent storage
+- the system distinguishes private production data, private projection artifacts, public production artifacts, and dedicated test datasets
+- canonical HyperCV final artifacts remain the source of truth for publication, reuse, and future backend evolution
+- `site-data` remains private, regenerable, never manually edited, and subordinate to canonical HyperCV content
+- release governance must preserve revision traceability from approved source inputs through composition, final materialization, and public projection
 
 The operational addendum must not be archived until its critical rules are persisted elsewhere through code enforcement, CI validation, backlog items for deferred decisions, and permanent architecture notes where needed.
 
 ## Architecture Readiness Summary
 
-The architecture is validated as coherent and ready for implementation at the design level. The remaining open points are operational, not architectural: concrete secure-storage choice, optional private-data versioning, promotion mechanics between private storage and public artifacts, and regression strategy for pipeline reprocessing.
+The architecture is validated as coherent and ready for implementation at the design level. The remaining open points are operational, not architectural: concrete secure-storage choice, optional private-data versioning strategy, exact schema/file-layout details for the private classes, and regression strategy for pipeline reprocessing.
 
 ## Architecture Validation Record
 
 **Coherence validation**
-The architecture is coherent around a static-first public portal and a private-content-centered generation pipeline. Astro is treated as a delivery framework, while contracts, canonical content, and release validation remain the true architectural backbone.
+The architecture is coherent around a static-first public portal and a private-content-centered generation pipeline. Astro is treated as a delivery framework, while contracts, private data classes, canonical HyperCV materialization, and release validation remain the true architectural backbone.
 
 **Requirements coverage validation**
-The architecture covers both sides of the MVP: private ingestion and distillation workflows, and public bilingual delivery with guided navigation, static search, progressive disclosure, and publish-time governance.
+The architecture covers both sides of the MVP: private ingestion and distillation workflows, explicit HyperCV composition and revision governance, and public bilingual delivery with guided navigation, static search, progressive disclosure, and publish-time governance.
 
 **Implementation readiness validation**
-The design is ready for implementation because technology direction, repository model, privacy boundaries, data classes, migration stance, and release model are explicit enough to guide implementation consistently.
+The design is ready for implementation because technology direction, engine/data boundary, privacy constraints, data classes, revision model, migration stance, and release model are explicit enough to guide implementation consistently.
 
 **Deferred but non-blocking gaps**
 - concrete secure-storage choice and backup strategy
 - optional private-data versioning, pending proven rollback or audit needs
-- exact canonical schema details to be finalized during implementation
+- exact canonical schema and file-layout details to be finalized during implementation
 - regression comparison strategy for pipeline reprocessing
-- operational promotion flow between private storage and public publishable artifacts

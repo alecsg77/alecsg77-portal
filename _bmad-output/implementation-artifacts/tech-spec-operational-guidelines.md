@@ -5,7 +5,7 @@ scope: 'operational-definition'
 sourceArchitecture: '/workspaces/alecsg77-portal/_bmad-output/planning-artifacts/architecture.md'
 intendedPhase: 'implementation'
 archiveWhen: 'implementation decisions are consolidated in code, tests, and final documentation'
-date: '2026-03-14'
+date: '2026-03-16'
 ---
 
 # Tech Spec Operational Guidelines
@@ -27,14 +27,14 @@ _This document is a temporary implementation-phase addendum. It captures operati
 
 ### Core Architectural Principle
 
-The core architecture of this MVP is the content pipeline, not the frontend framework. The public frontend is a delivery projection of approved canonical knowledge. All implementation patterns must therefore protect the integrity, traceability, and governability of the private generation pipeline first, and only then optimize rendering and delivery.
+The core architecture of this MVP is the content pipeline, not the frontend framework. The public frontend is a delivery projection of approved private canonical knowledge. All implementation patterns must therefore protect the integrity, traceability, and governability of the private generation pipeline first, and only then optimize rendering and delivery.
 
 ### Content Generation Patterns
 
 **Pipeline Boundaries:**
 - Raw notes, private source material, and working prompts must never be consumed directly by frontend rendering.
-- Distillation outputs must pass through a canonical structured-content layer before they become publishable frontend input.
-- Rendering components must consume normalized publishable artifacts only, never intermediate generation outputs.
+- Distillation outputs must pass through explicit private class transitions before they become publishable frontend input.
+- Rendering components must consume `site-data` only, never intermediate generation outputs.
 - The frontend must not repair, infer, or reinterpret missing semantic structure that should have been produced earlier in the pipeline.
 - Human approval closes semantic authority. After approval, downstream stages may transform, package, validate, and render content, but must not silently redefine its meaning.
 
@@ -51,35 +51,42 @@ Each stage must have a single responsibility, explicit input/output expectations
 
 **Stage Rules:**
 - Capture collects raw notes or recordings without forcing publish structure prematurely.
-- Distill extracts candidate structured facts, claims, and draft evidence units from raw material.
-- Normalize maps distilled outputs into canonical schemas, stable identifiers, locale relationships, and reusable content structures.
-- Validate checks schema correctness, localization parity, provenance completeness, structural consistency, and publish eligibility.
-- Approve establishes the human-reviewed canonical artifact as the authoritative source of meaning.
-- Publish generates delivery-ready artifacts, route manifests, search inputs, and release evidence from approved canonical artifacts.
-- Deliver renders the approved publishable artifacts without altering domain semantics.
+- Distill extracts candidate structured facts, claims, and private evidence units from raw material.
+- Normalize maps distilled outputs into explicit private classes, stable identifiers, revision-aware composition references, and reusable content structures.
+- Validate checks schema correctness, localization parity, provenance completeness, structural consistency, stale state, and publish eligibility.
+- Approve establishes the human-reviewed canonical HyperCV artifact as the authoritative source of meaning.
+- Publish generates `site-data`, route manifests, search inputs, release evidence, and the deployable static package from approved private canonical artifacts.
+- Deliver publishes the static package without altering domain semantics.
 
 **Artifact Model:**
-The pipeline should distinguish four artifact classes:
+The pipeline should distinguish explicit private and public artifact classes:
 - raw source material
-- distilled structured artifacts
-- approved canonical artifacts
-- publishable delivery artifacts
+- `deep-knowledge`
+- `knowledge-base` artifacts
+- `hypercv-draft`
+- `hypercv-composition`
+- `hypercv-final`
+- `site-data`
+- deployable static package
 
 These layers must be treated as separate contracts, not as interchangeable files.
 
 **Artifact Rules:**
 - Raw source material is private and non-renderable.
-- Distilled structured artifacts are candidate interpretations and remain non-publishable until validated and approved.
-- Approved canonical artifacts are the semantic source of truth for publication and reuse.
-- Publishable delivery artifacts are projections optimized for route generation, search indexing, and rendering.
-- Delivery artifacts may optimize structure for the frontend, but must remain derivable from canonical artifacts through explicit, auditable mappings.
+- `deep-knowledge` is append-only, immutable, private, and not a render target.
+- `knowledge-base` artifacts remain private and are managed either as distillation-derived or manual contributions.
+- `hypercv-draft` and `hypercv-composition` remain private editorial artifacts and are never frontend inputs.
+- `hypercv-final` is the private semantic source of truth for publication and reuse.
+- `site-data` is a private projection optimized for route generation, search indexing, localization, and rendering.
+- The deployable static package is the only production artifact that crosses the runtime public boundary.
 
 **Transformation Rules:**
 - No stage may silently mutate canonical identifiers, locale links, approval state, or provenance metadata.
 - Derived frontend fields must be generated through explicit mappers, not ad hoc inline page logic.
-- Any new publishable field must be introduced in the canonical schema first, then mapped into delivery artifacts deliberately.
-- If a field is needed only for presentation, its derivation rule must still be traceable back to canonical content.
+- Any new publishable field must be introduced in the canonical schema first, then mapped into `site-data` deliberately.
+- If a field is needed only for presentation, its derivation rule must still be traceable back to private canonical content.
 - Any transformation that changes meaning rather than shape must occur before approval, not after it.
+- If a referenced approved revision changes, the affected composition and downstream final artifacts must be treated as stale until re-reviewed.
 
 ### Naming Patterns
 
@@ -157,7 +164,7 @@ These layers must be treated as separate contracts, not as interchangeable files
 - Rendering components must consume explicit typed inputs, not raw ad hoc content blobs.
 - Locale switching logic must depend on canonical node mappings, not string heuristics.
 - Search indexing must consume normalized publishable outputs rather than page internals.
-- Delivery contracts must be explicit enough that a future ASP.NET MVC backend can consume the same approved canonical artifacts and publish manifests without redefining domain meaning.
+- Delivery contracts must be explicit enough that a future ASP.NET MVC backend can consume the same `site-data`, canonical contracts, and publish manifests without redefining domain meaning.
 - Frontend concerns may influence delivery projections, but must not back-propagate semantic shortcuts into canonical artifact design.
 
 **State Management Patterns:**
@@ -187,7 +194,7 @@ These layers must be treated as separate contracts, not as interchangeable files
 
 **All AI Agents MUST:**
 - treat canonical content IDs, locale mappings, artifact classes, and route contracts as shared architecture, not local implementation details
-- preserve the separation between raw inputs, distilled artifacts, approved canonical artifacts, and publishable delivery artifacts
+- preserve the separation between raw inputs, private persisted classes, private canonical artifacts, private web projections, and the deployable static package
 - keep Astro page files thin and move reusable logic into typed utilities
 - avoid introducing global client state, runtime data dependencies, or framework-specific shortcuts without explicit architectural approval
 - preserve framework-light boundaries so future ASP.NET MVC integration remains feasible
@@ -221,37 +228,41 @@ These layers must be treated as separate contracts, not as interchangeable files
 
 ### Repository Boundary Decision
 
-This project uses a single public repository as the authoritative codebase for the full architecture: distillation pipeline, canonical contracts, validation, publish workflow, and frontend delivery.
+This project uses a single public repository as the authoritative codebase for the full architecture: distillation pipeline, contracts, validators, release workflow, and frontend delivery.
 
 The privacy boundary applies to data, not to core project code.
 
 Therefore:
-- raw notes, transcripts, sensitive prompts, private review materials, and non-approved intermediate data must remain outside the public repository
-- distillation, normalization, validation, publish, and delivery code must remain inside the public repository
+- raw notes, transcripts, prompts, private review materials, private structured content classes, `hypercv-final`, `site-data`, and release-candidate outputs must remain outside the public repository
+- distillation, normalization, validation, projection, release, deploy, and frontend delivery code must remain inside the public repository
 - the public repository must be executable against sanitized fixtures for showcase purposes and against private local data sources for real authoring workflows
 
-This keeps the codebase unified and inspectable while preserving privacy for sensitive source material.
+This keeps the codebase unified and inspectable while preserving privacy for sensitive source material and private content structure.
 
 ### Private Data Persistence Boundary
 
-Private production data is not only sensitive input; it is the recovery base for the entire system. Raw notes, transcripts, private review materials, and non-approved intermediate artifacts must therefore be stored in secure persistent storage outside the public repository.
+Private production data is not only sensitive input; it is the recovery base for the entire system. Raw notes, private review materials, persisted knowledge classes, HyperCV artifacts, `site-data`, and release evidence inputs must therefore be stored in secure persistent storage outside the public repository.
 
 That storage must support:
 - recovery of source materials after data loss
-- reprocessing when distillation or normalization logic changes
-- controlled promotion of approved artifacts into the public repository boundary
+- reprocessing when distillation or transformation logic changes
+- revision-aware review of compositions and final artifacts
+- controlled promotion from private classes into a deployable static package
 
 Private data versioning is not mandatory by default. It should be introduced only if required by validated use cases such as rollback, auditability, historical comparison, or recovery guarantees beyond simple persistence.
 
 ### Data Classes for Production and Testing
 
-The architecture distinguishes at least three data classes:
+The architecture distinguishes four operational data classes:
 
 - private production data:
-  raw notes, transcripts, sensitive prompts, private review materials, and non-approved intermediate artifacts stored in secure private storage
+  raw notes, deep knowledge, knowledge-base content, HyperCV drafts, compositions, final artifacts, `site-data`, and release evidence inputs stored in secure private storage
 
-- public production data:
-  approved canonical artifacts, publishable delivery artifacts, release evidence, and showcase-safe materials stored in the public repository
+- private projection artifacts:
+  generated route payloads, localized citation targets, search sources, release candidate bundles, and other regenerable web-delivery artifacts that remain private until deployment
+
+- public production artifacts:
+  the deployed static site package and the runtime-served static assets produced from the private pipeline
 
 - test data:
   synthetic or sanitized fixtures, stable regression datasets, and deterministic publishing inputs used for automated validation
@@ -259,9 +270,9 @@ The architecture distinguishes at least three data classes:
 ### Testability Rules
 
 - private production data must never be used as automated test input
-- public production data must not be treated as the only stable baseline for repetitive publishing tests
+- public deployed output must not be treated as the only stable baseline for repetitive publishing tests
 - automated tests must rely on dedicated synthetic or sanitized datasets that are versioned and stable
-- distillation validation and publishing validation may use different test datasets because they verify different contracts
+- distillation validation, HyperCV materialization validation, and publishing validation may use different test datasets because they verify different contracts
 - the public repository must remain runnable and demonstrable without requiring access to private production data
 
 ### Complete Project Directory Structure
@@ -288,44 +299,34 @@ alecsg77-portal/
 │   └── search.ts
 ├── scripts/
 │   ├── pipeline/
-│   │   ├── distill-content.ts
-│   │   ├── normalize-artifacts.ts
-│   │   ├── validate-canonical.ts
-│   │   └── assemble-publishable-output.ts
+│   │   ├── run-pipeline.ts
+│   │   ├── ingest-raw.ts
+│   │   ├── distill-deep-knowledge.ts
+│   │   ├── build-knowledge-base.ts
+│   │   ├── generate-hypercv-draft.ts
+│   │   ├── materialize-hypercv-final.ts
+│   │   ├── build-site-data.ts
+│   │   └── detect-stale-compositions.ts
 │   ├── release/
+│   │   ├── build-static-package.ts
+│   │   ├── build-release-evidence.ts
 │   │   ├── build-publish-manifest.ts
 │   │   ├── check-localization-parity.ts
 │   │   ├── generate-search-index.ts
 │   │   ├── run-release-gates.ts
-│   │   └── verify-no-private-leakage.ts
+│   │   ├── verify-no-private-leakage.ts
+│   │   └── deploy-static-package.ts
 │   └── reporting/
-│   │   └── export-release-evidence.ts
-├── content/
-│   ├── canonical/
-│   │   ├── topics/
-│   │   ├── artifacts/
-│   │   ├── proof-points/
-│   │   ├── relationships/
-│   │   └── manifests/
-│   ├── delivery/
-│   │   ├── routes/
-│   │   ├── search/
-│   │   ├── publish/
-│   │   └── snapshots/
-│   └── fixtures/
-│       ├── synthetic/
-│       └── sanitized/
+│       └── export-release-evidence.ts
+├── fixtures/
+│   ├── synthetic/
+│   ├── sanitized/
+│   └── showcase-site-data/
 ├── test-data/
 │   ├── distillation/
-│   │   ├── synthetic-raw/
-│   │   ├── expected-canonical/
-│   │   └── fixtures.json
+│   ├── hypercv/
 │   ├── publishing/
-│   │   ├── canonical-fixtures/
-│   │   ├── expected-delivery/
-│   │   └── manifests/
 │   └── e2e/
-│       └── showcase-safe-content/
 ├── src/
 │   ├── pages/
 │   │   ├── index.astro
@@ -358,127 +359,141 @@ alecsg77-portal/
 │   └── social/
 ├── tests/
 │   ├── unit/
-│   │   ├── content/
-│   │   ├── routing/
-│   │   ├── release/
-│   │   └── search/
 │   ├── integration/
-│   │   ├── pipeline/
-│   │   ├── contracts/
-│   │   ├── localization/
-│   │   ├── publish/
-│   │   └── leakage-prevention/
 │   └── e2e/
-│       ├── navigation/
-│       ├── language-switching/
-│       └── search/
 └── .github/
     └── workflows/
         ├── ci.yml
         └── release-validation.yml
 
-private-storage/   (outside repo, secure, persistent)
+portal-private/   (outside repo, secure, persistent)
 ├── raw/
-├── transcripts/
-├── prompts/
-├── review/
-├── distilled/
-├── exports/
-│   └── approved-canonical/
-└── recovery/
+│   ├── notes/
+│   ├── transcripts/
+│   └── prompts/
+├── deep-knowledge/
+├── knowledge-base/
+│   ├── dk/
+│   └── manual/
+├── hypercv/
+│   ├── drafts/
+│   │   ├── cv-experience/
+│   │   ├── cv-project/
+│   │   └── cv-star/
+│   ├── compositions/
+│   └── final/
+├── site-data/
+│   ├── en/
+│   ├── it/
+│   ├── search/
+│   └── manifests/
+├── release/
+│   ├── candidates/
+│   ├── evidence/
+│   └── deployable/
+└── manifests/
 ```
 
 ### Architectural Boundaries
 
 **Codebase Boundary:**
-- The public repository contains the full architecture code: distillation, normalization, validation, publication, and frontend delivery.
+- The public repository contains the full architecture code: distillation, normalization, validation, materialization, publication, and frontend delivery.
 - No core architectural code should be hidden in private-only workspaces.
 - Shared schemas and contracts must be used across private-data execution and showcase-safe execution.
 
 **Private Data Boundary:**
 - Private production data lives only in secure persistent storage outside the repository.
 - Private storage is the recovery and reprocessing base for the system.
-- Promotion from private storage into the public repository boundary happens only through validated and approved artifacts.
+- All transformations across `raw`, `deep-knowledge`, `knowledge-base`, `hypercv-*`, and `site-data` happen inside this private boundary.
 
 **Canonical Knowledge Boundary:**
-- `content/canonical` contains only approved artifacts that are safe to version publicly.
-- Canonical artifacts remain the semantic source of truth for publication and reuse.
-- Future backend orchestration must consume this boundary rather than redefine it.
+- `hypercv-final` is the semantic source of truth for publication and reuse.
+- `hypercv-draft` and `hypercv-composition` are editorial and governance layers, not render inputs.
+- Future backend orchestration must consume these contracts rather than redefine them.
 
-**Delivery Boundary:**
-- `content/delivery` contains publishable projections derived from approved canonical artifacts.
-- Delivery artifacts are optimized for routing, search, rendering, and release evidence.
-- Delivery artifacts must remain auditable derivations of canonical content.
+**Projection Boundary:**
+- `site-data` contains private web projections derived from `hypercv-final`.
+- `site-data` is optimized for routing, search, rendering, and release evidence preparation.
+- `site-data` must remain auditable, regenerable, and never manually edited.
+
+**Public Runtime Boundary:**
+- The only production artifact that crosses into the public runtime is the deployable static package.
+- No raw data, private structured content, HyperCV source layers, or `site-data` may be committed or published as public runtime source material.
 
 **Test Data Boundary:**
-- `test-data/` contains stable synthetic or sanitized datasets for automated validation.
+- `test-data/` and `fixtures/` contain stable synthetic or sanitized datasets for automated validation.
 - Test datasets must be versioned and repeatable.
-- Test datasets must not be replaced by live private production data or by ever-changing public production data.
+- Test datasets must not be replaced by live private production data or by the latest deployed site output.
 
 ### Requirements to Structure Mapping
 
 **FR1-FR4 Data Ingestion & Distillation:**
-- `scripts/pipeline/distill-content.ts`
-- `scripts/pipeline/normalize-artifacts.ts`
+- `scripts/pipeline/ingest-raw.ts`
+- `scripts/pipeline/distill-deep-knowledge.ts`
+- `scripts/pipeline/build-knowledge-base.ts`
 - `src/lib/content/schemas/`
 - `src/lib/content/contracts/`
 - `src/lib/content/validators/`
-- `tests/integration/pipeline/`
-- private inputs resolved from `private-storage/`
+- `tests/integration/`
+- private inputs resolved from `portal-private/`
 
 **FR5-FR8 Content Assembly & Generation:**
-- `content/canonical/`
-- `content/delivery/`
-- `scripts/pipeline/assemble-publishable-output.ts`
+- `scripts/pipeline/generate-hypercv-draft.ts`
+- `scripts/pipeline/materialize-hypercv-final.ts`
+- `scripts/pipeline/build-site-data.ts`
+- `scripts/pipeline/detect-stale-compositions.ts`
 - `scripts/release/build-publish-manifest.ts`
 - `scripts/release/run-release-gates.ts`
-- `tests/integration/publish/`
+- `tests/integration/`
 
 **Localization & Bilingual Parity:**
 - `config/locales.ts`
 - `config/routes.ts`
-- `content/canonical/relationships/`
+- `portal-private/site-data/en/`
+- `portal-private/site-data/it/`
 - `scripts/release/check-localization-parity.ts`
-- `tests/integration/localization/`
+- `tests/integration/`
 
 **Search & Discovery Acceleration:**
 - `src/lib/search/`
-- `content/delivery/search/`
+- `portal-private/site-data/search/`
 - `scripts/release/generate-search-index.ts`
 - `tests/e2e/search/`
 
 **Automated Validation and Regression Safety:**
 - `test-data/distillation/`
+- `test-data/hypercv/`
 - `test-data/publishing/`
-- `test-data/e2e/`
 - `tests/unit/`
 - `tests/integration/`
 - `tests/e2e/`
 
 ### Integration Points
 
-**Private to Public Promotion Flow:**
-- raw -> distilled in secure private storage
-- distilled -> approved canonical through validation and human review
-- approved canonical exported or synchronized into the public repository boundary
-- canonical -> delivery via explicit mappers and publish scripts
-- delivery -> frontend via typed rendering inputs
+**Private Promotion Flow:**
+- raw -> `deep-knowledge`
+- `deep-knowledge` -> `knowledge-base`
+- `knowledge-base` -> `hypercv-draft`
+- `hypercv-draft` + `hypercv-composition` -> `hypercv-final`
+- `hypercv-final` -> `site-data`
+- `site-data` -> deployable static package
 
 **Future ASP.NET MVC Integration:**
-- ASP.NET MVC should consume approved canonical contracts or publish manifests, not frontend internals.
-- This preserves V2 as a runtime/orchestration evolution instead of a semantic rewrite.
+- ASP.NET MVC should consume `site-data`, publish manifests, or canonical contracts, not Astro page internals.
+- This preserves V2 as a runtime or orchestration evolution instead of a semantic rewrite.
 
 ### File Organization Patterns
 
 **Public Repository Rules:**
-- only approved, publishable, or showcase-safe artifacts may be versioned
-- raw notes, prompts, transcripts, and intermediate private artifacts are forbidden
+- only code, configuration, synthetic fixtures, sanitized fixtures, and showcase-safe assets may be versioned
+- raw notes, prompts, transcripts, `deep-knowledge`, `knowledge-base`, HyperCV production artifacts, `site-data`, and intermediate private artifacts are forbidden
 - test fixtures must be synthetic or sanitized
 - the public repository must support repeatable automated validation without private data access
 
 **Private Storage Rules:**
 - private storage must be persistent and secure
 - it is the authoritative source for reprocessing and disaster recovery
+- `site-data` persists there only as a regenerable projection and must never become the source of truth
 - versioning is optional until justified by specific recovery, rollback, or audit use cases
 
 ### Development Workflow Integration
@@ -486,16 +501,18 @@ private-storage/   (outside repo, secure, persistent)
 **Development Server Structure:**
 - the repository must run in showcase mode using public fixtures
 - the same codebase must also run in private authoring mode using local secure inputs
+- rendering must consume fixture `site-data` in showcase mode and private `site-data` in authoring mode
 - semantic repair must never happen in rendering code
 
 **Build Process Structure:**
 - verify no private leakage
-- validate canonical content
+- validate private canonical content and revision references
+- detect stale compositions
+- build `site-data`
 - verify localization and provenance
-- assemble delivery artifacts
-- generate manifests and search inputs
-- build Astro site
-- run release gates and export release evidence
+- generate search inputs, release evidence, and manifests
+- build Astro site from `site-data`
+- run release gates and deploy the static package
 - run automated tests against stable test datasets, not live production data
 
 ## Architecture Validation Results
@@ -503,42 +520,29 @@ private-storage/   (outside repo, secure, persistent)
 ### Coherence Validation ✅
 
 **Decision Compatibility:**
-The architecture is coherent around a static-first public delivery model and a private-content-centered generation pipeline. Astro 6.0.4 is used as a delivery framework rather than as the owner of domain semantics. TypeScript-based contracts, canonical content modeling, publish-time validation, and the separation between private storage, public canonical artifacts, and delivery artifacts all reinforce the same architectural direction rather than conflicting with it.
-
-The repository decision is also coherent with the showcase requirement. The codebase remains unified and public, while the privacy boundary applies to data only. This avoids architectural drift between distillation logic and publication logic while still protecting sensitive source material.
+The implementation guidance is coherent around a static-first public delivery model and a private-content-centered generation pipeline. Astro remains a delivery framework rather than the owner of domain semantics. TypeScript-based contracts, class-based private content modeling, revision-aware validation, and the separation between private storage, private `site-data`, and the deployable static package reinforce the same architectural direction.
 
 **Pattern Consistency:**
-The implementation patterns support the architectural decisions well. Naming, structure, format, and process rules all reinforce the central principle that the content pipeline is the primary architecture and the frontend is a delivery projection. The artifact-class distinctions and stage boundaries reduce the risk that AI agents will mix raw inputs, canonical meaning, and render-time transformations.
+The implementation patterns support the architectural decisions well. Naming, structure, format, and process rules all reinforce the central principle that the content pipeline is the primary architecture and the frontend is a delivery projection. The class distinctions and stage boundaries reduce the risk that AI agents will mix raw inputs, editorial artifacts, canonical meaning, and render-time transformations.
 
 **Structure Alignment:**
-The project structure aligns with the architecture. The repository tree separates code, canonical content, delivery artifacts, test datasets, and frontend concerns clearly, while private production data remains outside the repository in secure persistent storage. The structure supports both showcase-safe execution and real authoring workflows without requiring a second codebase.
+The project structure aligns with the updated architecture. The repository tree separates code, fixtures, tests, and frontend concerns clearly, while private production data, HyperCV artifacts, and `site-data` remain outside the repository in secure persistent storage.
 
 ### Requirements Coverage Validation ✅
 
 **Feature Coverage:**
-The architecture supports both halves of the MVP:
+The implementation guidance supports both halves of the MVP:
 - the private offline-first distillation pipeline
 - the public static-first bilingual portal
 
-This is critical because the project is not modeled as a website with supporting scripts, but as a governed content supply chain whose public interface is only one projection of the larger system.
-
 **Functional Requirements Coverage:**
-The architecture supports:
-- raw note ingestion and private distillation workflows
-- human approval and canonical artifact management
-- artifact reuse across multiple public routes
-- bilingual route and node consistency
-- static search and progressive disclosure
-- publish-time validation and release evidence
-- future migration toward backend-supported capabilities without redefining the semantic model
-
-No major functional requirement appears unsupported by the architecture as currently described.
+The guidance supports raw note ingestion, human approval, HyperCV composition, revision pinning, stale detection, artifact reuse across routes, bilingual route consistency, static search, progressive disclosure, publish-time validation, and release evidence.
 
 **Non-Functional Requirements Coverage:**
 - static-first performance constraints
 - no-critical-JS resilience
 - strong public/private data separation
-- governance through provenance, approval, and release gates
+- governance through provenance, approval, revision, and release gates
 - bilingual consistency
 - showcase/public-repository constraints
 - recovery and reprocessing needs through secure persistent private storage
@@ -547,10 +551,10 @@ No major functional requirement appears unsupported by the architecture as curre
 ### Implementation Readiness Validation ✅
 
 **Decision Completeness:**
-Critical decisions are sufficiently documented for implementation to begin. The technology direction, repository model, privacy boundaries, data classes, pipeline stages, and migration stance are all explicit enough to guide AI agents consistently.
+Critical decisions are sufficiently documented for implementation to begin. The technology direction, engine/data boundary, privacy boundaries, data classes, pipeline stages, revision handling, and migration stance are explicit enough to guide AI agents consistently.
 
 **Structure Completeness:**
-The project structure is concrete and implementation-oriented. It defines code ownership, artifact ownership, validation boundaries, promotion flow from private data to public deliverables, and dedicated boundaries for automated testing.
+The project structure is concrete and implementation-oriented. It defines code ownership, artifact ownership, validation boundaries, and the transition from private classes to a deployable public artifact.
 
 **Pattern Completeness:**
 The most dangerous conflict areas are covered:
@@ -560,30 +564,26 @@ The most dangerous conflict areas are covered:
 - rendering boundaries
 - leakage prevention
 - test data separation
-- promotion flow between private storage and public publishable artifacts
-
-This is a strong level of detail for an architecture intended to guide multiple agents.
+- revision pinning and stale detection
 
 ### Gap Analysis Results
 
 **Important but Non-Blocking Gaps:**
-- The secure private storage solution is intentionally unspecified. This is acceptable at the architecture stage, but implementation will need a concrete storage and backup approach.
-- Private data versioning is deferred. This is reasonable, but rollback, audit, and historical comparison use cases should be revisited before the private pipeline becomes operationally critical.
-- The exact shape of some canonical schemas is still implementation-phase work, though the governing rules are already clear.
-- The architecture implies deterministic or controlled reprocessing, but does not yet define how output regressions are measured when pipeline logic changes.
-- The promotion/synchronization mechanism between secure private storage and the public repository boundary is still a design-level concept and will need operational definition.
+- The secure private storage solution is intentionally unspecified and must be chosen during implementation planning.
+- Private data versioning is deferred and should be revisited once rollback or audit needs are proven.
+- Exact field-level schemas remain implementation-phase work, though the class model and folder layout are now defined.
+- Regression comparison for pipeline reprocessing still needs a concrete strategy.
 
 **No Critical Architectural Gaps Found:**
-No unresolved issue currently blocks implementation planning at the architectural level. Remaining gaps are operational or implementation-detail decisions rather than missing architectural direction.
+No unresolved issue currently blocks implementation planning at the architectural level.
 
 ### Validation Issues Addressed
 
-The main validation risks were addressed during the workflow:
-- Step 3 was corrected to compare Astro primarily against Vite rather than against an irrelevant future full-stack baseline.
-- The architecture was re-centered on the content pipeline rather than the frontend starter.
-- The repository model was revised to keep the codebase public and unified while moving private data outside the repository.
-- Testability concerns were addressed by distinguishing private production data, public production data, and stable test datasets.
-- The project structure was refined so that the full codebase remains inspectable while sensitive source material remains excluded from the public repository.
+The main validation risks addressed in this update are:
+- removing the outdated assumption that production canonical artifacts are versioned in the public repository
+- making `hypercv-final` and `site-data` explicitly private operational classes
+- aligning the implementation structure with revision-aware composition and stale detection
+- clarifying that only the deployable static package crosses the public runtime boundary
 
 ### Architecture Completeness Checklist
 
@@ -615,34 +615,20 @@ The main validation risks were addressed during the workflow:
 
 **Overall Status:** READY FOR IMPLEMENTATION
 
-**Qualification:** Architecturally ready for implementation. Operational details for secure storage, promotion mechanics, and regression governance remain to be defined during implementation planning.
+**Qualification:** Architecturally ready for implementation. Operational details for secure storage and regression governance remain to be defined during implementation planning.
 
 **Confidence Level:** High
-
-**Key Strengths:**
-- The architecture models the project as a full content pipeline, not just a static site.
-- The codebase remains public, inspectable, and showcase-friendly.
-- Sensitive data is protected through an external secure persistence boundary.
-- Canonical contracts provide a stable bridge between distillation, publication, frontend delivery, and future backend evolution.
-- Testability is explicitly supported through dedicated stable datasets.
-
-**Areas for Future Enhancement:**
-- define the secure-storage strategy once operational constraints are clearer
-- decide whether private data versioning is needed based on actual recovery and audit use cases
-- formalize canonical schema details during implementation
-- define regression comparison strategy for pipeline reprocessing over time
-- define the operational promotion flow between private storage and public publishable artifacts
 
 ### Implementation Handoff
 
 **AI Agent Guidelines:**
-- Follow the canonical artifact model and stage boundaries exactly.
+- Follow the class model and stage boundaries exactly.
 - Treat the content pipeline as the architectural center of the system.
-- Keep frontend rendering semantically thin.
+- Keep frontend rendering semantically thin and `site-data`-driven.
 - Never introduce dependencies on private production data into the public repository.
 - Use only synthetic or sanitized fixtures for automated tests.
-- Treat promotion from private storage to public canonical artifacts as a governed step, not a casual file copy.
+- Treat the transition from private classes to deployable package as a governed step, not a casual file copy.
 - Do not compensate in delivery code for missing meaning, metadata, or validation that belongs earlier in the pipeline.
 
 **First Implementation Priority:**
-Set up the repository skeleton, shared canonical contracts, and secure private-data integration boundary first. Then implement validation and publish-safe pipeline scaffolding before building interactive frontend enhancements.
+Set up the repository skeleton, shared contracts, and private-data integration boundary first. Then implement revision-aware validation, HyperCV materialization, and `site-data` projection scaffolding before building interactive frontend enhancements.
