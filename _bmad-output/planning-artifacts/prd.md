@@ -126,12 +126,18 @@ The MVP scope is sufficient if it demonstrates that guided discovery, operationa
 
 ### Canonical Content Boundary
 The product distinguishes four layers at the requirement level, without turning the PRD into a detailed technical design:
-* **Ephemeral inputs:** work notes and voice notes used for initial ingestion, not intended for publication.
-* **Persisted private content:** rich memory, curated knowledge base, and editorial materials that remain outside the public domain.
-* **Canonical HyperCV catalog:** approved private representation of experiences, projects, and S.T.A.R. cases used as the authoritative source for publishing.
-* **Derived public output:** bilingual site-data and static pages generated from the approved catalog and sanitized before release.
+* **Ephemeral inputs:** work notes and voice notes used for initial ingestion, not intended for publication, not renderable, and not treated as a persisted governed class.
+* **Persisted private content:** `deep-knowledge` as append-only private memory and `knowledge-base` content managed through distillation-derived and manual subclasses that remain outside the public domain.
+* **Canonical HyperCV catalog:** private HyperCV artifacts separated into draft, composition, and final responsibilities, with `hypercv-final` as the approved materialized source of truth for publishing.
+* **Derived public output:** private `site-data` as the regenerable bilingual web projection and the deployable static package as the only runtime artifact that crosses into the public domain.
 
-The MVP requires that only the derived public output crosses the boundary toward the published site; private layers always remain excluded from the public package.
+The MVP requires that only the deployable static package crosses the boundary toward the published site; private layers always remain excluded from the public package.
+
+The planning baseline also requires these class-boundary rules:
+* `raw` begins and ends as transient ingestion input.
+* `deep-knowledge` is the first persisted responsibility boundary of the system.
+* `hypercv-draft` and `hypercv-composition` remain private editorial classes and never become direct frontend inputs.
+* `site-data` is a private projection for localization, routing, search, and rendering; it is not the semantic source of truth.
 
 ## User Journeys
 
@@ -203,6 +209,7 @@ The operational principle that emerged from system discovery is that the key con
 * **Core User Experience:** primary hierarchical navigation, search over the static corpus as a secondary mode, and progressive disclosure over public content in English and Italian, kept consistent across desktop and mobile in supported browsers.
 * **Content Promotion Chain:** final private HyperCV catalog -> projection site-data -> deployed static site, with allowlist-based controls before every release.
 * **Engine Promotion Chain:** separate evolution of public pipeline code, contracts, and frontend, consumable by the private workspace without requiring real data to enter the public repository.
+* **Execution Contract:** the public engine must remain runnable in showcase mode with sanitized fixtures and in private mode against a configured private data root, without assuming that private data exist inside the public repository tree.
 
 #### Phase 2 (Growth & Backend Migration):
 * **Activation Condition:** optional introduction of runtime or additional services only after V1 validation.
@@ -240,12 +247,12 @@ The previous sections define the problem, the product model, the journeys to sup
 
 ### Data Ingestion & Distillation (Offline AI Pipeline)
 * **FR1:** The Author can enter unstructured "memories" (text notes or voice notes) related to their career in the local environment.
-* **FR2:** The local pipeline can consolidate inputs into persisted private content, preserving the context needed for review and future updates.
+* **FR2:** The local pipeline can consolidate inputs into persisted private content beginning at `deep-knowledge`, preserving the context needed for review and future updates. Raw inputs remain transient ingestion material and are not treated as a persisted governed class.
 * **FR3:** The Distiller Agent (local) can derive from persisted content a curated knowledge base reusable for the canonical HyperCV catalog and for approved public projections of the same release.
 * **FR4:** The Author can read, edit, and manually approve the generated content and native manual contributions that flow into the canonical catalog.
 
 ### Content Assembly & Generation
-* **FR5:** The local pipeline can organize approved content into a HyperCV catalog composed of experiences, projects, and S.T.A.R. cases ready for publication.
+* **FR5:** The local pipeline can organize approved content into a HyperCV catalog composed of experiences, projects, and S.T.A.R. cases ready for publication through explicit private class transitions: draft contributions, composition rules, final materialization, then site projection.
 * **FR6:** The Generator Agent (local) can reuse the same approved canonical content across the different approved navigation nodes of the portal while maintaining semantic consistency, linkage to the same canonical source, and absence of unapproved textual divergences between published views of the same release.
 * **FR7:** The local System can publish the static output of the portal through the public hosting pipeline.
 * **FR8:** The Author can bypass the Agents (manual degradation) and directly edit approved content before publication.
@@ -272,15 +279,23 @@ The previous sections define the problem, the product model, the journeys to sup
 * **FR21:** The distillation system can create a monolingual canonical HyperCV catalog only from heterogeneous sources and manual contributions that, for the current release, have `approved` status, completed human review, and no blocking publishability findings.
 * **FR22:** The system can maintain a verifiable link between the canonical catalog, the contributions that compose it, and the sources that support its review so that, during review, the Author can trace every canonical element back to at least one approved source or contribution with identifiable review.
 * **FR23:** The Author can inspect provenance, review status, and approved components of the canonical content during review and publish decisions.
-* **FR24:** The static generation system can publish page variants in English and Italian from the approved canonical catalog, without exposing private editorial layers.
+* **FR24:** The static generation system can publish page variants in English and Italian from the approved canonical catalog, without exposing private editorial layers. The public delivery layer must consume `site-data`, not draft, composition, or final private artifacts directly.
 * **FR25:** The Visitor can change language while preserving, when available, the same logical content or navigation node.
 * **FR26:** The system can detect before public release untranslated placeholders, missing variants for required pages, and manifest inconsistencies between equivalent nodes that prevent coherent publication.
 * **FR27:** The Author can trigger selective or full regeneration when source inputs or approved transformation rules change.
 * **FR28:** The system can publish only a state of the corpus that has been reviewed as coherent for the intended public release.
-* **FR29:** The system can distinguish content managed primarily by the knowledge base, manual content, and hybrid content by assigning each content item a single active classification among `knowledge-base-managed`, `manual-managed`, or `hybrid-managed`, visible in review and respected during regeneration.
-* **FR30:** The system can associate a verifiable revision with canonical content and the references used to compose it.
-* **FR31:** The system can signal when an approved composition becomes stale due to a change in a referenced revision.
+* **FR29:** The system can distinguish content managed primarily by the knowledge base, manual content, and hybrid content by assigning each content item a single active classification among `knowledge-base-managed`, `manual-managed`, or `hybrid-managed`, visible in review and respected during regeneration. These classifications must govern editability and regeneration behavior rather than act as labels only.
+* **FR30:** The system can associate a verifiable revision with canonical content and the references used to compose it. All HyperCV artifacts participating in review, composition, final materialization, or publication must carry revision metadata.
+* **FR31:** The system can signal when an approved composition becomes stale due to a change in a referenced revision. Stale compositions and their downstream final artifacts must not be reused automatically until re-reviewed.
 * **FR32:** The Author can inspect which revisions and which contributions were materialized into the content ready for publication.
+
+For planning and decomposition purposes, the minimum transformation contract is:
+* raw -> `deep-knowledge`: ingestion and normalization without turning raw into a persistent governed layer
+* `deep-knowledge` -> `knowledge-base`: distillation into reusable private content
+* `knowledge-base` -> `hypercv-draft`: generation of private draft contributions
+* `hypercv-draft` + `hypercv-composition` -> `hypercv-final`: explicit materialization of approved final content
+* `hypercv-final` -> `site-data`: private bilingual web projection with route, locale, and presentation needs resolved before rendering
+* `site-data` -> deployed static site: static rendering and delivery only
 
 ## Non-Functional Requirements
 
@@ -295,12 +310,14 @@ The previous sections define the problem, the product model, the journeys to sup
 * The public build must include only content and projections marked as publishable through allowlist-based policy; every element lacking approval must be excluded from the release bundle, as verified in the release evidence package for 100% of modified content.
 * The number of unauthorized private references in the public layer must be 0 in every release review.
 * The release evidence package must confirm that sensitive metadata, internal references, NDA-covered details, and structured layers not intended for publication are absent from modified public pages.
+* Minimum release guardrails must include secret scanning on public and private repositories and on release jobs, least-privilege credentials for access to private data, and the rule that untrusted public workflows must not be able to read private production data.
 
 ### Governance & Traceability
 * Every published content item must have a review status, verifiable provenance, and an identifiable revision before release, as attested for 100% of modified content by the release checklist or equivalent evidence attached to the release evidence package.
 * The Author must be able to trace an approved content item back to at least one supporting source or contribution during pre-publish review.
 * If a referenced revision changes after approval, the derived content must be treated as stale until it is reviewed again.
-* The release evidence package must verify review status, provenance linkage, and materialized revisions for 100% of modified content in a release.
+* The release evidence package must verify review status, provenance linkage, materialized revisions, and the exact public engine revision used for processing for 100% of modified content in a release.
+* The publish manifest and release evidence package, not the transient Git workspace state of a mount, checkout, or submodule, must serve as the audit source for what was built, validated, and released.
 
 ### Localization & Content Consistency
 * Every public page in English must have an equivalent Italian variant or an explicit approved exception before release.
@@ -321,4 +338,7 @@ The previous sections define the problem, the product model, the journeys to sup
 * A standard update of publishable content must be completable by a single author-operator in less than 30 minutes, excluding raw note drafting, during a process dry run.
 * A full corpus rebuild must be executable through a documented end-to-end checklist, without undescribed manual interventions and with a verifiable outcome in a dry run completed successfully at least once for every substantial workflow change.
 * The operational workflow must be executable in a private workspace that consumes the public engine without requiring real data to enter the public repository.
+* The public repository must remain runnable for showcase, tests, and frontend work through sanitized fixtures even when private production data are unavailable.
+* The private execution workflow must use an explicit configured private data root rather than assuming that private content is present inside the public repository tree.
 * The release evidence package and the rebuild, review, and publish checklist must be executable by a single author using repository documentation as the only operational guide.
+* Private production persistence is mandatory as the recovery baseline of the system. Additional private-data versioning beyond that baseline is optional until justified by validated rollback, audit, historical comparison, or stronger recovery requirements.

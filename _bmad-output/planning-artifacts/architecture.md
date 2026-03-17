@@ -234,6 +234,12 @@ The MVP exposes no public runtime API as a core dependency. Private preparation 
 
 The architectural contract is schema-based rather than endpoint-based: content artifacts, localization mappings, navigation structures, route manifests, publish manifests, and revision references must be versioned and validated before build completion. Build failures are fail-fast. Search is delivered through a precomputed static index decoupled from route internals.
 
+The public engine must support two execution contexts without changing its logical boundary:
+- showcase mode on sanitized fixtures for public demonstration, repeatable testing, and frontend work
+- private mode against an explicit configured private data root for real authoring and publication workflows
+
+The public repository must not assume that private data are present inside its own Git tree. The contract is that private data are provided through an explicit external root with known class boundaries and schema expectations.
+
 The operational boundary is `public code + private data`, not `public repo + private repo` as a hard architectural invariant. The private workspace may consume the public engine as a package in automation and may use adjacent local checkouts in development. Git submodules are tolerated only as a local bootstrap convenience and must not become the governance mechanism.
 
 ### Frontend Architecture
@@ -251,6 +257,8 @@ State management remains minimal: build-produced page state, URL and anchor stat
 
 The frontend must render from `site-data`, not directly from `hypercv-final`. `site-data` is where localized citation targets, persona-profile entities, path derivation, and user-facing route surfaces are established. Internal provenance must remain traceable back to `hypercv-final`, while user-facing citations resolve only to localized public targets.
 
+Delivery components must not repair missing semantic structure that should have been produced earlier in the pipeline. New publishable fields must be introduced in canonical schemas first and then mapped deliberately into `site-data`; they must not arise as ad hoc page-level reinterpretation.
+
 ### Infrastructure & Deployment
 
 Use static CDN deployment with atomic builds, preview environments, and simple rollback capability. Stay provider-agnostic unless a platform introduces a concrete implementation advantage.
@@ -267,10 +275,17 @@ CI/CD must verify more than build success:
 Execution infrastructure must preserve the engine/data split:
 - the public repository ships the engine, contracts, validators, and frontend delivery code
 - the private GitHub repository is the authoritative persistence and recovery baseline for `deep-knowledge`, knowledge-base content, HyperCV artifacts, `site-data`, and release evidence inputs
+- the architecture distinguishes private production data, private projection artifacts, public production artifacts, and dedicated test datasets as separate governance categories with different handling rules
 - all transformations from private classes to public output run inside the private execution environment
 - the deployed public artifact is the static site package only
 
+Each private publication must be attributable to an explicit reproducibility tuple composed of the public engine revision used for processing, the relevant private revision scope materialized into the release, and the active schema or contract version used by the pipeline gates.
+
+The publish manifest and release evidence are the audit source for a release. The temporary Git state of a checkout, mount, or workspace composition is not sufficient as the governance record.
+
 For MVP operations, protect the default branch of the private repository, disallow force-push to its main branch, and rely on repository-backed recovery rather than a separate backup platform unless stronger recovery needs are later validated.
+
+Private persistence is mandatory. Additional private-data versioning beyond the repository-backed recovery baseline is optional until a validated need emerges for stronger rollback, audit, historical comparison, or recovery guarantees.
 
 Environment configuration stays minimal and explicit, with public build variables cleanly separated from private pipeline configuration such as content-root paths and release evidence locations. V1 scales through CDN distribution and immutable static assets. If V2 introduces authentication, chatbot runtime, or SSR, the backend should be added as a separate boundary rather than eroding the current static delivery assumptions.
 
@@ -282,19 +297,21 @@ Key dependencies remain explicit: routing depends on the canonical schema and lo
 
 ## Implementation Governance Summary
 
-Detailed implementation guidance has been extracted into the temporary operational addendum at [_bmad-output/implementation-artifacts/tech-spec-operational-guidelines.md](_bmad-output/implementation-artifacts/tech-spec-operational-guidelines.md). Detailed validation evidence has been preserved separately in the permanent record at [_bmad-output/planning-artifacts/architecture-validation-record.md](_bmad-output/planning-artifacts/architecture-validation-record.md). The implementation addendum remains temporary and can be archived once its decisions are consolidated in code, tests, and final documentation.
+Detailed implementation guidance was extracted through the temporary operational addendum and has now been triaged into canonical rules, rejected details, and archival leftovers. Detailed validation evidence remains preserved in the permanent record at [_bmad-output/planning-artifacts/architecture-validation-record.md](_bmad-output/planning-artifacts/architecture-validation-record.md). The operational addendum can now be archived because its stable value has been promoted where needed and its remaining content is intentionally non-canonical.
 
 The architecture-level constraints that remain mandatory are:
 - the content pipeline is the semantic center of the system and the frontend is only a delivery projection
 - the public GitHub repository contains the full codebase, while private production data and private structured content classes remain in a separate private GitHub repository used as the persistence and recovery baseline for MVP
 - the system distinguishes private production data, private projection artifacts, public production artifacts, and dedicated test datasets
+- the public engine must remain runnable both on sanitized fixtures and on externally provided private data without changing semantic contracts
 - canonical HyperCV final artifacts remain the source of truth for publication, reuse, and future backend evolution
 - `site-data` remains private, regenerable, never manually edited, and subordinate to canonical HyperCV content
 - release governance must preserve revision traceability from approved source inputs through composition, final materialization, and public projection
+- any publishable semantic field must be introduced in canonical contracts before it appears in `site-data` or delivery components
 - the class and folder baseline for private production data is fixed at the operational level as `raw`, `deep-knowledge`, `knowledge-base/{dk,manual}`, `hypercv/{drafts,compositions,final}`, `site-data/{locale}`, `release/{candidates,evidence,deployable}`, and `manifests`, while field-level schemas remain implementation-phase detail
 - regression safety uses a two-track model: deterministic CI checks on sanitized fixtures in the public repository and mandatory release-evidence comparison for private production promotions
 
-The operational addendum must not be archived until its critical rules are persisted elsewhere through code enforcement, CI validation, backlog items for deferred decisions, and permanent architecture notes where needed.
+The archived operational addendum should not be used as an active planning input after archival. Any future reuse requires explicit re-promotion into canonical documentation.
 
 ## Architecture Readiness Summary
 
