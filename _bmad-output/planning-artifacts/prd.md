@@ -112,13 +112,14 @@ Builds the minimum value while reducing cost, hallucination risk, and attack sur
 * **Progressive Disclosure:** links expose contextual questions and open readable, copyable S.T.A.R. fragments.
 * Analytics for TTV, deep-dive engagement, and CTR toward LinkedIn.
 * Publication workflow with evidence package, safety controls, and promotion to the public allowed only for approved static outputs.
-* Explicit MVP exclusions: no runtime chatbot, no live job matching, no dynamic on-demand report generation, no authentication.
+* Explicit MVP exclusions: no runtime chatbot, no live job matching, no dynamic on-demand report generation, no authentication, and no alternate identity-lens or style-switch mode in the public experience.
 
 ### Growth Features (Post-MVP)
 Extends the same canonical knowledge base with real-time capabilities and operational governance:
 * Authentication and gating of advanced features.
 * Retrieval and contextual matching on Job Descriptions behind login.
 * Conversational experiences and dynamic outputs generated at runtime.
+* Optional identity-lens or alternate expressive presentation modes, if later validated as product-relevant rather than decorative.
 * Administrative dashboard for ingestion, validation, and content updates.
 
 The MVP scope is sufficient if it demonstrates that guided discovery, operational copy-paste, and rapid consultation generate real value before introducing real-time AI capabilities.
@@ -224,6 +225,7 @@ The operational principle that emerged from system discovery is that the key con
 * **[IN SCOPE] Search over the static corpus:** global search over a static index as a secondary discovery mode.
 * **[IN SCOPE] Publish Governance:** release evidence package, human review of modified content, and automatic publication safety checks before deploy.
 * **[OUT OF SCOPE]** No cloud database. No live operational backend. No log-in. No semantic retrieval, chatbot, or LLM inference produced by user interactions at run time.
+* **[OUT OF SCOPE]** No identity-lens toggle, alternate style mode, or secondary expressive presentation layer in the public MVP.
 * **[OUT OF SCOPE]** Publication of raw materials, private knowledge bases, editorial drafts, or other structured sources internal to the private domain.
 
 #### Phase 2: Growth (Backend Evaluation)

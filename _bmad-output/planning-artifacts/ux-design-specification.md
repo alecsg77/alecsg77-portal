@@ -324,15 +324,15 @@ The layout foundation should follow the Research Archive logic: modular, structu
 
 Spacing should follow a disciplined system with clear vertical rhythm between stages, sections, and evidence clusters. The layout should support a strong top-down reading order, clear section transitions, and visible stopping points where users can decide whether to continue refining or stop with enough proof.
 
-The alternate Soft Terminal Minimalism style should reuse the same layout system rather than redefining it. Only surface treatment, accent behavior, and tonal atmosphere should shift between styles. The structure and component grammar of the product must remain stable because both styles are two faces of the same experience, not two different interfaces.
+The alternate Soft Terminal Minimalism style should be treated as a future exploratory direction rather than an MVP commitment. If introduced after MVP validation, it should reuse the same layout system rather than redefining it. Only surface treatment, accent behavior, and tonal atmosphere should shift between styles. The structure and component grammar of the product must remain stable because both styles would be two faces of the same experience, not two different interfaces.
 
 ### Accessibility Considerations
 
 The default Research Archive style should remain the accessibility baseline. Contrast, hierarchy, spacing, and reading comfort should be optimized first in this mode so that the product remains highly legible for recruiters and evaluators under time pressure.
 
-The secondary Soft Terminal Minimalism style must preserve the same accessibility guarantees. It should not rely on dim low-contrast terminal nostalgia, decorative glow effects, or dense dark surfaces that reduce readability over time.
+If the secondary Soft Terminal Minimalism style is introduced in a later phase, it must preserve the same accessibility guarantees. It should not rely on dim low-contrast terminal nostalgia, decorative glow effects, or dense dark surfaces that reduce readability over time.
 
-If a style switch is introduced, it should be framed as a shift between identity lenses rather than as a basic light/dark toggle. The primary lens should express the professional self, while the secondary lens should express the geek-facing self. The switch should behave as a stable alternate mode rather than as a gimmick or hidden joke, while remaining clearly understandable, discoverable, and accessible.
+An identity-lens or style switch is explicitly post-MVP. If introduced later, it should be framed as a shift between identity lenses rather than as a basic light/dark toggle. The primary lens should express the professional self, while the secondary lens should express the geek-facing self. The switch should behave as a stable alternate mode rather than as a gimmick or hidden joke, while remaining clearly understandable, discoverable, and accessible.
 
 ## Design Direction Decision
 
@@ -687,7 +687,6 @@ These patterns support clarity, continuity, workflow quality, and identity expre
 - Feedback Patterns
 - Search Patterns
 - Language Switch Patterns
-- Identity Lens Switch Pattern
 - Copy-Ready Interaction Patterns
 
 ### Low-Priority Patterns
@@ -781,9 +780,9 @@ Language switching should preserve the same logical node whenever possible.
 **Consistency Rule**
 Changing language should not reset the user to an unrelated overview if an equivalent content node exists.
 
-### Identity Lens Switch Pattern
+### Identity Lens Switch Pattern (Post-MVP)
 
-The identity lens switch is distinct from language switching and should be treated as its own consistency pattern.
+The identity lens switch is distinct from language switching and is deferred to post-MVP. It should be treated as a future consistency pattern rather than as a V1 delivery commitment.
 
 It does not change the logical content node, the journey structure, or the information hierarchy. It changes only the expressive lens through which the same experience is presented.
 
@@ -833,6 +832,7 @@ If an interaction begins to require multi-step validation or heavy form affordan
 The responsive and accessibility strategy for alecsg77-portal should be understood as a single continuity strategy.
 
 Its purpose is not only to adapt layouts or satisfy compliance requirements. Its primary purpose is to preserve the product's journey logic across device size, input mode, language state, and identity lens.
+For the MVP, this continuity strategy applies to device size, input mode, and language state. Identity lens continuity becomes relevant only if the deferred lens-switch capability is introduced in a later phase.
 
 The system succeeds only if users can still:
 - identify the right evaluation perspective quickly
@@ -906,21 +906,21 @@ This means accessibility is not only about contrast, keyboard support, and seman
 - clarity of section identity
 - understandable disclosure behavior
 - continuity when switching language
-- continuity when switching identity lens
+- continuity when switching identity lens, if that deferred capability is later introduced
 - readability of proof under time pressure
 
 WCAG 2.1 AA is the right target, but the deeper principle is journey preservation, not checklist completion.
 
 The most important accessibility priorities are:
 - semantic structure that preserves meaning across sections and paths
-- full keyboard support for routing, disclosure, language switching, and lens switching
-- visible focus indicators that remain strong in both identity lenses
-- readable contrast in both the professional and geek-facing modes
+- full keyboard support for routing, disclosure, and language switching in MVP, plus lens switching if later introduced
+- visible focus indicators that remain strong in the MVP presentation and in any future alternate identity lens
+- readable contrast in the MVP presentation and in any future geek-facing mode
 - touch targets of at least 44x44px where interactive controls appear
 - consistent heading hierarchy for homepage sections, path pages, and evidence blocks
 - screen reader clarity for persona routing, top-topic entry, and progressive disclosure state
 
-The geek-facing lens must not reduce accessibility. It may change tone and atmosphere, but it cannot lower contrast, weaken focus visibility, or make metadata harder to parse.
+The geek-facing lens, if later introduced, must not reduce accessibility. It may change tone and atmosphere, but it cannot lower contrast, weaken focus visibility, or make metadata harder to parse.
 
 ### Testing Strategy
 
@@ -931,7 +931,7 @@ The key questions are:
 - can they still get immediate reward at section entry?
 - can they still choose a top topic without friction?
 - can they still expand proof and remain oriented?
-- can they do this with keyboard, screen reader, touch, different language states, and both identity lenses?
+- can they do this with keyboard, screen reader, touch, and different language states in MVP, plus both identity lenses if that deferred capability is later introduced?
 
 **Responsive Testing**
 - test the homepage routing layer on real phones and tablets
@@ -942,9 +942,9 @@ The key questions are:
 **Accessibility Testing**
 - automated checks for contrast, semantics, and common ARIA issues
 - keyboard-only testing for all primary flows
-- screen reader testing for homepage routing, section entry, disclosure, language switching, and identity lens switching
+- screen reader testing for homepage routing, section entry, disclosure, and language switching in MVP, plus identity lens switching if later introduced
 - focus-order verification after anchor jumps and content expansion
-- testing both identity lenses for readability and state visibility
+- testing both identity lenses for readability and state visibility only when the post-MVP lens capability is implemented
 
 **User-Level Validation**
 - test with realistic recruiter and evaluator reading behavior on mobile
@@ -966,8 +966,8 @@ Implementation should protect continuity before polish.
 - use semantic HTML first
 - ensure anchor navigation lands on clear, announced section headings
 - use accessible disclosure patterns with state announcement
-- preserve focus after route selection, expansion, language switching, and lens switching
-- ensure both language and lens switches preserve context rather than disorienting the user
+- preserve focus after route selection, expansion, and language switching in MVP, plus lens switching if later introduced
+- ensure language switching preserves context in MVP, and require the same behavior from any future lens switch
 - keep metadata supportive rather than essential to understanding
 - treat readability as a core accessibility requirement, not just contrast compliance
 
@@ -976,6 +976,6 @@ Implementation should protect continuity before polish.
 - Preserve cognitive parity across devices.
 - Keep the dominant first move obvious on mobile as well as desktop.
 - Do not let responsive collapse weaken section identity or path clarity.
-- Make both identity lenses accessible, not just the default professional mode.
+- Make any future alternate identity lens accessible, not just the default professional mode.
 - Treat focus, headings, and disclosure state as part of the product's trust model.
 - Optimize for fast reading under time pressure, not for visual symmetry across breakpoints.

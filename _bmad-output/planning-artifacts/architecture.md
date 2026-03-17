@@ -195,6 +195,7 @@ Use Astro with migration-aware boundaries: framework-light content contracts, ex
 - Runtime API design
 - Backend database selection
 - Chatbot orchestration and LLM service integration
+- Identity-lens or alternate expressive presentation modes in the public experience
 - SSR or hybrid rendering adoption
 - Rate limiting and API-specific security controls
 
@@ -265,9 +266,11 @@ CI/CD must verify more than build success:
 
 Execution infrastructure must preserve the engine/data split:
 - the public repository ships the engine, contracts, validators, and frontend delivery code
-- private storage or a private repository holds `deep-knowledge`, knowledge-base content, HyperCV artifacts, `site-data`, and release evidence inputs
+- the private GitHub repository is the authoritative persistence and recovery baseline for `deep-knowledge`, knowledge-base content, HyperCV artifacts, `site-data`, and release evidence inputs
 - all transformations from private classes to public output run inside the private execution environment
 - the deployed public artifact is the static site package only
+
+For MVP operations, protect the default branch of the private repository, disallow force-push to its main branch, and rely on repository-backed recovery rather than a separate backup platform unless stronger recovery needs are later validated.
 
 Environment configuration stays minimal and explicit, with public build variables cleanly separated from private pipeline configuration such as content-root paths and release evidence locations. V1 scales through CDN distribution and immutable static assets. If V2 introduces authentication, chatbot runtime, or SSR, the backend should be added as a separate boundary rather than eroding the current static delivery assumptions.
 
@@ -283,17 +286,19 @@ Detailed implementation guidance has been extracted into the temporary operation
 
 The architecture-level constraints that remain mandatory are:
 - the content pipeline is the semantic center of the system and the frontend is only a delivery projection
-- the public repository contains the full codebase, while private production data and private structured content classes remain outside the repository in secure persistent storage
+- the public GitHub repository contains the full codebase, while private production data and private structured content classes remain in a separate private GitHub repository used as the persistence and recovery baseline for MVP
 - the system distinguishes private production data, private projection artifacts, public production artifacts, and dedicated test datasets
 - canonical HyperCV final artifacts remain the source of truth for publication, reuse, and future backend evolution
 - `site-data` remains private, regenerable, never manually edited, and subordinate to canonical HyperCV content
 - release governance must preserve revision traceability from approved source inputs through composition, final materialization, and public projection
+- the class and folder baseline for private production data is fixed at the operational level as `raw`, `deep-knowledge`, `knowledge-base/{dk,manual}`, `hypercv/{drafts,compositions,final}`, `site-data/{locale}`, `release/{candidates,evidence,deployable}`, and `manifests`, while field-level schemas remain implementation-phase detail
+- regression safety uses a two-track model: deterministic CI checks on sanitized fixtures in the public repository and mandatory release-evidence comparison for private production promotions
 
 The operational addendum must not be archived until its critical rules are persisted elsewhere through code enforcement, CI validation, backlog items for deferred decisions, and permanent architecture notes where needed.
 
 ## Architecture Readiness Summary
 
-The architecture is validated as coherent and ready for implementation at the design level. The remaining open points are operational, not architectural: concrete secure-storage choice, optional private-data versioning strategy, exact schema/file-layout details for the private classes, and regression strategy for pipeline reprocessing.
+The architecture is validated as coherent and ready for implementation at the design level. The remaining open points are narrower implementation details rather than unresolved operating-model decisions: optional private-data versioning strategy, exact field-level schema details for private artifacts, and the concrete shape of release evidence templates.
 
 ## Architecture Validation Record
 
@@ -307,7 +312,6 @@ The architecture covers both sides of the MVP: private ingestion and distillatio
 The design is ready for implementation because technology direction, engine/data boundary, privacy constraints, data classes, revision model, migration stance, and release model are explicit enough to guide implementation consistently.
 
 **Deferred but non-blocking gaps**
-- concrete secure-storage choice and backup strategy
 - optional private-data versioning, pending proven rollback or audit needs
-- exact canonical schema and file-layout details to be finalized during implementation
-- regression comparison strategy for pipeline reprocessing
+- exact field-level schema details to be finalized during implementation
+- concrete release-evidence template format to be finalized during implementation
