@@ -1,4 +1,4 @@
----
+Mi hai detto che è avresti preparato tu il brainstorming Tu così la sessione top uguale chiarimento Abbastanza netto da sostenere una proposta di chiarimento canonico minimo da soli Szioni con il framing. Glassare Generative Depetris. Ego ora una sequenza di tecniche adatta al tuo obiettivo. Storming Reading S Fisso la tecnica senza. Della sessione, poi apro subito il primo giro sul terreno del pubblico Blind bin. Leato. Sessione di brainstorming l'ho già fissata qui, 30 Il nome punto NB. Poi se parliamo in verità Promote Made changer. ---
 workflowType: implementation-readiness
 assessmentStage: focused-rerun
 assessmentDate: '2026-03-17'
