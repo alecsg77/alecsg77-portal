@@ -14,7 +14,7 @@ documentsIncluded:
     - _bmad-output/planning-artifacts/prd.md
   architecture:
     - _bmad-output/planning-artifacts/architecture.md
-    - _bmad-output/planning-artifacts/architecture-validation-record.md
+    - _bmad-archive/planning-artifacts/architecture-validation-record.md
   ux:
     - _bmad-output/planning-artifacts/ux-design-specification.md
   implementationArtifacts:
@@ -41,7 +41,7 @@ documentDiscoveryStatus: complete
 #### Architecture
 
 - _bmad-output/planning-artifacts/architecture.md
-- _bmad-output/planning-artifacts/architecture-validation-record.md
+- _bmad-archive/planning-artifacts/architecture-validation-record.md
 
 #### UX
 

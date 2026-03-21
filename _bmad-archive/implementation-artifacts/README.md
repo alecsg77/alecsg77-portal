@@ -19,4 +19,4 @@ These files were archived on 2026-03-17 after a completed extraction pass.
 - `_bmad-output/planning-artifacts/prd.md`
 - `_bmad-output/planning-artifacts/architecture.md`
 - `_bmad-output/planning-artifacts/ux-design-specification.md`
-- `_bmad-output/brainstorming/brainstorming-session-2026-03-15-0620.md` as decision trace and comparison baseline
+- `_bmad-archive/brainstorming/brainstorming-session-2026-03-15-0620.md` as decision trace and comparison baseline

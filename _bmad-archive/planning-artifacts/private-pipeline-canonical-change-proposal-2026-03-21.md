@@ -10,7 +10,7 @@ primaryObjective: absorb the private pipeline model into canonical planning docu
 inputDocuments:
   - _bmad-output/planning-artifacts/prd.md
   - _bmad-output/planning-artifacts/architecture.md
-  - _bmad-output/planning-artifacts/gray-area-review-2026-03-17.md
+  - _bmad-archive/planning-artifacts/gray-area-review-2026-03-17.md
 ---
 
 # Private Pipeline Canonical Change Proposal Preparation
@@ -33,7 +33,7 @@ You should treat this document as the current source of truth for the required r
 
 1. [prd.md](/workspaces/alecsg77-portal/_bmad-output/planning-artifacts/prd.md)
 2. [architecture.md](/workspaces/alecsg77-portal/_bmad-output/planning-artifacts/architecture.md)
-3. [gray-area-review-2026-03-17.md](/workspaces/alecsg77-portal/_bmad-output/planning-artifacts/gray-area-review-2026-03-17.md)
+3. [gray-area-review-2026-03-17.md](/workspaces/alecsg77-portal/_bmad-archive/planning-artifacts/gray-area-review-2026-03-17.md)
 4. this document as the delta-oriented realignment brief
 
 ### Outputs You Must Produce

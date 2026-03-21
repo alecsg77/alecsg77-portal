@@ -3,13 +3,13 @@ workflowType: implementation-readiness
 assessmentStage: focused-rerun
 assessmentDate: '2026-03-17'
 project: alecsg77-portal
-sourceReport: _bmad-output/planning-artifacts/implementation-readiness-rerun-2026-03-17.md
+sourceReport: _bmad-archive/planning-artifacts/implementation-readiness-rerun-2026-03-17.md
 documentsReviewed:
   - _bmad-output/planning-artifacts/prd.md
   - _bmad-output/planning-artifacts/ux-design-specification.md
   - _bmad-output/planning-artifacts/architecture.md
-  - _bmad-output/planning-artifacts/implementation-artifact-extraction-matrix-2026-03-17.md
-  - _bmad-output/planning-artifacts/sprint-change-proposal-2026-03-17.md
+  - _bmad-archive/planning-artifacts/implementation-artifact-extraction-matrix-2026-03-17.md
+  - _bmad-archive/planning-artifacts/sprint-change-proposal-2026-03-17.md
 overallStatus: Pass
 readinessDecision: Ready for epic creation after gray-area review
 ---

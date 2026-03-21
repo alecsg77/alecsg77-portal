@@ -20,7 +20,7 @@ stepsCompleted:
 inputDocuments:
   - _bmad-archive/planning-artifacts/product-brief-alecsg77-portal-2026-02-27.md
   - _bmad-archive/brainstorming/brainstorming-session-2026-02-25.md
-  - _bmad-output/brainstorming/brainstorming-session-2026-03-15-0620.md
+  - _bmad-archive/brainstorming/brainstorming-session-2026-03-15-0620.md
 date: '2026-02-27'
 classification:
   projectType: web_app
@@ -32,7 +32,7 @@ productVision:
   differentiator: "A HyperCV powered by an offline-first private pipeline that distills memories and raw notes into canonically structured artifacts validated by humans, then published in a highly readable bilingual static portal."
   insight: The goal is not to replace the interview with an assistant that speaks on behalf of the candidate, but to reduce evaluation friction by exposing a real database of experiences that can be consulted through navigation, search, and progressive disclosure.
   oneLiner: "A public static portal that makes a career consultable like a knowledge base, powered by a private pipeline that distills verifiable content."
-lastEdited: '2026-03-16'
+lastEdited: '2026-03-21'
 editHistory:
   - date: '2026-03-08'
     changes: 'Refocused requirements for measurability, traceability, web-app coverage, and abstract provenance/regeneration language'
@@ -44,6 +44,8 @@ editHistory:
     changes: 'Refined flagged FRs and NFRs after validation to improve measurability, evidence, and abstraction level'
   - date: '2026-03-16'
     changes: 'Closed final validation gaps by tightening canonical-governance FRs and evidence-oriented acceptance language'
+  - date: '2026-03-21'
+    changes: 'Realigned the canonical private-pipeline model around candidate review, governed knowledge partitions, HyperCV base/refinement stages, and projection-only delivery rules'
 workflowType: 'prd'
 workflow: 'edit'
 ---
@@ -108,6 +110,7 @@ These goals impose a conservative architectural choice for V1: verifiable conten
 ### MVP - Minimum Viable Product
 Builds the minimum value while reducing cost, hallucination risk, and attack surface:
 * Offline-first private pipeline to transform ephemeral inputs into persisted private content, curated knowledge base, and final HyperCV catalog subject to review.
+* Private-domain transformations are expected to be LLM-assisted by default where they improve extraction, synthesis, normalization, and drafting quality, while remaining governed by explicit schemas, validators, revision rules, and human review.
 * Bilingual public static portal with hierarchical navigation as the primary mode and search over the static corpus as secondary support.
 * **Progressive Disclosure:** links expose contextual questions and open readable, copyable S.T.A.R. fragments.
 * Analytics for TTV, deep-dive engagement, and CTR toward LinkedIn.
@@ -127,8 +130,8 @@ The MVP scope is sufficient if it demonstrates that guided discovery, operationa
 ### Canonical Content Boundary
 The product distinguishes four layers at the requirement level, without turning the PRD into a detailed technical design:
 * **Ephemeral inputs:** work notes and voice notes used for initial ingestion, not intended for publication, not renderable, and not treated as a persisted governed class.
-* **Persisted private content:** `deep-knowledge` as append-only private memory and `knowledge-base` content managed through distillation-derived and manual subclasses that remain outside the public domain.
-* **Canonical HyperCV catalog:** private HyperCV artifacts separated into draft, composition, and final responsibilities, with `hypercv-final` as the approved materialized source of truth for publishing.
+* **Persisted private content:** `deep-knowledge` as append-only private memory, `knowledge-base-candidate` as the governed review-entry layer, and `knowledge-base` as the unified governed center with semantically active `current` and `deprecated` partitions that remain outside the public domain.
+* **Canonical HyperCV catalog:** private HyperCV artifacts separated into `hypercv-base`, `hypercv-refinement`, and `hypercv-final` responsibilities, with `hypercv-final` as the approved materialized source of truth for publishing.
 * **Derived public output:** private `site-data` as the regenerable bilingual web projection and the deployable static package as the only runtime artifact that crosses into the public domain.
 
 The MVP requires that only the deployable static package crosses the boundary toward the published site; private layers always remain excluded from the public package.
@@ -136,8 +139,16 @@ The MVP requires that only the deployable static package crosses the boundary to
 The planning baseline also requires these class-boundary rules:
 * `raw` begins and ends as transient ingestion input.
 * `deep-knowledge` is the first persisted responsibility boundary of the system.
-* `hypercv-draft` and `hypercv-composition` remain private editorial classes and never become direct frontend inputs.
+* `knowledge-base-candidate` is the review-entry layer for proposed reusable knowledge.
+* `knowledge-base` remains the governed center, with `current` as positive reusable source material and `deprecated` as an active downstream exclusion guardrail.
+* `hypercv-base` is the first generated HyperCV materialization; `hypercv-refinement` is a replayable editorial delta layer; `hypercv-final` is the approved private canonical publication source.
 * `site-data` is a private projection for localization, routing, search, and rendering; it is not the semantic source of truth.
+
+The planning baseline also requires these governance rules:
+* knowledge maintenance and editorial refinement are distinct change types and must not be collapsed into one generic editing concept
+* LLM usage is allowed only inside the governed private pipeline and never replaces schemas, validators, class contracts, or human review
+* projection and delivery may not repair meaning or invent publishable semantics
+* `user-persona` affects projection only; `patch-grammar` constrains replayable editorial deltas; `hypercv-docs-spec` defines the HyperCV document contract; `hypercv-distillation-profile` governs base-generation behavior within that contract
 
 ## User Journeys
 
@@ -248,14 +259,14 @@ The previous sections define the problem, the product model, the journeys to sup
 ### Data Ingestion & Distillation (Offline AI Pipeline)
 * **FR1:** The Author can enter unstructured "memories" (text notes or voice notes) related to their career in the local environment.
 * **FR2:** The local pipeline can consolidate inputs into persisted private content beginning at `deep-knowledge`, preserving the context needed for review and future updates. Raw inputs remain transient ingestion material and are not treated as a persisted governed class.
-* **FR3:** The Distiller Agent (local) can derive from persisted content a curated knowledge base reusable for the canonical HyperCV catalog and for approved public projections of the same release.
-* **FR4:** The Author can read, edit, and manually approve the generated content and native manual contributions that flow into the canonical catalog.
+* **FR3:** The Distiller Agent (local) can derive from persisted content governed `knowledge-base-candidate` contributions and reusable `knowledge-base` content for the canonical HyperCV catalog and for approved public projections of the same release. MVP planning assumes this distillation may be LLM-assisted, but only inside the private pipeline and only under schema validation, review, and publish-safety gates.
+* **FR4:** The Author can read, edit, and manually approve generated content and native manual contributions as they move through candidate review, governed knowledge maintenance, HyperCV generation, and final publication decisions.
 
 ### Content Assembly & Generation
-* **FR5:** The local pipeline can organize approved content into a HyperCV catalog composed of experiences, projects, and S.T.A.R. cases ready for publication through explicit private class transitions: draft contributions, composition rules, final materialization, then site projection.
-* **FR6:** The Generator Agent (local) can reuse the same approved canonical content across the different approved navigation nodes of the portal while maintaining semantic consistency, linkage to the same canonical source, and absence of unapproved textual divergences between published views of the same release.
+* **FR5:** The local pipeline can organize approved content into a HyperCV catalog composed of experiences, projects, and S.T.A.R. cases ready for publication through explicit private class transitions: candidate review, governed knowledge maintenance, `hypercv-base` generation, `hypercv-refinement`, `hypercv-final` materialization, then `site-data` projection.
+* **FR6:** The Generator Agent (local) can reuse the same approved canonical content across the different approved navigation nodes of the portal while maintaining semantic consistency, linkage to the same canonical source, and absence of unapproved textual divergences between published views of the same release. TypeScript orchestration, deterministic transforms, and LLM-assisted generation are all acceptable implementation choices so long as canonical contracts, provenance, and review obligations remain intact.
 * **FR7:** The local System can publish the static output of the portal through the public hosting pipeline.
-* **FR8:** The Author can bypass the Agents (manual degradation) and directly edit approved content before publication.
+* **FR8:** The Author can bypass the Agents (manual degradation) and directly edit approved content before publication, but manual edits to governed knowledge must still enter through candidate review and may not bypass validation, provenance, or approval rules.
 
 ### Navigation & Discovery (UX)
 * **FR9:** The Visitor can access a general Executive Summary and navigate the career through logical clusters.
@@ -279,22 +290,23 @@ The previous sections define the problem, the product model, the journeys to sup
 * **FR21:** The distillation system can create a monolingual canonical HyperCV catalog only from heterogeneous sources and manual contributions that, for the current release, have `approved` status, completed human review, and no blocking publishability findings.
 * **FR22:** The system can maintain a verifiable link between the canonical catalog, the contributions that compose it, and the sources that support its review so that, during review, the Author can trace every canonical element back to at least one approved source or contribution with identifiable review.
 * **FR23:** The Author can inspect provenance, review status, and approved components of the canonical content during review and publish decisions.
-* **FR24:** The static generation system can publish page variants in English and Italian from the approved canonical catalog, without exposing private editorial layers. The public delivery layer must consume `site-data`, not draft, composition, or final private artifacts directly.
+* **FR24:** The static generation system can publish page variants in English and Italian from the approved canonical catalog, without exposing private editorial layers. The public delivery layer must consume `site-data`, not `knowledge-base`, `hypercv-base`, `hypercv-refinement`, or `hypercv-final` directly.
 * **FR25:** The Visitor can change language while preserving, when available, the same logical content or navigation node.
 * **FR26:** The system can detect before public release untranslated placeholders, missing variants for required pages, and manifest inconsistencies between equivalent nodes that prevent coherent publication.
 * **FR27:** The Author can trigger selective or full regeneration when source inputs or approved transformation rules change.
 * **FR28:** The system can publish only a state of the corpus that has been reviewed as coherent for the intended public release.
 * **FR29:** The system can distinguish content managed primarily by the knowledge base, manual content, and hybrid content by assigning each content item a single active classification among `knowledge-base-managed`, `manual-managed`, or `hybrid-managed`, visible in review and respected during regeneration. These classifications must govern editability and regeneration behavior rather than act as labels only.
-* **FR30:** The system can associate a verifiable revision with canonical content and the references used to compose it. All HyperCV artifacts participating in review, composition, final materialization, or publication must carry revision metadata.
-* **FR31:** The system can signal when an approved composition becomes stale due to a change in a referenced revision. Stale compositions and their downstream final artifacts must not be reused automatically until re-reviewed.
+* **FR30:** The system can associate a verifiable revision with canonical content and the references used to compose it. All governed and HyperCV artifacts participating in candidate review, base generation, refinement, final materialization, or publication must carry revision metadata.
+* **FR31:** The system can signal when an approved generated state becomes stale due to a change in a referenced revision, dependency contract, or approved input. Stale downstream artifacts must not be reused automatically until re-reviewed.
 * **FR32:** The Author can inspect which revisions and which contributions were materialized into the content ready for publication.
 
 For planning and decomposition purposes, the minimum transformation contract is:
-* raw -> `deep-knowledge`: ingestion and normalization without turning raw into a persistent governed layer
-* `deep-knowledge` -> `knowledge-base`: distillation into reusable private content
-* `knowledge-base` -> `hypercv-draft`: generation of private draft contributions
-* `hypercv-draft` + `hypercv-composition` -> `hypercv-final`: explicit materialization of approved final content
-* `hypercv-final` -> `site-data`: private bilingual web projection with route, locale, and presentation needs resolved before rendering
+* `raw` -> `deep-knowledge-current`: ingestion and normalization without turning raw into a persistent governed layer
+* `deep-knowledge` -> `knowledge-base-candidate`: distillation into governed reviewable contributions
+* `knowledge-base-candidate` -> `knowledge-base-current` / `knowledge-base-deprecated` / discard: explicit governed review closure
+* `knowledge-base` -> `hypercv-base`: generation of the first spec-constrained HyperCV materialization
+* `hypercv-base` + `hypercv-refinement` -> `hypercv-final`: explicit materialization of approved final content through replayable editorial deltas that may not add new knowledge
+* `hypercv-final` + `user-persona` -> `site-data`: private bilingual web projection with route, locale, and presentation needs resolved before rendering
 * `site-data` -> deployed static site: static rendering and delivery only
 
 ## Non-Functional Requirements

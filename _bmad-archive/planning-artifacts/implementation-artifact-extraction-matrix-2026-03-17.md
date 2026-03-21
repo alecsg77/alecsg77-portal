@@ -5,12 +5,12 @@
 This matrix records what stable value was extracted from the three implementation artifacts, what was intentionally not promoted, and what still needs an explicit decision before those artifacts can be archived.
 
 Primary decision baseline:
-- `_bmad-output/brainstorming/brainstorming-session-2026-03-15-0620.md`
+- `_bmad-archive/brainstorming/brainstorming-session-2026-03-15-0620.md`
 
 Secondary extraction sources:
-- `_bmad-output/implementation-artifacts/private-public-boundary-proposal.md`
-- `_bmad-output/implementation-artifacts/private-public-operational-implementation.md`
-- `_bmad-output/implementation-artifacts/tech-spec-operational-guidelines.md`
+- `_bmad-archive/implementation-artifacts/private-public-boundary-proposal.md`
+- `_bmad-archive/implementation-artifacts/private-public-operational-implementation.md`
+- `_bmad-archive/implementation-artifacts/tech-spec-operational-guidelines.md`
 
 Canonical targets:
 - `_bmad-output/planning-artifacts/prd.md`

@@ -57,7 +57,7 @@ The working objective now includes deriving a consistent and defensible change-p
 
 The continuation criterion was later tightened further: no meaningful rule from the source private pipeline model should remain outside the canonical planning knowledge used to derive epics and stories.
 
-An initial first-principles proposal artifact was prepared in `_bmad-output/planning-artifacts/private-pipeline-canonical-change-proposal-2026-03-21.md` as structured input for a later dedicated change workflow.
+An initial first-principles proposal artifact was prepared in `_bmad-archive/planning-artifacts/private-pipeline-canonical-change-proposal-2026-03-21.md` as structured input for a later dedicated change workflow.
 
 The current closure criterion is stricter: the proposal artifact must be internally consistent, aligned with the brainstorming objective of clarification-before-update, and explicit enough that the next workflow can execute it without rediscovering the model.
 

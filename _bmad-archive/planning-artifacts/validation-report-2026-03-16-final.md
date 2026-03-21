@@ -9,7 +9,7 @@ validationDate: '2026-03-16'
 inputDocuments:
   - _bmad-output/planning-artifacts/prd.md
   - _bmad-archive/planning-artifacts/product-brief-alecsg77-portal-2026-02-27.md
-  - _bmad-output/brainstorming/brainstorming-session-2026-03-15-0620.md
+  - _bmad-archive/brainstorming/brainstorming-session-2026-03-15-0620.md
 validationStepsCompleted:
   - step-v-01-discovery
   - step-v-02-format-detection

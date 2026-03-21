@@ -4,13 +4,13 @@ workflow: 'validate'
 reportStage: 'initial-pass'
 precedence: 'superseded'
 sourceOfTruth: false
-supersededBy: '_bmad-output/planning-artifacts/validation-report-2026-03-16-final.md'
+supersededBy: '_bmad-archive/planning-artifacts/validation-report-2026-03-16-final.md'
 validationTarget: '_bmad-output/planning-artifacts/prd.md'
 validationDate: '2026-03-16'
 inputDocuments:
   - _bmad-output/planning-artifacts/prd.md
   - _bmad-archive/planning-artifacts/product-brief-alecsg77-portal-2026-02-27.md
-  - _bmad-output/brainstorming/brainstorming-session-2026-03-15-0620.md
+  - _bmad-archive/brainstorming/brainstorming-session-2026-03-15-0620.md
 validationStepsCompleted:
   - step-v-01-discovery
   - step-v-02-format-detection
@@ -38,7 +38,7 @@ overallStatus: 'Warning'
 
 - PRD: _bmad-output/planning-artifacts/prd.md
 - Product Brief: _bmad-archive/planning-artifacts/product-brief-alecsg77-portal-2026-02-27.md
-- Brainstorming: _bmad-output/brainstorming/brainstorming-session-2026-03-15-0620.md
+- Brainstorming: _bmad-archive/brainstorming/brainstorming-session-2026-03-15-0620.md
 
 ## Validation Findings
 

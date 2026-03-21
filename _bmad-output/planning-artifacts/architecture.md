@@ -11,7 +11,7 @@ stepsCompleted:
 inputDocuments:
   - _bmad-output/planning-artifacts/prd.md
   - _bmad-output/planning-artifacts/ux-design-specification.md
-  - _bmad-output/brainstorming/brainstorming-session-2026-03-15-0620.md
+  - _bmad-archive/brainstorming/brainstorming-session-2026-03-15-0620.md
 workflowType: 'architecture'
 lastStep: 8
 status: 'complete'
@@ -170,10 +170,10 @@ Use Astro with migration-aware boundaries: framework-light content contracts, ex
 ### Decision Priority Analysis
 
 **Critical Decisions (Block Implementation):**
-- Use a file-based private canonical content architecture with explicit classes for `deep-knowledge`, `knowledge-base`, `hypercv-draft`, `hypercv-composition`, `hypercv-final`, and `site-data`.
+- Use a file-based private canonical content architecture with explicit classes for `deep-knowledge`, `knowledge-base-candidate`, `knowledge-base`, `hypercv-base`, `hypercv-refinement`, `hypercv-final`, and `site-data`.
 - Enforce schema validation through shared TypeScript and schema definitions across ingestion, transformation, review, and pre-publish release checks.
-- Materialize `hypercv-final` explicitly from draft plus composition rather than inferring final content implicitly from intermediate layers.
-- Require revision pinning and stale detection for HyperCV compositions and release candidates.
+- Materialize `hypercv-final` explicitly from `hypercv-base` plus `hypercv-refinement` rather than inferring final content implicitly from intermediate layers.
+- Require revision pinning and stale detection for governed and HyperCV generated states before review reuse or release promotion.
 - Keep the MVP free of runtime database, public authentication, and public backend APIs.
 - Implement search through a prebuilt static index or equivalent static-search strategy.
 - Deploy the public portal as a static build on CDN-backed hosting with atomic deploys.
@@ -182,6 +182,7 @@ Use Astro with migration-aware boundaries: framework-light content contracts, ex
 
 **Important Decisions (Shape Architecture):**
 - Use TypeScript in strict mode across content utilities, validation logic, and frontend code.
+- Treat TypeScript orchestration plus private-domain LLM-assisted transformations as the default MVP implementation posture for extraction, synthesis, normalization, and drafting, while keeping validators, schemas, and review gates deterministic and explicit.
 - Use Astro as a delivery framework, but keep domain structure, content contracts, and route semantics as framework-light as practical.
 - Model localization explicitly with node-preserving language mappings rather than inferred route equivalence.
 - Generate bilingual `site-data` from monolingual private canonical HyperCV artifacts instead of making the canonical layer itself bilingual.
@@ -194,7 +195,7 @@ Use Astro with migration-aware boundaries: framework-light content contracts, ex
 - User accounts and session management
 - Runtime API design
 - Backend database selection
-- Chatbot orchestration and LLM service integration
+- Public-runtime chatbot orchestration and live LLM service integration
 - Identity-lens or alternate expressive presentation modes in the public experience
 - SSR or hybrid rendering adoption
 - Rate limiting and API-specific security controls
@@ -205,16 +206,30 @@ Use a repository-backed, file-based private data model with explicit class respo
 
 The class model is:
 - `raw` as ephemeral ingestion input, not a persistent governed class
-- `deep-knowledge` as append-only, immutable, private persisted memory
-- `knowledge-base-dk` and `knowledge-base-manual` as two managed subclasses that merge into a logical unified knowledge-base view for downstream generation
-- `hypercv-draft` as persistent draft contributions for `cv-experience`, `cv-project`, and `cv-star`
-- `hypercv-composition` as the explicit convergence layer that records approved revision references and composition defaults
+- `deep-knowledge` as append-only, immutable, private persisted memory and the first persisted private boundary
+- `knowledge-base-candidate` as the governed review-entry layer for proposed reusable knowledge
+- `knowledge-base` as the unified governed center whose `current` partition is positive reusable source material and whose `deprecated` partition is an active downstream exclusion guardrail
+- `hypercv-base` as the first generated HyperCV materialization constrained by `hypercv-docs-spec` and `hypercv-distillation-profile`
+- `hypercv-refinement` as the replayable editorial delta layer, with no-new-knowledge semantics and only the current patch normative
 - `hypercv-final` as the private canonical materialization used as the source of truth for publication
 - `site-data` as a private, fully regenerable web projection that feeds the static renderer without becoming the content source of truth
+- `deployed static site` as the only public runtime artifact
 
-The canonical HyperCV catalog must preserve an explicit hierarchy of `cv-experience -> cv-project -> cv-star`, with policy classification on each object (`knowledge-base-managed`, `manual-managed`, or `hybrid-managed`). All HyperCV artifacts carry stable IDs and required revision metadata. If a referenced approved revision changes, the related composition becomes stale and the derived final content must be re-reviewed before reuse.
+The canonical HyperCV catalog must preserve an explicit hierarchy of `cv-experience -> cv-project -> cv-star`, with policy classification on each object (`knowledge-base-managed`, `manual-managed`, or `hybrid-managed`). All governed and HyperCV artifacts carry stable IDs and required revision metadata. If a referenced approved revision changes, the related downstream generated state becomes stale and the derived final content must be re-reviewed before reuse.
 
-Validation is schema-first but domain-oriented: structure, lineage, safety, semantic quality, consistency, and publication readiness are reusable validator domains applied to the classes where relevant. Migration remains lightweight through content-shape migrations rather than database migrations. Caching is static and CDN-oriented only at the public output layer; persistence of `site-data` is a materialization choice, not a statement of canonical ownership.
+Validation is schema-first but domain-oriented: minimal ingestion, structure, lineage and provenance, semantic quality, logical consistency and disambiguation, review and approval, policy and governance, content safety, projection integrity, publish safety, release coherence, accessibility, and performance are reusable validator domains applied to the classes where relevant. Transition validation is local and partial; full target-class validity remains dominant. Migration remains lightweight through content-shape migrations rather than database migrations. Caching is static and CDN-oriented only at the public output layer; persistence of `site-data` is a materialization choice, not a statement of canonical ownership.
+
+Review granularity is explicit in the class model:
+- `knowledge-base-candidate` is reviewable as a governed candidate and may produce mixed outcomes across promotable, deprecatable, or discardable portions
+- `hypercv-base` is reviewable as generated output and must remain recognizable under the document contract
+- `hypercv-refinement` is reviewable as an editorial delta constrained by replayability and the no-new-knowledge rule
+- `hypercv-final` becomes the publishable private canonical source only after governed approval
+
+The dependency model is also explicit:
+- `user-persona` affects projection only and may change exposure or granularity, not canonical claims
+- `patch-grammar` defines admissible replayable editorial operations for `hypercv-refinement`
+- `hypercv-docs-spec` defines the structural and semantic contract of the HyperCV document family
+- `hypercv-distillation-profile` governs base-generation behavior within the document-spec contract
 
 ### Authentication & Security
 
@@ -233,6 +248,8 @@ Authenticated authorization is deferred to a future backend-supported release. T
 The MVP exposes no public runtime API as a core dependency. Private preparation and public delivery communicate through build-time artifact exchange using validated structured content and generated static outputs.
 
 The architectural contract is schema-based rather than endpoint-based: content artifacts, localization mappings, navigation structures, route manifests, publish manifests, and revision references must be versioned and validated before build completion. Build failures are fail-fast. Search is delivered through a precomputed static index decoupled from route internals.
+
+Within that boundary, private execution may combine deterministic TypeScript transforms and LLM-assisted steps. LLM usage is an implementation mechanism inside the private pipeline, not a replacement for canonical class transitions, explicit materialization, validation, or human approval.
 
 The public engine must support two execution contexts without changing its logical boundary:
 - showcase mode on sanitized fixtures for public demonstration, repeatable testing, and frontend work
@@ -291,13 +308,13 @@ Environment configuration stays minimal and explicit, with public build variable
 
 ### Decision Impact Analysis
 
-Implementation should proceed in this order: private class schema and revision rules, shared validation and publish eligibility, HyperCV draft/composition/final materialization, `site-data` projection and provenance tracking, Astro route generation around framework-light contracts, static search indexing, release validation and publish manifests, then static hosting and deployment.
+Implementation should proceed in this order: private class schema and revision rules, shared validation and publish eligibility, candidate review and governed knowledge maintenance, HyperCV base/refinement/final materialization, `site-data` projection and provenance tracking, Astro route generation around framework-light contracts, static search indexing, release validation and publish manifests, then static hosting and deployment.
 
-Key dependencies remain explicit: routing depends on the canonical schema and locale linkage; `site-data` depends on explicit HyperCV final materialization; stale detection depends on revision-aware composition; release validation depends on provenance, publish eligibility, and materialized revision evidence; search depends on stable page generation and content chunking; future ASP.NET MVC integration depends on keeping content, route semantics, and interaction boundaries independent from Astro internals.
+Key dependencies remain explicit: routing depends on the canonical schema and locale linkage; `site-data` depends on explicit `hypercv-final` materialization plus persona-scoped projection; stale detection depends on revision-aware generated-state dependencies; release validation depends on provenance, publish eligibility, and materialized revision evidence; search depends on stable page generation and content chunking; future ASP.NET MVC integration depends on keeping content, route semantics, and interaction boundaries independent from Astro internals.
 
 ## Implementation Governance Summary
 
-Detailed implementation guidance was extracted through the temporary operational addendum and has now been triaged into canonical rules, rejected details, and archival leftovers. Detailed validation evidence remains preserved in the permanent record at [_bmad-output/planning-artifacts/architecture-validation-record.md](_bmad-output/planning-artifacts/architecture-validation-record.md). The operational addendum can now be archived because its stable value has been promoted where needed and its remaining content is intentionally non-canonical.
+Detailed implementation guidance was extracted through the temporary operational addendum and has now been triaged into canonical rules, rejected details, and archival leftovers. Detailed validation evidence remains preserved in the permanent record at [_bmad-archive/planning-artifacts/architecture-validation-record.md](_bmad-archive/planning-artifacts/architecture-validation-record.md). The operational addendum can now be archived because its stable value has been promoted where needed and its remaining content is intentionally non-canonical.
 
 The architecture-level constraints that remain mandatory are:
 - the content pipeline is the semantic center of the system and the frontend is only a delivery projection
@@ -308,7 +325,7 @@ The architecture-level constraints that remain mandatory are:
 - `site-data` remains private, regenerable, never manually edited, and subordinate to canonical HyperCV content
 - release governance must preserve revision traceability from approved source inputs through composition, final materialization, and public projection
 - any publishable semantic field must be introduced in canonical contracts before it appears in `site-data` or delivery components
-- the class and folder baseline for private production data is fixed at the operational level as `raw`, `deep-knowledge`, `knowledge-base/{dk,manual}`, `hypercv/{drafts,compositions,final}`, `site-data/{locale}`, `release/{candidates,evidence,deployable}`, and `manifests`, while field-level schemas remain implementation-phase detail
+- the canonical class baseline is `raw`, `deep-knowledge`, `knowledge-base-candidate`, `knowledge-base`, `hypercv-base`, `hypercv-refinement`, `hypercv-final`, `site-data`, and the deployed static site; concrete folder layout remains implementation-phase detail so long as these semantic boundaries remain explicit
 - regression safety uses a two-track model: deterministic CI checks on sanitized fixtures in the public repository and mandatory release-evidence comparison for private production promotions
 
 The archived operational addendum should not be used as an active planning input after archival. Any future reuse requires explicit re-promotion into canonical documentation.
