@@ -3,15 +3,15 @@ workflowType: planning-change-crosswalk
 preparedDate: '2026-03-21'
 project: alecsg77-portal
 status: complete
-purpose: map-private-pipeline-model-absorption-into-canonical-planning-set
+purpose: map-portal-data-model-absorption-into-canonical-planning-set
 sourceBrief: _bmad-archive/planning-artifacts/private-pipeline-canonical-change-proposal-2026-03-21.md
 targetArtifacts:
   - _bmad-output/planning-artifacts/prd.md
   - _bmad-output/planning-artifacts/architecture.md
-  - _bmad-output/planning-artifacts/private-pipeline-canonical-model.md
+  - _bmad-output/planning-artifacts/portal-data-canonical-model.md
 ---
 
-# Private Pipeline Canonical Absorption Crosswalk
+# Portal Data Canonical Absorption Crosswalk
 
 Absorption status: complete. The mapped responsibilities in this crosswalk are now reflected in the active canonical planning set.
 
@@ -55,7 +55,7 @@ The PRD should absorb only planning-level rules that later epics and stories mus
 2. `knowledge-base-candidate` is the review-entry layer
 3. `knowledge-base` is a unified governed center with semantically active `current` and `deprecated` partitions
 4. knowledge maintenance and editorial refinement are distinct change types
-5. LLM usage is confined to the governed private pipeline and cannot replace schemas, validators, class contracts, or human review
+5. LLM usage is confined to the governed data pipeline and cannot replace schemas, validators, class contracts, or human review
 6. projection and delivery may not repair meaning or invent semantics
 7. `user-persona`, `patch-grammar`, `hypercv-docs-spec`, and `hypercv-distillation-profile` have planning-level roles and non-negotiable boundary rules
 
@@ -74,7 +74,7 @@ The Architecture document should absorb the structural and operational model:
 
 ### 4.3 Companion Canonical Artifact
 
-The companion artifact at [_bmad-output/planning-artifacts/private-pipeline-canonical-model.md](_bmad-output/planning-artifacts/private-pipeline-canonical-model.md) should absorb dense normative detail that would overload the main Architecture document:
+The companion artifact at [_bmad-output/planning-artifacts/portal-data-canonical-model.md](_bmad-output/planning-artifacts/portal-data-canonical-model.md) should absorb dense normative detail that would overload the main Architecture document:
 
 1. class-by-class validation objectives
 2. transition-by-transition validation objectives
@@ -90,15 +90,15 @@ The companion artifact at [_bmad-output/planning-artifacts/private-pipeline-cano
 | Class | PRD | Architecture | Companion Artifact |
 | --- | --- | --- | --- |
 | `raw` | mention as transient ingestion input only | define as non-persisted, non-governed class with meaning-preserving normalization constraints | preserve exact admissible normalization semantics |
-| `deep-knowledge` | mention as first persisted private boundary | define append-only, private, optional persisted layer | preserve split, optionality, and non-canonical downstream role |
+| `deep-knowledge` | mention as first persisted governed boundary | define append-only, optional persisted layer in the portal data root | preserve split, optionality, and non-canonical downstream role |
 | `knowledge-base-candidate` | introduce as review-entry layer | define reviewable proposal layer and allowed outcomes | preserve partial review and mixed-outcome rules |
 | `knowledge-base-current` | mention as positive governed knowledge | define reusable approved source material | preserve class-level validation and downstream usage rules |
 | `knowledge-base-deprecated` | mention as active negative guardrail | define exclusion and veto role | preserve non-reintroduction semantics |
 | `knowledge-base` | define unified governed center | define logical center with current/deprecated partitions | preserve maintenance rules and class integrity constraints |
 | `hypercv-base` | mention as first generated materialization | define spec/profile-constrained generated layer | preserve recognizability and validity rules |
 | `hypercv-refinement` | mention as replayable editorial delta | define no-new-knowledge refinement layer | preserve current-patch normativity and replayability rules |
-| `hypercv-final` | mention as approved private canonical publication source | define semantically stable canonical materialization | preserve change-lever distinction and semantic-drift taxonomy |
-| `site-data` | mention as subordinate projection only | define localized private projection with no authoring authority | preserve projection-only and no-semantic-repair rules |
+| `hypercv-final` | mention as approved canonical publication source in the portal data root | define semantically stable canonical materialization | preserve change-lever distinction and semantic-drift taxonomy |
+| `site-data` | mention as subordinate projection only | define localized generated projection with no authoring authority | preserve projection-only and no-semantic-repair rules |
 | `deployed static site` | mention as only public runtime artifact | define public delivery boundary | preserve publish-safety and release-coherence obligations |
 
 ## 6. Transition Absorption Matrix

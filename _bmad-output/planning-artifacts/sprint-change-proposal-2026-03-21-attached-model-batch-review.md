@@ -2,21 +2,21 @@
 workflowType: sprint-change-proposal
 preparedDate: '2026-03-21'
 project: alecsg77-portal
-status: approved-absorbed
+status: completed
 executionMode: batch
 changeScope: minor
-triggerType: attached-private-pipeline-model-post-alignment-review
+triggerType: attached-model-post-alignment-review
 inputDocuments:
   - attached private-pipeline-definition.md
   - _bmad-output/planning-artifacts/prd.md
   - _bmad-output/planning-artifacts/architecture.md
-  - _bmad-output/planning-artifacts/private-pipeline-canonical-model.md
-  - _bmad-output/planning-artifacts/private-pipeline-canonical-crosswalk-2026-03-21.md
+  - _bmad-output/planning-artifacts/portal-data-canonical-model.md
+  - _bmad-output/planning-artifacts/portal-data-canonical-crosswalk-2026-03-21.md
   - _bmad-output/planning-artifacts/ux-design-specification.md
-approvalStatus: approved-2026-03-21
+approvalStatus: approved-completed-2026-03-21
 ---
 
-# Sprint Change Proposal - Attached Private Pipeline Model Batch Review
+# Sprint Change Proposal - Attached Portal Data Model Batch Review
 
 ## 1. Issue Summary
 
@@ -41,7 +41,7 @@ No major PRD rewrite, architecture rewrite, or UX rewrite is required.
 
 The only residual clarification opportunities were concentrated in the companion canonical artifact rather than in the PRD or the main Architecture document.
 
-Those two micro-clarifications have now been applied. This review is therefore closed as absorbed.
+Those two micro-clarifications have now been applied. This sprint-change request is therefore closed as completed.
 
 ## 2. Checklist Status
 
@@ -58,6 +58,7 @@ Those two micro-clarifications have now been applied. This review is therefore c
 - 2.3 Remaining epic review: N/A.
 - 2.4 Future epic invalidation or new epic need: Not triggered by this review alone.
 - 2.5 Epic order or priority change: N/A before first decomposition.
+- 2.6 Closure dependency on epic existence: None. Completion of this sprint-change request does not require epics to exist.
 
 ### Section 3 - Artifact Conflict and Impact Analysis
 
@@ -98,7 +99,7 @@ It now correctly expresses:
 1. `knowledge-base-candidate` as the governed review-entry layer
 2. `knowledge-base` as the unified governed center with `current` and `deprecated` partitions
 3. `hypercv-base`, `hypercv-refinement`, and `hypercv-final` as the canonical HyperCV lifecycle
-4. `site-data` as a private projection rather than an authoring layer
+4. `site-data` as a generated projection inside the portal data root rather than an authoring layer
 5. planning-level roles for `user-persona`, `patch-grammar`, `hypercv-docs-spec`, and `hypercv-distillation-profile`
 6. the explicit transition chain from `raw` to deployed static site
 
@@ -123,7 +124,7 @@ No material Architecture conflict remains relative to the attached source.
 
 No UX contradiction was found.
 
-The UX document remains correctly downstream of the semantic model and does not need to encode the dense private-pipeline rules.
+The UX document remains correctly downstream of the semantic model and does not need to encode the dense portal-data rules.
 
 #### Companion Canonical Artifact
 
@@ -171,7 +172,7 @@ Risk: Medium.
 
 ### Selected Path
 
-Option 2 was selected and completed. The change is now closed as absorbed.
+Option 2 was selected and completed. The change is now closed as completed.
 
 Operationally, this means:
 
@@ -204,7 +205,7 @@ Status: No change required.
 
 Rationale:
 
-The attached source concerns private-pipeline semantics and governance, not the public interaction model. The UX document is still correctly aligned as long as the frontend remains projection-only.
+The attached source concerns portal-data semantics and governance, not the public interaction model. The UX document is still correctly aligned as long as the frontend remains projection-only.
 
 ### Proposal D - Companion Canonical Artifact Clarification
 
@@ -235,7 +236,9 @@ The current crosswalk preserves this nuance, but the companion artifact would be
 
 ## 7. Closure Note
 
-This review is closed as absorbed with micro-clarifications applied.
+This review is closed as completed with micro-clarifications applied.
+
+Closure does not depend on epic or story existence because this request only required canonical alignment review, companion-artifact clarification, and explicit confirmation that current epic/story impact is N/A until decomposition begins.
 
 Applied clarifications:
 
@@ -258,6 +261,7 @@ Minor.
 1. this batch review proposal
 2. the current canonical planning set already in force
 3. applied micro-clarifications in the companion canonical artifact
+4. explicit closure decision recorded independently from future epic creation
 
 ### Success Criteria
 

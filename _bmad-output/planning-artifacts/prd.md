@@ -29,9 +29,9 @@ classification:
   projectContext: greenfield
 productVision:
   vision: Transform the work experience into an explorable public knowledge base, capable of exposing tangible facts and objective lessons learned through guided discovery and verifiable structured content.
-  differentiator: "A HyperCV powered by an offline-first private pipeline that distills memories and raw notes into canonically structured artifacts validated by humans, then published in a highly readable bilingual static portal."
+  differentiator: "A HyperCV powered by an offline-first data pipeline that distills memories and raw notes into canonically structured artifacts validated by humans, then publishes them through a highly readable bilingual static portal."
   insight: The goal is not to replace the interview with an assistant that speaks on behalf of the candidate, but to reduce evaluation friction by exposing a real database of experiences that can be consulted through navigation, search, and progressive disclosure.
-  oneLiner: "A public static portal that makes a career consultable like a knowledge base, powered by a private pipeline that distills verifiable content."
+  oneLiner: "A public static portal that makes a career consultable like a knowledge base, powered by a reusable public engine and a user-managed PORTAL_DATA_ROOT."
 lastEdited: '2026-03-21'
 editHistory:
   - date: '2026-03-08'
@@ -45,7 +45,7 @@ editHistory:
   - date: '2026-03-16'
     changes: 'Closed final validation gaps by tightening canonical-governance FRs and evidence-oriented acceptance language'
   - date: '2026-03-21'
-    changes: 'Realigned the canonical private-pipeline model around candidate review, governed knowledge partitions, HyperCV base/refinement stages, and projection-only delivery rules'
+    changes: 'Realigned the canonical portal-data model around candidate review, governed knowledge partitions, HyperCV base/refinement stages, and projection-only delivery rules'
 workflowType: 'prd'
 workflow: 'edit'
 ---
@@ -57,18 +57,18 @@ workflow: 'edit'
 
 ## Executive Summary
 
-HyperCV is a web app that transforms the static CV into an explorable knowledge base. The problem to solve is twofold: a traditional CV compresses too much context for recruiters and technical evaluators, while a narrative portfolio requires too much time to get to the useful point. V1 addresses this gap with a bilingual public static portal, designed to offer guided discovery, search over the static corpus, and progressive disclosure over verifiable content. The portal's value derives from an offline-first private pipeline that keeps both working materials and canonical content in the private domain, and publishes to the public domain only approved and sanitized static artifacts. Conversational features and real-time matching remain explicitly out of scope for the MVP.
+HyperCV is a web app that transforms the static CV into an explorable knowledge base. The problem to solve is twofold: a traditional CV compresses too much context for recruiters and technical evaluators, while a narrative portfolio requires too much time to get to the useful point. V1 addresses this gap with a bilingual public static portal, designed to offer guided discovery, search over the static corpus, and progressive disclosure over verifiable content. The portal's value derives from an offline-first engine that reads from a user-managed `PORTAL_DATA_ROOT`, keeps governed source artifacts outside the public deliverable, and publishes only approved and sanitized static artifacts. Conversational features and real-time matching remain explicitly out of scope for the MVP.
 
 ### What Makes This Special
 
-The differentiator is the separation between private content preparation and public consultation:
+The differentiator is the separation between user-managed portal data preparation and public consultation:
 
-1. **Private canonical model:** the Author collects raw inputs, consolidates them into persisted private content, and converts them into a canonical HyperCV catalog subject to human review.
-2. **Public engine, private data boundary:** the public repository remains authoritative for engine, contracts, and frontend, while the real data and canonical layers remain in the private domain; the boundary applies to data, not code.
+1. **User-managed canonical model:** the Author collects raw inputs, consolidates them into governed content inside a user-managed `PORTAL_DATA_ROOT`, and converts them into a canonical HyperCV catalog subject to human review.
+2. **Public engine / portal data split:** the public repository remains authoritative for engine, contracts, and frontend, while user data and canonical layers stay in the externally managed portal data root; the boundary applies to data, not code.
 3. **Safe static publication:** the portal exposes only approved bilingual static outputs, with publication safety controls and absence of leakage as release constraints.
 4. **Contextual progressive disclosure:** the public experience first shows the relevant question and then the structured fragment, making rapid evaluation and operational copy-paste easier.
 
-**Core Insight:** *"A public static portal that makes a career consultable like a knowledge base, powered by a private domain that consolidates verifiable canonical content and publishes only safe static outputs."*
+**Core Insight:** *"A public static portal that makes a career consultable like a knowledge base, powered by a reusable public engine and a user-managed portal data root that produce safe static outputs."*
 
 ## Project Classification
 
@@ -109,8 +109,8 @@ These goals impose a conservative architectural choice for V1: verifiable conten
 
 ### MVP - Minimum Viable Product
 Builds the minimum value while reducing cost, hallucination risk, and attack surface:
-* Offline-first private pipeline to transform ephemeral inputs into persisted private content, curated knowledge base, and final HyperCV catalog subject to review.
-* Private-domain transformations are expected to be LLM-assisted by default where they improve extraction, synthesis, normalization, and drafting quality, while remaining governed by explicit schemas, validators, revision rules, and human review.
+* Offline-first data pipeline to transform ephemeral inputs into governed content, curated knowledge base, and final HyperCV catalog subject to review.
+* Portal-data transformations are expected to be LLM-assisted by default where they improve extraction, synthesis, normalization, and drafting quality, while remaining governed by explicit schemas, validators, revision rules, and human review.
 * Bilingual public static portal with hierarchical navigation as the primary mode and search over the static corpus as secondary support.
 * **Progressive Disclosure:** links expose contextual questions and open readable, copyable S.T.A.R. fragments.
 * Analytics for TTV, deep-dive engagement, and CTR toward LinkedIn.
@@ -130,23 +130,23 @@ The MVP scope is sufficient if it demonstrates that guided discovery, operationa
 ### Canonical Content Boundary
 The product distinguishes four layers at the requirement level, without turning the PRD into a detailed technical design:
 * **Ephemeral inputs:** work notes and voice notes used for initial ingestion, not intended for publication, not renderable, and not treated as a persisted governed class.
-* **Persisted private content:** `deep-knowledge` as append-only private memory, `knowledge-base-candidate` as the governed review-entry layer, and `knowledge-base` as the unified governed center with semantically active `current` and `deprecated` partitions that remain outside the public domain.
-* **Canonical HyperCV catalog:** private HyperCV artifacts separated into `hypercv-base`, `hypercv-refinement`, and `hypercv-final` responsibilities, with `hypercv-final` as the approved materialized source of truth for publishing.
-* **Derived public output:** private `site-data` as the regenerable bilingual web projection and the deployable static package as the only runtime artifact that crosses into the public domain.
+* **Persisted governed content:** `deep-knowledge` as append-only source memory, `knowledge-base-candidate` as the governed review-entry layer, and `knowledge-base` as the unified governed center with semantically active `current` and `deprecated` partitions that remain outside the public deliverable.
+* **Canonical HyperCV catalog:** HyperCV artifacts separated into `hypercv-base`, `hypercv-refinement`, and `hypercv-final` responsibilities, with `hypercv-final` as the approved materialized source of truth for publishing.
+* **Derived public output:** `site-data` as the regenerable bilingual web projection inside the portal data root and the deployable static package as the only runtime artifact that crosses into the public domain.
 
-The MVP requires that only the deployable static package crosses the boundary toward the published site; private layers always remain excluded from the public package.
+The MVP requires that only the deployable static package crosses the boundary toward the published site; governed source layers always remain excluded from the public package.
 
 The planning baseline also requires these class-boundary rules:
 * `raw` begins and ends as transient ingestion input.
 * `deep-knowledge` is the first persisted responsibility boundary of the system.
 * `knowledge-base-candidate` is the review-entry layer for proposed reusable knowledge.
 * `knowledge-base` remains the governed center, with `current` as positive reusable source material and `deprecated` as an active downstream exclusion guardrail.
-* `hypercv-base` is the first generated HyperCV materialization; `hypercv-refinement` is a replayable editorial delta layer; `hypercv-final` is the approved private canonical publication source.
-* `site-data` is a private projection for localization, routing, search, and rendering; it is not the semantic source of truth.
+* `hypercv-base` is the first generated HyperCV materialization; `hypercv-refinement` is a replayable editorial delta layer; `hypercv-final` is the approved canonical publication source within the portal data root.
+* `site-data` is a projection for localization, routing, search, and rendering within the portal data root; it is not the semantic source of truth.
 
 The planning baseline also requires these governance rules:
 * knowledge maintenance and editorial refinement are distinct change types and must not be collapsed into one generic editing concept
-* LLM usage is allowed only inside the governed private pipeline and never replaces schemas, validators, class contracts, or human review
+* LLM usage is allowed only inside the governed data pipeline and never replaces schemas, validators, class contracts, or human review
 * projection and delivery may not repair meaning or invent publishable semantics
 * `user-persona` affects projection only; `patch-grammar` constrains replayable editorial deltas; `hypercv-docs-spec` defines the HyperCV document contract; `hypercv-distillation-profile` governs base-generation behavior within that contract
 
@@ -165,24 +165,24 @@ The primary interaction pattern is **Progressive Disclosure**: a contextual requ
 * **Journey:** The recruiter accesses without barriers or login, reads a clear executive summary, and uses navigation and search to find relevant stacks, outcomes, and contexts. They expand the details of interest and use the on-screen formatted fragments for quick copy and paste into ATS, email, or screening notes.
 
 ### 3. The Author (Alessio / Admin)
-* **Goal:** Enter and keep their professional experience up to date while reducing friction and maximizing data quality, using a **completely local** private pipeline made up of one or more agents or offline processes.
+* **Goal:** Enter and keep their professional experience up to date while reducing friction and maximizing data quality, using an offline-first data pipeline that reads from a user-managed `PORTAL_DATA_ROOT`.
 * **Journey (Offline Backend):**
   1. **Initial input:** Alessio records a voice note or writes unstructured notes after a day of work.
-  2. **Private consolidation:** local processes transform the inputs into persisted private content, preserving the context useful for future review.
+  2. **Data consolidation:** local processes transform the inputs into governed content inside the portal data root, preserving the context useful for future review.
   3. **Curatorial knowledge base:** the consolidated content is distilled into a curated knowledge base, which can also be integrated with native manual contributions.
   4. **HyperCV drafting and composition:** the pipeline produces and refines drafts of experiences, projects, and S.T.A.R. cases, then converts them into a final HyperCV catalog ready for review.
   5. **Human validation:** Alessio reviews, approves, or corrects the final content before it becomes a publishable source.
   6. **Projection and publish safety:** local processes generate bilingual site-data and static pages, execute safety checks, and prepare the release evidence package.
   7. **Public update:** only the approved static package is distributed, without introducing complex runtime interactions in the MVP.
 
-These journeys show why the product combines a readable, fast public experience with a private editorial cycle governed by the Author.
+These journeys show why the product combines a readable, fast public experience with a governed editorial cycle over user-managed data.
 
 ## Innovation & Novel Patterns
 
 ### Detected Innovation Areas
 * **Offline-First AI Pipeline:** distillation happens upstream, outside the public runtime, reducing costs, leakage risk, and hallucinations.
-* **Canonical HyperCV Catalog:** the CV is not a static document but a view derived from an approved private catalog of experiences, projects, and reusable S.T.A.R. cases across multiple paths.
-* **Public Engine / Private Data Split:** the site and pipeline engine can remain public and inspectable, while the real data and editorial layers remain in the private domain.
+* **Canonical HyperCV Catalog:** the CV is not a static document but a view derived from an approved catalog of experiences, projects, and reusable S.T.A.R. cases across multiple paths.
+* **Engine / Portal Data Split:** the site and pipeline engine can remain public and inspectable, while user data and editorial layers remain in an externally managed portal data root.
 * **Contextual Progressive Disclosure:** navigation first exposes the question and then the structured answer, favoring fast reading and operational copy-paste.
 
 ### Market Context & Competitive Landscape
@@ -212,21 +212,21 @@ The model was validated through First Principles Analysis: it clearly separates 
 
 This section defines a decision constraint, not a final technical solution: V1 must remain static and low-risk; Growth may introduce runtime and additional services only after validating value and operating cost.
 
-The operational principle that emerged from system discovery is that the key contract is not between two specific repositories, but between a **public engine** and a **private data domain**. Pipeline code, validation rules, and frontend can remain public; real data, editorial materials, and the canonical catalog remain private.
+The operational principle that emerged from system discovery is that the key contract is between a **reusable public engine** and a **portal data boundary**. Pipeline code, validation rules, and frontend can remain public; user data, editorial materials, and the canonical catalog remain in an externally managed portal data root. The project governs code, contracts, validators, and transformations; it does not govern persistence strategy, historical versioning, or recovery policy for user data.
 
 #### V1 Phase (Minimum Viable Product):
 * **Boundary:** static public experience with content approved before publishing.
 * **Decision Driver:** maximize readability, SEO, operational simplicity, and release predictability.
 * **Core User Experience:** primary hierarchical navigation, search over the static corpus as a secondary mode, and progressive disclosure over public content in English and Italian, kept consistent across desktop and mobile in supported browsers.
-* **Content Promotion Chain:** final private HyperCV catalog -> projection site-data -> deployed static site, with allowlist-based controls before every release.
-* **Engine Promotion Chain:** separate evolution of public pipeline code, contracts, and frontend, consumable by the private workspace without requiring real data to enter the public repository.
-* **Execution Contract:** the public engine must remain runnable in showcase mode with sanitized fixtures and in private mode against a configured private data root, without assuming that private data exist inside the public repository tree.
+* **Content Promotion Chain:** final HyperCV catalog in the portal data root -> projection site-data -> deployed static site, with allowlist-based controls before every release.
+* **Engine Promotion Chain:** separate evolution of public pipeline code, contracts, and frontend, consumable against an externally managed portal data root without requiring real data to enter the public repository.
+* **Execution Contract:** the public engine must remain runnable against an explicit configured `PORTAL_DATA_ROOT` for real authoring and publication workflows, without assuming that user data exist inside the public repository tree. Each relevant component, transform, validator, and frontend-facing contract must also be testable independently with dedicated mock data that are kept separate from and are not implied by the `PORTAL_DATA_ROOT`.
 
 #### Phase 2 (Growth & Backend Migration):
 * **Activation Condition:** optional introduction of runtime or additional services only after V1 validation.
 * **Decision Driver:** the final Growth pattern remains open until operating cost and the value of advanced features have been measured.
 * **Additional capabilities:** authentication, gating, contextual matching, and other runtime AI features.
-* **Invariant to preserve:** even in Growth, the private data -> public content boundary remains governed by publication safety policy and explicit review.
+* **Invariant to preserve:** even in Growth, the portal-data -> public content boundary remains governed by publication safety policy and explicit review.
 
 ## Project Scoping & Phased Development
 
@@ -236,7 +236,7 @@ The operational principle that emerged from system discovery is that the key con
 ### Scope Boundaries (In vs Out)
 
 #### Phase 1: Minimum Viable Product (Static Publish)
-* **[IN SCOPE] Private Domain:** persisted content, curated knowledge base, editorial drafts, and final HyperCV catalog managed exclusively in the Author's local private pipeline.
+* **[IN SCOPE] User-Managed Portal Data Model:** persisted content, curated knowledge base, editorial drafts, and final HyperCV catalog managed inside the Author's `PORTAL_DATA_ROOT`.
 * **[IN SCOPE] Web Front-end:** static generator distributed as a public experience with low operating cost.
 * **[IN SCOPE] Public Localization:** publication of static pages in English and Italian from the approved canonical knowledge base.
 * **[IN SCOPE] User Experience (UX):** exploratory progressive disclosure dynamic with explicit context and on-demand deep dive.
@@ -244,7 +244,7 @@ The operational principle that emerged from system discovery is that the key con
 * **[IN SCOPE] Publish Governance:** release evidence package, human review of modified content, and automatic publication safety checks before deploy.
 * **[OUT OF SCOPE]** No cloud database. No live operational backend. No log-in. No semantic retrieval, chatbot, or LLM inference produced by user interactions at run time.
 * **[OUT OF SCOPE]** No identity-lens toggle, alternate style mode, or secondary expressive presentation layer in the public MVP.
-* **[OUT OF SCOPE]** Publication of raw materials, private knowledge bases, editorial drafts, or other structured sources internal to the private domain.
+* **[OUT OF SCOPE]** Publication of raw materials, governed knowledge bases, editorial drafts, or other structured sources internal to the portal data root.
 
 #### Phase 2: Growth (Backend Evaluation)
 * **[IN SCOPE]** Introduction of backend and managed services only after V1 validation.
@@ -258,12 +258,12 @@ The previous sections define the problem, the product model, the journeys to sup
 
 ### Data Ingestion & Distillation (Offline AI Pipeline)
 * **FR1:** The Author can enter unstructured "memories" (text notes or voice notes) related to their career in the local environment.
-* **FR2:** The local pipeline can consolidate inputs into persisted private content beginning at `deep-knowledge`, preserving the context needed for review and future updates. Raw inputs remain transient ingestion material and are not treated as a persisted governed class.
-* **FR3:** The Distiller Agent (local) can derive from persisted content governed `knowledge-base-candidate` contributions and reusable `knowledge-base` content for the canonical HyperCV catalog and for approved public projections of the same release. MVP planning assumes this distillation may be LLM-assisted, but only inside the private pipeline and only under schema validation, review, and publish-safety gates.
+* **FR2:** The local pipeline can consolidate inputs into governed content beginning at `deep-knowledge`, preserving the context needed for review and future updates. Raw inputs remain transient ingestion material and are not treated as a persisted governed class.
+* **FR3:** The Distiller Agent (local) can derive from persisted content governed `knowledge-base-candidate` contributions and reusable `knowledge-base` content for the canonical HyperCV catalog and for approved public projections of the same release. MVP planning assumes this distillation may be LLM-assisted, but only inside the data pipeline and only under schema validation, review, and publish-safety gates.
 * **FR4:** The Author can read, edit, and manually approve generated content and native manual contributions as they move through candidate review, governed knowledge maintenance, HyperCV generation, and final publication decisions.
 
 ### Content Assembly & Generation
-* **FR5:** The local pipeline can organize approved content into a HyperCV catalog composed of experiences, projects, and S.T.A.R. cases ready for publication through explicit private class transitions: candidate review, governed knowledge maintenance, `hypercv-base` generation, `hypercv-refinement`, `hypercv-final` materialization, then `site-data` projection.
+* **FR5:** The local pipeline can organize approved content into a HyperCV catalog composed of experiences, projects, and S.T.A.R. cases ready for publication through explicit governed class transitions inside the portal data root: candidate review, governed knowledge maintenance, `hypercv-base` generation, `hypercv-refinement`, `hypercv-final` materialization, then `site-data` projection.
 * **FR6:** The Generator Agent (local) can reuse the same approved canonical content across the different approved navigation nodes of the portal while maintaining semantic consistency, linkage to the same canonical source, and absence of unapproved textual divergences between published views of the same release. TypeScript orchestration, deterministic transforms, and LLM-assisted generation are all acceptable implementation choices so long as canonical contracts, provenance, and review obligations remain intact.
 * **FR7:** The local System can publish the static output of the portal through the public hosting pipeline.
 * **FR8:** The Author can bypass the Agents (manual degradation) and directly edit approved content before publication, but manual edits to governed knowledge must still enter through candidate review and may not bypass validation, provenance, or approval rules.
@@ -290,7 +290,7 @@ The previous sections define the problem, the product model, the journeys to sup
 * **FR21:** The distillation system can create a monolingual canonical HyperCV catalog only from heterogeneous sources and manual contributions that, for the current release, have `approved` status, completed human review, and no blocking publishability findings.
 * **FR22:** The system can maintain a verifiable link between the canonical catalog, the contributions that compose it, and the sources that support its review so that, during review, the Author can trace every canonical element back to at least one approved source or contribution with identifiable review.
 * **FR23:** The Author can inspect provenance, review status, and approved components of the canonical content during review and publish decisions.
-* **FR24:** The static generation system can publish page variants in English and Italian from the approved canonical catalog, without exposing private editorial layers. The public delivery layer must consume `site-data`, not `knowledge-base`, `hypercv-base`, `hypercv-refinement`, or `hypercv-final` directly.
+* **FR24:** The static generation system can publish page variants in English and Italian from the approved canonical catalog, without exposing governed editorial layers. The public delivery layer must consume `site-data`, not `knowledge-base`, `hypercv-base`, `hypercv-refinement`, or `hypercv-final` directly.
 * **FR25:** The Visitor can change language while preserving, when available, the same logical content or navigation node.
 * **FR26:** The system can detect before public release untranslated placeholders, missing variants for required pages, and manifest inconsistencies between equivalent nodes that prevent coherent publication.
 * **FR27:** The Author can trigger selective or full regeneration when source inputs or approved transformation rules change.
@@ -306,7 +306,7 @@ For planning and decomposition purposes, the minimum transformation contract is:
 * `knowledge-base-candidate` -> `knowledge-base-current` / `knowledge-base-deprecated` / discard: explicit governed review closure
 * `knowledge-base` -> `hypercv-base`: generation of the first spec-constrained HyperCV materialization
 * `hypercv-base` + `hypercv-refinement` -> `hypercv-final`: explicit materialization of approved final content through replayable editorial deltas that may not add new knowledge
-* `hypercv-final` + `user-persona` -> `site-data`: private bilingual web projection with route, locale, and presentation needs resolved before rendering
+* `hypercv-final` + `user-persona` -> `site-data`: bilingual web projection inside the `PORTAL_DATA_ROOT`, with route, locale, and presentation needs resolved before rendering
 * `site-data` -> deployed static site: static rendering and delivery only
 
 ## Non-Functional Requirements
@@ -318,11 +318,11 @@ For planning and decomposition purposes, the minimum transformation contract is:
 * Language switch must complete within 500 ms on already loaded public pages in supported browsers.
 
 ### Security & Boundary Enforcement
-* Pre-publish checks must verify on all modified content that raw data, private knowledge bases, editorial drafts, and working materials are not included in the public package.
+* Pre-publish checks must verify on all modified content that raw data, governed knowledge bases, editorial drafts, and working materials are not included in the public package.
 * The public build must include only content and projections marked as publishable through allowlist-based policy; every element lacking approval must be excluded from the release bundle, as verified in the release evidence package for 100% of modified content.
-* The number of unauthorized private references in the public layer must be 0 in every release review.
+* The number of unauthorized governed-source or internal references in the public layer must be 0 in every release review.
 * The release evidence package must confirm that sensitive metadata, internal references, NDA-covered details, and structured layers not intended for publication are absent from modified public pages.
-* Minimum release guardrails must include secret scanning on public and private repositories and on release jobs, least-privilege credentials for access to private data, and the rule that untrusted public workflows must not be able to read private production data.
+* Minimum release guardrails must include secret scanning on the public repository and on release jobs, least-privilege credentials for any automation that reads from `PORTAL_DATA_ROOT`, and the rule that untrusted public workflows must not be able to read governed production portal data.
 
 ### Governance & Traceability
 * Every published content item must have a review status, verifiable provenance, and an identifiable revision before release, as attested for 100% of modified content by the release checklist or equivalent evidence attached to the release evidence package.
@@ -344,13 +344,13 @@ For planning and decomposition purposes, the minimum transformation contract is:
 ### Validation & Publish Readiness
 * Pre-publish checks must block the release in the presence of leakage, non-allowed metadata, or incomplete content on modified pages.
 * Human review must cover 100% of modified public pages in a release.
-* The release evidence package must demonstrate that the public package contains neither raw data nor unauthorized private references.
+* The release evidence package must demonstrate that the public package contains neither raw data nor unauthorized governed-source or internal references.
 
 ### Operability
 * A standard update of publishable content must be completable by a single author-operator in less than 30 minutes, excluding raw note drafting, during a process dry run.
 * A full corpus rebuild must be executable through a documented end-to-end checklist, without undescribed manual interventions and with a verifiable outcome in a dry run completed successfully at least once for every substantial workflow change.
-* The operational workflow must be executable in a private workspace that consumes the public engine without requiring real data to enter the public repository.
-* The public repository must remain runnable for showcase, tests, and frontend work through sanitized fixtures even when private production data are unavailable.
-* The private execution workflow must use an explicit configured private data root rather than assuming that private content is present inside the public repository tree.
+* The operational workflow must be executable against an externally managed `PORTAL_DATA_ROOT` without requiring real data to enter the public repository.
+* The public repository must remain usable for tests and frontend work even when production portal data are unavailable. Each relevant element must be testable with dedicated mock data that remain separate from the Author's `PORTAL_DATA_ROOT`.
+* The execution workflow must use an explicit configured `PORTAL_DATA_ROOT` rather than assuming that governed content is present inside the public repository tree.
 * The release evidence package and the rebuild, review, and publish checklist must be executable by a single author using repository documentation as the only operational guide.
-* Private production persistence is mandatory as the recovery baseline of the system. Additional private-data versioning beyond that baseline is optional until justified by validated rollback, audit, historical comparison, or stronger recovery requirements.
+* The project must not prescribe a specific persistence, versioning, or recovery strategy for production portal data beyond requiring an explicitly configured `PORTAL_DATA_ROOT` at execution time.

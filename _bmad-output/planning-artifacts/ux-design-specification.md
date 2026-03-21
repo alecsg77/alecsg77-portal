@@ -36,7 +36,7 @@ lastStep: 14
 
 ### Project Vision
 
-alecsg77-portal is a static-first bilingual web experience designed to reduce evaluation uncertainty around a senior professional profile. Rather than forcing visitors to interpret a dense CV or read a long-form portfolio, the product helps different evaluators reach relevant, verified evidence quickly through guided discovery, contextual navigation, and progressive disclosure. The UX should make the public experience feel immediately understandable, trustworthy, and operationally useful while preserving the strict separation between the private offline-first content pipeline and the public static publishing surface.
+alecsg77-portal is a static-first bilingual web experience designed to reduce evaluation uncertainty around a senior professional profile. Rather than forcing visitors to interpret a dense CV or read a long-form portfolio, the product helps different evaluators reach relevant, verified evidence quickly through guided discovery, contextual navigation, and progressive disclosure. The UX should make the public experience feel immediately understandable, trustworthy, and operationally useful while preserving the strict separation between the offline-first portal data pipeline and the public static publishing surface.
 
 ### Target Users
 
@@ -44,7 +44,7 @@ The primary user is a technical evaluator such as a CTO, VP Engineering, or Tech
 
 A secondary user is a recruiter or talent sourcer who needs to assess relevance rapidly and extract structured text for screening, ATS notes, or internal handoff. This user benefits from clear summaries, low-friction entry points, business-readable framing, and copy-ready content that reduces interpretation effort.
 
-A supporting internal user is the author-administrator, who maintains the private content pipeline, reviews canonical artifacts, and republishes the public experience without relying on live systems. For this user, the public UX must reflect editorial rigor and control without exposing operational complexity.
+A supporting internal user is the author-administrator, who maintains the portal data pipeline, reviews canonical artifacts, and republishes the public experience without relying on live systems. For this user, the public UX must reflect editorial rigor and control without exposing operational complexity.
 
 ### Key Design Challenges
 

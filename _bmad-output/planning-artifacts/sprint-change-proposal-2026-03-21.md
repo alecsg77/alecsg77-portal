@@ -8,7 +8,7 @@ changeScope: major
 triggerType: canonical-model-realignment-before-epic-decomposition
 inputDocuments:
   - _bmad-archive/planning-artifacts/private-pipeline-canonical-change-proposal-2026-03-21.md
-  - _bmad-output/planning-artifacts/private-pipeline-canonical-crosswalk-2026-03-21.md
+  - _bmad-output/planning-artifacts/portal-data-canonical-crosswalk-2026-03-21.md
   - _bmad-output/planning-artifacts/prd.md
   - _bmad-output/planning-artifacts/architecture.md
   - _bmad-archive/planning-artifacts/gray-area-review-2026-03-17.md
@@ -16,25 +16,25 @@ inputDocuments:
 approvalStatus: implemented-2026-03-21
 ---
 
-# Sprint Change Proposal - Private Pipeline Canonical Realignment
+# Sprint Change Proposal - Portal Data Canonical Realignment
 
 ## 1. Issue Summary
 
 ### Trigger
 
-The March 21 private-pipeline canonical change brief established that the current canonical planning set is directionally correct but still under-specifies the private pipeline model in ways that can distort future epic and story decomposition.
+The March 21 canonical change brief established that the current canonical planning set is directionally correct but still under-specifies the portal-data model in ways that can distort future epic and story decomposition.
 
 This is not a product redesign from zero. It is a canonical realignment before backlog decomposition.
 
 ### Issue Type
 
 - misunderstanding or under-specification of the current canonical model
-- terminology drift between older HyperCV intermediate names and the intended private-pipeline model
+- terminology drift between older HyperCV intermediate names and the intended portal-data model
 - governance and validation semantics not yet explicit enough for decomposition-safe planning
 
 ### Evidence
 
-- the delta brief explicitly states that the current PRD and Architecture do not yet express the private pipeline model with enough clarity for safe decomposition
+- the delta brief explicitly states that the current PRD and Architecture do not yet express the portal-data model with enough clarity for safe decomposition
 - the current PRD still uses `hypercv-draft` and `hypercv-composition` as primary intermediate language in the canonical content boundary and minimum transformation contract
 - the current Architecture still models `knowledge-base-dk`, `knowledge-base-manual`, `hypercv-draft`, and `hypercv-composition` as the primary canonical class structure
 - the gray-area review already identified review granularity as operationally ambiguous and likely to derail future decomposition if left implicit
@@ -103,8 +103,8 @@ The proposed canonical realignment has been absorbed into the active planning se
 
 1. updates to [_bmad-output/planning-artifacts/prd.md](_bmad-output/planning-artifacts/prd.md)
 2. updates to [_bmad-output/planning-artifacts/architecture.md](_bmad-output/planning-artifacts/architecture.md)
-3. creation of [_bmad-output/planning-artifacts/private-pipeline-canonical-model.md](_bmad-output/planning-artifacts/private-pipeline-canonical-model.md)
-4. preservation of [_bmad-output/planning-artifacts/private-pipeline-canonical-crosswalk-2026-03-21.md](_bmad-output/planning-artifacts/private-pipeline-canonical-crosswalk-2026-03-21.md)
+3. creation of [_bmad-output/planning-artifacts/portal-data-canonical-model.md](_bmad-output/planning-artifacts/portal-data-canonical-model.md)
+4. preservation of [_bmad-output/planning-artifacts/portal-data-canonical-crosswalk-2026-03-21.md](_bmad-output/planning-artifacts/portal-data-canonical-crosswalk-2026-03-21.md)
 5. archival of superseded planning and brainstorming artifacts so the active BMAD output set now reflects only the current canonical baseline and the retained UX support artifact
 
 The issue summary and conflict analysis above remain preserved as the historical rationale for the change. The sections below record the implemented resolution state.
@@ -136,7 +136,7 @@ The PRD already states key boundary rules, including that only the deployable st
 
 Current wording that now conflicts with the target model:
 
-- `hypercv-draft` and `hypercv-composition` remain private editorial classes and never become direct frontend inputs.
+- `hypercv-draft` and `hypercv-composition` remain governed editorial classes and never become direct frontend inputs.
 - `knowledge-base` -> `hypercv-draft`: generation of private draft contributions.
 - `hypercv-draft` + `hypercv-composition` -> `hypercv-final`: explicit materialization of approved final content.
 
@@ -152,7 +152,7 @@ That model must now be reconciled with the intended canonical sequence centered 
 
 #### UX Design Specification
 
-No primary UX contradiction was found. The UX document remains valid because it mainly describes the public consultation experience, not the dense private pipeline semantics.
+No primary UX contradiction was found. The UX document remains valid because it mainly describes the public consultation experience, not the dense portal-data semantics.
 
 The only required discipline is that UX and frontend implementation must continue to treat `site-data` as a projection and not as an authoring or semantic-repair layer.
 
@@ -225,7 +225,7 @@ OLD:
 
 - `knowledge-base` content managed through distillation-derived and manual subclasses
 - HyperCV artifacts separated into draft, composition, and final responsibilities
-- `hypercv-draft` and `hypercv-composition` remain private editorial classes
+- `hypercv-draft` and `hypercv-composition` remain governed editorial classes
 
 NEW:
 
@@ -265,7 +265,7 @@ Future epics must inherit the actual governed transitions, not a compressed chai
 Add planning-level rules stating that:
 
 1. knowledge maintenance and editorial refinement are distinct change types
-2. LLM usage is allowed only inside the governed private pipeline and never replaces schemas, validators, class contracts, or human review
+2. LLM usage is allowed only inside the governed data pipeline and never replaces schemas, validators, class contracts, or human review
 3. projection and delivery may not repair meaning or invent publishable semantics
 4. `user-persona`, `patch-grammar`, `hypercv-docs-spec`, and `hypercv-distillation-profile` each impose planning-level contract constraints
 
@@ -308,7 +308,7 @@ Add explicit review semantics for:
 1. `knowledge-base-candidate` as review-entry layer with mixed possible outcomes
 2. `hypercv-base` as reviewable generated output
 3. `hypercv-refinement` as reviewable editorial delta with no-new-knowledge rule
-4. `hypercv-final` as approved private canonical publication source only after governed approval
+4. `hypercv-final` as approved canonical publication source only after governed approval
 
 Rationale:
 
@@ -333,7 +333,7 @@ These rules determine how validator, review, provenance, and regeneration storie
 
 Status: Completed.
 
-Create [_bmad-output/planning-artifacts/private-pipeline-canonical-model.md](_bmad-output/planning-artifacts/private-pipeline-canonical-model.md) with:
+Create [_bmad-output/planning-artifacts/portal-data-canonical-model.md](_bmad-output/planning-artifacts/portal-data-canonical-model.md) with:
 
 1. class-by-class validation objectives
 2. transition-by-transition validation objectives
@@ -351,7 +351,7 @@ Without this artifact, either the Architecture document becomes overloaded or th
 
 Status: Completed.
 
-Created [_bmad-output/planning-artifacts/private-pipeline-canonical-crosswalk-2026-03-21.md](_bmad-output/planning-artifacts/private-pipeline-canonical-crosswalk-2026-03-21.md) to show where the absorbed model now lives.
+Created [_bmad-output/planning-artifacts/portal-data-canonical-crosswalk-2026-03-21.md](_bmad-output/planning-artifacts/portal-data-canonical-crosswalk-2026-03-21.md) to show where the absorbed model now lives.
 
 Rationale:
 
@@ -373,7 +373,7 @@ The change must resolve conflict, not accumulate competing models.
 
 ## 6. Crosswalk Reference
 
-The authoritative absorption crosswalk for this change is documented in [_bmad-output/planning-artifacts/private-pipeline-canonical-crosswalk-2026-03-21.md](_bmad-output/planning-artifacts/private-pipeline-canonical-crosswalk-2026-03-21.md).
+The authoritative absorption crosswalk for this change is documented in [_bmad-output/planning-artifacts/portal-data-canonical-crosswalk-2026-03-21.md](_bmad-output/planning-artifacts/portal-data-canonical-crosswalk-2026-03-21.md).
 
 That crosswalk should be used during canonical editing to verify that:
 
@@ -430,8 +430,8 @@ Completed in this change:
 1. approve this Sprint Change Proposal
 2. update [prd.md](_bmad-output/planning-artifacts/prd.md)
 3. update [architecture.md](_bmad-output/planning-artifacts/architecture.md)
-4. create [_bmad-output/planning-artifacts/private-pipeline-canonical-model.md](_bmad-output/planning-artifacts/private-pipeline-canonical-model.md)
-5. preserve [_bmad-output/planning-artifacts/private-pipeline-canonical-crosswalk-2026-03-21.md](_bmad-output/planning-artifacts/private-pipeline-canonical-crosswalk-2026-03-21.md)
+4. create [_bmad-output/planning-artifacts/portal-data-canonical-model.md](_bmad-output/planning-artifacts/portal-data-canonical-model.md)
+5. preserve [_bmad-output/planning-artifacts/portal-data-canonical-crosswalk-2026-03-21.md](_bmad-output/planning-artifacts/portal-data-canonical-crosswalk-2026-03-21.md)
 6. archive superseded BMAD planning and brainstorming artifacts
 
 Recommended next step:

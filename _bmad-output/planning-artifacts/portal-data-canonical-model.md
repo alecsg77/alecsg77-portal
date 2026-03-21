@@ -3,16 +3,16 @@ workflowType: canonical-companion-model
 preparedDate: '2026-03-21'
 project: alecsg77-portal
 status: complete
-purpose: preserve-dense-private-pipeline-rules-for-safe-decomposition
+purpose: preserve-dense-portal-data-rules-for-safe-decomposition
 sourceBrief: _bmad-archive/planning-artifacts/private-pipeline-canonical-change-proposal-2026-03-21.md
-crosswalk: _bmad-output/planning-artifacts/private-pipeline-canonical-crosswalk-2026-03-21.md
+crosswalk: _bmad-output/planning-artifacts/portal-data-canonical-crosswalk-2026-03-21.md
 ---
 
-# Private Pipeline Canonical Model
+# Portal Data Canonical Model
 
 ## 1. Purpose
 
-This companion artifact preserves the dense normative rules of the private pipeline model without overloading the PRD or the main Architecture document.
+This companion artifact preserves the dense normative rules of the portal-data model without overloading the PRD or the main Architecture document.
 
 It is canonical. It is not an appendix, brainstorming note, or implementation-only reference.
 
@@ -81,8 +81,8 @@ Rules:
 
 Role:
 
-- first persisted private boundary
-- append-only, private, optional, non-public
+- first persisted governed boundary
+- append-only, optional, non-public inside the portal data root
 - persistent sedimentation before governed consolidation
 
 Validation focus:
@@ -90,13 +90,13 @@ Validation focus:
 - structural
 - lineage and provenance
 - content safety
-- semantic quality appropriate to persistent private memory
+- semantic quality appropriate to persistent governed memory
 
 Rules:
 
 - may be internally split for operational purposes, but that split does not replace canonical downstream truth
 - when the optional split is used, `deep-knowledge-current` holds material still awaiting candidate generation and `deep-knowledge-archived` holds already-processed material retained for traceability
-- remains outside the public domain and outside canonical publication ownership
+- remains outside the public deliverable and outside canonical publication ownership
 
 ### 4.3 `knowledge-base-candidate`
 
@@ -190,13 +190,13 @@ Rules:
 - only the current patch between the latest `hypercv-base` and the latest approved `hypercv-final` is normative
 - historical patches may remain as context for recurring intent, conflict diagnosis, or pattern recognition only
 - historical patches may not become a parallel semantic source
-- if a recurring correction class persists across regenerated bases without depending on new private knowledge, it is evidence of upstream design debt in `hypercv-distillation-profile` or `hypercv-docs-spec`
+- if a recurring correction class persists across regenerated bases without depending on new governed knowledge, it is evidence of upstream design debt in `hypercv-distillation-profile` or `hypercv-docs-spec`
 
 ### 4.7 `hypercv-final`
 
 Role:
 
-- approved private canonical publication source
+- approved canonical publication source inside the portal data root
 - semantically stable materialized source of truth for downstream projection
 
 Validation focus:
@@ -213,7 +213,7 @@ Rules:
 
 Role:
 
-- private web projection
+- web projection inside the portal data root
 - localized, regenerable, non-authoritative
 
 Validation focus:
@@ -248,7 +248,7 @@ Validation focus:
 Rules:
 
 - delivery-only boundary
-- contains no private classes
+- contains no governed source classes
 
 ## 5. Transition Model
 
@@ -352,7 +352,7 @@ Rules:
 ### 6.3 `hypercv-docs-spec`
 
 - defines the structural and semantic contract of the HyperCV document family
-- is the single normative label for this document-spec family in the private pipeline model
+- is the single normative label for this document-spec family in the portal-data model
 - owns section admissibility, section purpose, filling constraints, cardinality, obligatoriness, inter-section relations, and minimum recognizability
 
 ### 6.4 `hypercv-distillation-profile`
