@@ -110,7 +110,7 @@ These goals impose a conservative architectural choice for V1: verifiable conten
 ### MVP - Minimum Viable Product
 Builds the minimum value while reducing cost, hallucination risk, and attack surface:
 * Offline-first data pipeline to transform ephemeral inputs into governed content, curated knowledge base, and final HyperCV catalog subject to review.
-* Portal-data transformations are expected to be LLM-assisted by default where they improve extraction, synthesis, normalization, and drafting quality, while remaining governed by explicit schemas, validators, revision rules, and human review.
+* Portal-data workflows are expected to be LLM-centered by default for extraction, synthesis, normalization, drafting, and editorial assistance, currently using GitHub Copilot skills and agents through VS Code Chat or Copilot CLI. These workflows remain governed by explicit schemas, validators, revision rules, and human review.
 * Bilingual public static portal with hierarchical navigation as the primary mode and search over the static corpus as secondary support.
 * **Progressive Disclosure:** links expose contextual questions and open readable, copyable S.T.A.R. fragments.
 * Analytics for TTV, deep-dive engagement, and CTR toward LinkedIn.
@@ -264,7 +264,7 @@ The previous sections define the problem, the product model, the journeys to sup
 
 ### Content Assembly & Generation
 * **FR5:** The local pipeline can organize approved content into a HyperCV catalog composed of experiences, projects, and S.T.A.R. cases ready for publication through explicit governed class transitions inside the portal data root: candidate review, governed knowledge maintenance, `hypercv-base` generation, `hypercv-refinement`, `hypercv-final` materialization, then `site-data` projection.
-* **FR6:** The Generator Agent (local) can reuse the same approved canonical content across the different approved navigation nodes of the portal while maintaining semantic consistency, linkage to the same canonical source, and absence of unapproved textual divergences between published views of the same release. TypeScript orchestration, deterministic transforms, and LLM-assisted generation are all acceptable implementation choices so long as canonical contracts, provenance, and review obligations remain intact.
+* **FR6:** The Generator Agent (local) can reuse the same approved canonical content across the different approved navigation nodes of the portal while maintaining semantic consistency, linkage to the same canonical source, and absence of unapproved textual divergences between published views of the same release. GitHub Copilot-mediated LLM orchestration is the default MVP generation posture. Deterministic transforms may be implemented in Node.js TypeScript or JavaScript where appropriate, so long as canonical contracts, provenance, replayability, and review obligations remain intact.
 * **FR7:** The local System can publish the static output of the portal through the public hosting pipeline.
 * **FR8:** The Author can bypass the Agents (manual degradation) and directly edit approved content before publication, but manual edits to governed knowledge must still enter through candidate review and may not bypass validation, provenance, or approval rules.
 

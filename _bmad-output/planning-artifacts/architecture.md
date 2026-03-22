@@ -181,8 +181,8 @@ Use Astro with migration-aware boundaries: framework-light content contracts, ex
 - Preserve explicit migration boundaries so future integration with ASP.NET MVC does not require redesigning the content model or route contracts.
 
 **Important Decisions (Shape Architecture):**
-- Use TypeScript in strict mode across content utilities, validation logic, and frontend code.
-- Treat TypeScript orchestration plus portal-data LLM-assisted transformations as the default MVP implementation posture for extraction, synthesis, normalization, and drafting, while keeping validators, schemas, and review gates deterministic and explicit.
+- Use TypeScript in strict mode for shared schemas, validators, frontend code, and reusable engine utilities. Isolated deterministic helper scripts may use Node.js JavaScript when compilation overhead is not justified, provided they preserve the same contracts, inputs, outputs, and reviewability.
+- Treat the portal-data pipeline as LLM-centered by default for extraction, synthesis, normalization, drafting, and guided editorial operations, currently mediated through GitHub Copilot skills and agents. Deterministic validators, schemas, class transitions, and review gates remain explicit and authoritative.
 - Use Astro as a delivery framework, but keep domain structure, content contracts, and route semantics as framework-light as practical.
 - Model localization explicitly with node-preserving language mappings rather than inferred route equivalence.
 - Generate bilingual `site-data` from monolingual canonical HyperCV artifacts in the portal data root instead of making the canonical layer itself bilingual.
@@ -210,7 +210,7 @@ The class model is:
 - `knowledge-base-candidate` as the governed review-entry layer for proposed reusable knowledge
 - `knowledge-base` as the unified governed center whose `current` partition is positive reusable source material and whose `deprecated` partition is an active downstream exclusion guardrail
 - `hypercv-base` as the first generated HyperCV materialization constrained by `hypercv-docs-spec` and `hypercv-distillation-profile`
-- `hypercv-refinement` as the replayable editorial delta layer, with no-new-knowledge semantics and only the current patch normative
+- `hypercv-refinement` as the replayable editorial delta layer, with no-new-knowledge semantics, only the current patch normative, and a concrete representation that remains text-first, diffable, LLM-readable, and easy to review manually
 - `hypercv-final` as the canonical materialization inside the portal data root used as the source of truth for publication
 - `site-data` as a fully regenerable web projection inside the portal data root that feeds the static renderer without becoming the content source of truth
 - `deployed static site` as the only public runtime artifact
@@ -227,7 +227,7 @@ Review granularity is explicit in the class model:
 
 The dependency model is also explicit:
 - `user-persona` affects projection only and may change exposure or granularity, not canonical claims
-- `patch-grammar` defines admissible replayable editorial operations for `hypercv-refinement`
+- `patch-grammar` defines admissible replayable editorial operations for `hypercv-refinement`; its concrete encoding should prefer human-reviewable textual forms such as structured Markdown, YAML, JSON, or equivalent line-oriented representations rather than opaque or tool-only formats
 - `hypercv-docs-spec` defines the structural and semantic contract of the HyperCV document family
 - `hypercv-distillation-profile` governs base-generation behavior within the document-spec contract
 
@@ -249,7 +249,7 @@ The MVP exposes no public runtime API as a core dependency. Portal-data preparat
 
 The architectural contract is schema-based rather than endpoint-based: content artifacts, localization mappings, navigation structures, route manifests, publish manifests, and revision references must be versioned and validated before build completion. Build failures are fail-fast. Search is delivered through a precomputed static index decoupled from route internals.
 
-Within that boundary, execution may combine deterministic TypeScript transforms and LLM-assisted steps. LLM usage is an implementation mechanism inside the data pipeline, not a replacement for canonical class transitions, explicit materialization, validation, or human approval.
+Within that boundary, the supported MVP orchestration surfaces are VS Code Chat and Copilot CLI. LLM orchestration through GitHub Copilot skills and agents is the primary execution mode for authoring and generation workflows, while deterministic transforms remain responsible for validation, replayability, materialization, and publish-safety enforcement. LLM usage does not replace canonical class transitions, explicit materialization, validation, or human approval.
 
 The public engine must support an explicit configured `PORTAL_DATA_ROOT` for real authoring and publication workflows without changing its logical boundary. Each relevant component, transform, validator, and delivery contract must also be testable independently against dedicated mock datasets that remain separate from and are not implied by the `PORTAL_DATA_ROOT`.
 
@@ -276,9 +276,9 @@ Delivery components must not repair missing semantic structure that should have 
 
 ### Infrastructure & Deployment
 
-Use static CDN deployment with atomic builds, preview environments, and simple rollback capability. Stay provider-agnostic unless a platform introduces a concrete implementation advantage.
+Use static hosting for the approved public package with atomic deploys and simple rollback capability. Prefer GitHub Pages for V1 when its constraints remain compatible with the required static-output model; keep Cloudflare as the fallback provider if Pages introduces blocking limitations.
 
-CI/CD must verify more than build success:
+Repository CI/CD must verify more than build success, but its scope is limited to the public engine, shared validators, dedicated mock datasets, and the publishable static package:
 - schema correctness
 - approval and provenance requirements
 - bilingual parity
@@ -321,14 +321,14 @@ The architecture-level constraints that remain mandatory are:
 - `site-data` remains inside the portal data root, regenerable, never manually edited, and subordinate to canonical HyperCV content
 - release governance must preserve revision traceability from approved source inputs through composition, final materialization, and public projection
 - any publishable semantic field must be introduced in canonical contracts before it appears in `site-data` or delivery components
-- the canonical class baseline is `raw`, `deep-knowledge`, `knowledge-base-candidate`, `knowledge-base`, `hypercv-base`, `hypercv-refinement`, `hypercv-final`, `site-data`, and the deployed static site; concrete folder layout remains implementation-phase detail so long as these semantic boundaries remain explicit
+- the canonical class baseline is `raw`, `deep-knowledge`, `knowledge-base-candidate`, `knowledge-base`, `hypercv-base`, `hypercv-refinement`, `hypercv-final`, `site-data`, and the deployed static site; repository layout should explicitly separate public engine code, dedicated mock datasets, and optional local orchestration helpers from the external `PORTAL_DATA_ROOT`, while exact folder names remain implementation-phase detail
 - regression safety uses a two-track model: deterministic CI checks on dedicated mock datasets in the public repository and mandatory release-evidence comparison for portal-data-backed production promotions
 
 The archived operational addendum should not be used as an active planning input after archival. Any future reuse requires explicit re-promotion into canonical documentation.
 
 ## Architecture Readiness Summary
 
-The architecture is validated as coherent and ready for implementation at the design level. The remaining open points are narrower implementation details rather than unresolved operating-model decisions: exact field-level schema details for governed artifacts in `PORTAL_DATA_ROOT`, and the concrete shape of release evidence templates.
+The architecture is validated as coherent and ready for implementation at the design level. The remaining open points are narrower implementation details rather than unresolved operating-model decisions: exact field-level schema details for governed artifacts in `PORTAL_DATA_ROOT`, the concrete shape of release evidence templates, and the final selection of text-first governed artifact and refinement encodings consistent with replayability, LLM readability, and manual review.
 
 ## Architecture Validation Record
 
