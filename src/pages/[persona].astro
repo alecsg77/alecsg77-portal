@@ -1,0 +1,26 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { loadSiteDataFromEnvironment } from "../lib/config.js";
+import { PERSONA_KEYS, type PersonaKey } from "../lib/contracts/site-data.js";
+
+export function getStaticPaths() {
+  return PERSONA_KEYS.map((persona) => ({
+    params: { persona }
+  }));
+}
+
+const persona = Astro.params.persona as PersonaKey;
+const siteData = await loadSiteDataFromEnvironment();
+const page = siteData.pages[persona];
+
+if (!page) {
+  throw new Error(`Unsupported persona route: ${persona}`);
+}
+---
+
+<BaseLayout title={`${siteData.site.title} · ${persona}`}>
+  <article class="card">
+    <h2>{page.headline}</h2>
+    <p class="prose">{page.body}</p>
+  </article>
+</BaseLayout>

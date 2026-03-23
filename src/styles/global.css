@@ -1,0 +1,90 @@
+:root {
+  color-scheme: light;
+  --bg: #f7f1e8;
+  --panel: rgba(255, 251, 245, 0.85);
+  --ink: #1f1a17;
+  --muted: #6a5f58;
+  --line: rgba(43, 30, 18, 0.14);
+  --accent: #b5542f;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: Georgia, "Times New Roman", serif;
+  color: var(--ink);
+  background:
+    radial-gradient(circle at top left, rgba(181, 84, 47, 0.16), transparent 28%),
+    linear-gradient(180deg, #efe1cf 0%, var(--bg) 48%, #fbf7f2 100%);
+}
+
+a {
+  color: inherit;
+}
+
+.page-shell {
+  width: min(960px, calc(100vw - 2rem));
+  margin: 0 auto;
+  padding: 3rem 0 4rem;
+}
+
+.hero,
+.card {
+  border: 1px solid var(--line);
+  background: var(--panel);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 20px 60px rgba(71, 48, 29, 0.08);
+}
+
+.hero {
+  padding: 2rem;
+  border-radius: 1.5rem;
+}
+
+.eyebrow {
+  margin: 0 0 0.75rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-size: 0.78rem;
+  color: var(--accent);
+}
+
+.marker {
+  margin-top: 1rem;
+  color: var(--muted);
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.card {
+  display: block;
+  padding: 1.25rem;
+  border-radius: 1.25rem;
+  text-decoration: none;
+}
+
+.card p,
+.prose {
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+@media (max-width: 720px) {
+  .page-shell {
+    width: min(100vw - 1.25rem, 960px);
+    padding-top: 1.25rem;
+  }
+
+  .hero {
+    padding: 1.5rem;
+  }
+}

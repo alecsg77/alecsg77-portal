@@ -1,0 +1,19 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { loadSiteDataFromEnvironment } from "../lib/config.js";
+
+const siteData = await loadSiteDataFromEnvironment();
+---
+
+<BaseLayout title={siteData.site.title} buildMarker={siteData.buildMarker}>
+  <section class="cards">
+    <a class="card" href="/recruiter/">
+      <h2>{siteData.pages.recruiter.headline}</h2>
+      <p>{siteData.pages.recruiter.body}</p>
+    </a>
+    <a class="card" href="/technical-evaluator/">
+      <h2>{siteData.pages["technical-evaluator"].headline}</h2>
+      <p>{siteData.pages["technical-evaluator"].body}</p>
+    </a>
+  </section>
+</BaseLayout>
